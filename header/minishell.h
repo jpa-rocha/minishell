@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 18:28:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 17:45:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,8 @@ int	ms_parser(t_cmd *cmd);
 int	ms_args_len(char **args);
 int	ms_exec(char **args);
 void	ms_signals(void);
+
+/* built-in functions */
+void	ms_pwd(void)
 
 #endif

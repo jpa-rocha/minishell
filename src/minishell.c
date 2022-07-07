@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 18:59:25 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 17:48:25 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	main(int argc, char **argv, char **env)
 static int	ms_shell(char **env)
 {
 	t_cmd	*cmd;
-	
+
 	ms_logo();
 	ms_signals();
-        while (1)
+    while (1)
 	{
 		cmd = ms_cmd_init(env);
 		if (cmd->line == NULL)
@@ -40,6 +40,6 @@ static int	ms_shell(char **env)
 		add_history(cmd->line);
 		ms_exec(cmd->args);
 		ms_cmd_cleanup(cmd);
-        }
-        return (ms_cmd_cleanup(cmd));
+    }
+    return (ms_cmd_cleanup(cmd));
 }
