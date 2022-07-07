@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 13:56:08 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:37:29 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	ms_shell(char **env);
 int	main(int argc, char **argv, char **env)
 {
 	if (argc > 1 || !argv[0])
-	return (ms_error_management(1));
+		return (ms_error_management(1));
 	ms_shell(env);
 	return (0);
 }

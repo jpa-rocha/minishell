@@ -6,8 +6,20 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 13:56:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:35:05 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../he
+#include "../../header/minishell.h"
+
+void	ms_env(char **env)
+{
+	int i;
+
+	i = 0;
+	while (i < ms_args_len(env))
+	{
+		printf("%s\n", env[i]);
+		i += 1;
+	}
+}

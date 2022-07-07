@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 11:53:52 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:24:02 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,14 @@ static void ms_free_args(char **args)
 		i -= 1;
 	}
 	free(args);
+}
+
+int	ms_args_len(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+		i += 1;
+	return (i);
 }

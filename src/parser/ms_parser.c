@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 17:45:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:23:43 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,4 @@ int	ms_parser(t_cmd *cmd)
 		return (1);
 	}
 	return (0);
-}
-
-int	ms_args_len(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i] != NULL)
-		i += 1;
-	return (i);
 }

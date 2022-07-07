@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 18:28:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 14:34:04 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,23 @@ typedef struct s_cmd {
   	t_symbols	*symb;
 } t_cmd;
 
+// General Functions
 t_cmd	*ms_cmd_init(char **env);
 int	ms_cmd_cleanup(t_cmd *cmd);
 int	ms_error_management(int errnum);
 void	ms_logo(void);
-int	ms_parser(t_cmd *cmd);
 int	ms_args_len(char **args);
-int	ms_exec(char **args);
+
+// Signal Functions
 void	ms_signals(void);
+
+// Parsing Functions
+int	ms_parser(t_cmd *cmd);
+
+// Executing Functions
+int	ms_exec(char **args);
+
+// Built-in Functions
+void	ms_env(char **env);
 
 #endif
