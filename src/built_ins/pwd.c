@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:31:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/07 17:44:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:59:11 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	ms_pwd(void)
 	char	*path;
 	
 	path = getcwd(buffer, 1024);
-	printf("Current working directory: \n\n%s\n", path);
  	if (path == NULL)
 		printf("Error in getcwd\n");
+	else
+		printf("Current working directory: \n%s\n", path);
 }

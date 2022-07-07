@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 17:48:25 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:55:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char **argv, char **env)
 {
 	if (argc > 1 || !argv[0])
 	return (ms_error_management(1));
+	ms_pwd();
 	ms_shell(env);
 	return (0);
 }

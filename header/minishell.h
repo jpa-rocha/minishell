@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 17:45:07 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/07 17:56:17 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ int	ms_exec(char **args);
 void	ms_signals(void);
 
 /* built-in functions */
-void	ms_pwd(void)
+void	ms_pwd(void);
 
 #endif
