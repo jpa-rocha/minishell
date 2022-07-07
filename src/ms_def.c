@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_def.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 19:00:49 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 11:53:52 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 	if (cmd->args != NULL)
 		ms_free_args(cmd->args);
 	free(cmd);
-	write(1, "\n", 1);
 	return (errnum);
-  
 }
 
 static void ms_free_args(char **args)
