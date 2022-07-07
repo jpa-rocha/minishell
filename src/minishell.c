@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/06 18:59:25 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/07 13:56:08 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ static int	ms_shell(char **env)
 	{
 		cmd = ms_cmd_init(env);
 		if (cmd->line == NULL)
-		  break ;
+		{
+			write(1, "exit\n", 5);
+			break;
+		}
 		if (ms_parser(cmd) != 0)
-		  return (ms_error_management(cmd->errnum));
+			return (ms_error_management(cmd->errnum));
 		add_history(cmd->line);
 		ms_exec(cmd->args);
 		ms_cmd_cleanup(cmd);
