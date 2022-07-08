@@ -85,7 +85,7 @@ $(EXEC): $(LIBFT) $(SRCS)
 	@echo "|                                                 |"
 	@echo "---------------------------------------------------"
 
-debug: $(LIBFT)
+debug: re $(LIBFT)
 	@$(CC) $(DEBUG) $(SRCS) $(LIBRARIES) -I $(HEADER) -o $(EXEC)
 
 $(LIBFT):

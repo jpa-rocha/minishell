@@ -6,25 +6,25 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 14:37:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/08 12:14:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-static int	ms_shell(char **env);
+// Entry point for the minishell logic
+static int	ms_shell(char **env, char **argv);
 
 int	main(int argc, char **argv, char **env)
 {
 	if (argc > 1 || !argv[0])
 		return (ms_error_management(1));
-	ms_shell(env);
+	ms_shell(env, argv);
 	return (0);
 }
 
 
-// Entry point for the minishell logic
-static int	ms_shell(char **env)
+static int	ms_shell(char **env, char **argv)
 {
 	t_cmd	*cmd;
 	
@@ -32,7 +32,7 @@ static int	ms_shell(char **env)
 	ms_signals();
         while (1)
 	{
-		cmd = ms_cmd_init(env);
+		cmd = ms_cmd_init(env, argv);
 		if (cmd->line == NULL)
 		{
 			write(1, "exit\n", 5);

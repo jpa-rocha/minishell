@@ -3,38 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ms_def.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 14:24:02 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/08 13:44:40 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-static void	ms_free_args(char **args);
-
-t_cmd	*ms_cmd_init(char **env)
+t_cmd	*ms_cmd_init(char **env, char **argv)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
+
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (cmd == NULL)
-	    return (NULL);
+		return (NULL);
 	cmd->symb = ft_calloc(1, sizeof(t_symbols));
-        if (cmd->symb == NULL)
+	if (cmd->symb == NULL)
 	{
-          cmd->errnum = 2;
-          return (cmd);
-        }
-        cmd->line = readline("minishell> ");
-	cmd->env = env;
+		cmd->errnum = 2;
+		return (cmd);
+	}
+	cmd->line = readline("minishell> ");
+	cmd->env = ms_create_env(env, argv);
 	cmd->errnum = 0;
 	return (cmd);
 }
 
 int	ms_cmd_cleanup(t_cmd *cmd)
 {
-	int errnum;
+	int	errnum;
 
 	errnum = cmd->errnum;
 	if (cmd->symb != NULL)
@@ -43,13 +42,15 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 		free(cmd->line);
 	if (cmd->args != NULL)
 		ms_free_args(cmd->args);
+	if (cmd->env != NULL)
+		ms_free_args(cmd->env);
 	free(cmd);
 	return (errnum);
 }
 
-static void ms_free_args(char **args)
+void	ms_free_args(char **args)
 {
-	int i;
+	int	i;
 
 	i = ms_args_len(args);
 	while (i >= 0)
