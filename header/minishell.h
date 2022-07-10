@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/08 13:33:58 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/10 22:11:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@
 # define SMSM '<<'
 # define DOLLAR '$'
 
+typedef struct s_envvar {
+	char	*name;
+	char	*value;
+}	t_envvar;
 
 typedef struct s_symbols {
 	int 	sq;
@@ -54,18 +58,21 @@ typedef struct s_cmd {
 	char		*line;
 	char		**args;
 	char		**env;
+	t_list 		*workenv;
   	t_symbols	*symb;
 } t_cmd;
 
 // General Functions
 
-t_cmd	*ms_cmd_init(char **env, char **argv);
-int	ms_cmd_cleanup(t_cmd *cmd);
-int	ms_error_management(int errnum);
-void	ms_logo(void);
-int	ms_args_len(char **args);
-char	**ms_create_env(char **env, char **argv);
-void ms_free_args(char **args);
+t_cmd		*ms_cmd_init(char **env, char **argv);
+int			ms_cmd_cleanup(t_cmd *cmd);
+void		ms_list_data_cleaner(t_list *list);
+int			ms_error_management(int errnum);
+void		ms_logo(void);
+int			ms_args_len(char **args);
+int			ms_list_env_len(t_list *env);
+char		**ms_create_env(char **env, char **argv);
+void 		ms_free_args(char **args);
 
 // Signal Functions
 
@@ -82,6 +89,8 @@ int	ms_exec(char **args);
 
 // Built-in Functions
 
-void	ms_env(char **env);
+void	ms_env(t_list *env);
+char	**ms_env_init_env(t_list *env);
+t_list	*ms_env_create_work_env(char **env, char **argv);
 
 #endif
