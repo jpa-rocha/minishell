@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 17:56:17 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/10 14:26:55 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,23 @@ typedef struct s_cmd {
 	char		*line;
 	char		**args;
 	char		**env;
+	int			num_args;
   	t_symbols	*symb;
 } t_cmd;
 
 t_cmd	*ms_cmd_init(char **env);
-int	ms_cmd_cleanup(t_cmd *cmd);
-int	ms_error_management(int errnum);
+int		ms_cmd_cleanup(t_cmd *cmd);
+int		ms_error_management(int errnum);
 void	ms_logo(void);
-int	ms_parser(t_cmd *cmd);
-int	ms_args_len(char **args);
-int	ms_exec(char **args);
+int		ms_parser(t_cmd *cmd);
+int		ms_args_len(char **args);
+int		ms_exec(char **args);
 void	ms_signals(void);
 
 /* built-in functions */
-void	ms_pwd(void);
+int		ms_pwd(void);
+int		check_if_int(char *s );
+int		ms_exit(void);
+int		ms_echo(char **argv);
 
 #endif

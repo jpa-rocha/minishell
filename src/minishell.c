@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 17:55:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/10 14:19:34 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,9 @@ int	main(int argc, char **argv, char **env)
 {
 	if (argc > 1 || !argv[0])
 	return (ms_error_management(1));
-	ms_pwd();
 	ms_shell(env);
 	return (0);
 }
-
 
 // Entry point for the minishell logic
 static int	ms_shell(char **env)
@@ -36,6 +34,12 @@ static int	ms_shell(char **env)
 		cmd = ms_cmd_init(env);
 		if (cmd->line == NULL)
 		  break ;
+		if (ft_strncmp(cmd->line, "exit", 4) == 0)
+		{
+			printf("testing\n");
+			//ms_pwd();
+			ms_exit();
+		}
 		if (ms_parser(cmd) != 0)
 		  return (ms_error_management(cmd->errnum));
 		add_history(cmd->line);
