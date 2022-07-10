@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/08 13:44:40 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/10 22:31:29 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ t_cmd	*ms_cmd_init(char **env, char **argv)
 		cmd->errnum = 2;
 		return (cmd);
 	}
-	cmd->line = readline("minishell> ");
-	cmd->env = ms_create_env(env, argv);
+	cmd->workenv = ms_env_create_work_env(env, argv);
+	cmd->env = ms_env_init_env(cmd->workenv);
+	ms_env(cmd->workenv);
+	//cmd->line = readline("minishell> ");
 	cmd->errnum = 0;
 	return (cmd);
 }
@@ -40,10 +42,13 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 		free(cmd->symb);
 	if (cmd->line != NULL)
 		free(cmd->line);
-	if (cmd->args != NULL)
-		ms_free_args(cmd->args);
 	if (cmd->env != NULL)
 		ms_free_args(cmd->env);
+	if (cmd->workenv != NULL)
+	{
+		ms_list_data_cleaner(cmd->workenv);
+		list_destroyer(cmd->workenv);
+	}
 	free(cmd);
 	return (errnum);
 }
