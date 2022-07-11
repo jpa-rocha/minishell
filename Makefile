@@ -54,12 +54,11 @@ SRCS	=	$(SRCDIR)minishell.c		\
 		$(SIGNALS)ms_signals.c		\
 		$(PARSER)ms_parser.c		\
 		$(EXECUTER)ms_exec.c		\
-<<<<<<< HEAD
 		$(BUILTINS)env.c		\
 		$(BUILTINS)export.c		\
-=======
 		$(BUILTINS)pwd.c		\
->>>>>>> mgulenay
+		$(BUILTINS)exit.c		\
+		$(BUILTINS)echo.c		\
 ################################################################################
 #################################### PROGRAM ###################################
 ################################################################################

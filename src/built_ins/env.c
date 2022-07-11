@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/10 22:22:21 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 15:06:13 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_envvar	ms_env_create_data(char *env_line, char **argv);
 
-void	ms_env(t_list *env)
+int	ms_env(t_list *env)
 {
 	t_envvar	*line;
 	t_node		*node;
@@ -27,6 +27,7 @@ void	ms_env(t_list *env)
 		printf("%s\n", line->value);
 		node = node->next;
 	}
+	return (0);
 }
 
 t_list	*ms_env_create_work_env(char **env, char **argv)

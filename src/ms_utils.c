@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/10 22:25:59 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 15:39:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,27 @@ int	ms_list_env_len(t_list *env)
 		i++;
 	}	
 	return (i);
+}
+
+int	ms_args_len(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+		i += 1;
+	return (i);
+}
+
+void	ms_free_args(char **args)
+{
+	int	i;
+
+	i = ms_args_len(args);
+	while (i >= 0)
+	{
+		free(args[i]);
+		i -= 1;
+	}
+	free(args);
 }
