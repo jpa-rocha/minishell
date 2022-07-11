@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:03:25 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 16:50:28 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 static int	ms_call_built_in(t_shell *shell)
 {
 	if (shell->cmd->builtin_num == 1)
-		return (ms_exit(shell->cmd));
+		return (ms_exit(shell));
 	if (shell->cmd->builtin_num == 2)
 		return (ms_env(shell->workenv));
 	if (shell->cmd->builtin_num == 3)
