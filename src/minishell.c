@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:52:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 17:12:30 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	ms_shell(char **env, char **argv)
 	t_shell	*shell;
 
 	ms_logo();
-	//ms_signals();
+	ms_signals();
 	shell = ms_shell_init(env, argv);
     while (1)
 	{
@@ -38,7 +38,7 @@ static int	ms_shell(char **env, char **argv)
 		  break ;
 		if (ms_parser(shell) != 0)
 			return (ms_error_management(shell->errnum));
-		//add_history(shell->cmd->line);
+		add_history(shell->cmd->line);
 		ms_exec(shell);
 		ms_cmd_cleanup(shell->cmd);
     }
