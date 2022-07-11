@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/10 14:25:53 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/11 14:01:45 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-int		ms_echo(char **args)
+int	ms_echo(t_cmd *cmd)
 {
 	int	i;
 	int	flag_n;
@@ -24,7 +24,7 @@ int		ms_echo(char **args)
 		return (0);
 	}
 	i = 1;
-	if (ft_strncmp(cmd->args[1], "-n", 2) != 0)
+	if (ft_strncmp(cmd->args[1], "-n", 2) == 0)
 	{
 		flag_n = 1;
 		i++;

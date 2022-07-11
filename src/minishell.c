@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/07/10 18:36:19 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/07/10 14:19:34 by mgulenay         ###   ########.fr       */
->>>>>>> mgulenay
+/*   Updated: 2022/07/11 15:59:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,45 +23,25 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-<<<<<<< HEAD
-
-static int	ms_shell(char **env, char **argv)
-=======
 // Entry point for the minishell logic
-static int	ms_shell(char **env)
->>>>>>> mgulenay
+static int	ms_shell(char **env, char **argv)
 {
-	t_cmd	*cmd;
+	t_shell	*shell;
 
 	ms_logo();
-<<<<<<< HEAD
-	//ms_signals();
-        while (1)
-=======
 	ms_signals();
+	shell = ms_shell_init(env, argv);
     while (1)
->>>>>>> mgulenay
 	{
-		cmd = ms_cmd_init(env, argv);
-		if (cmd->line == NULL)
-<<<<<<< HEAD
-		{
-			write(1, "exit\n", 5);
-			break;
-=======
+		shell->cmd = ms_cmd_init(env, argv);
+		if (shell->cmd->line == NULL)
 		  break ;
-		if (ft_strncmp(cmd->line, "exit", 4) == 0)
-		{
-			printf("testing\n");
-			//ms_pwd();
-			ms_exit();
->>>>>>> mgulenay
-		}
-		if (ms_parser(cmd) != 0)
-			return (ms_error_management(cmd->errnum));
-		//add_history(cmd->line);
-		ms_exec(cmd->args);
-		ms_cmd_cleanup(cmd);
+		if (ms_parser(shell) != 0)
+			return (ms_error_management(shell->errnum));
+		add_history(shell->cmd->line);
+		ms_exec(shell);
+		ms_cmd_cleanup(shell->cmd);
     }
-    return (ms_cmd_cleanup(cmd));
+	write(1, "exit\n", 5);
+    return (ms_cmd_cleanup(shell->cmd));
 }

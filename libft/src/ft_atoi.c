@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/26 10:14:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/03/18 13:04:18 by jrocha           ###   ########.fr       */
+/*   Created: 2022/05/24 12:38:29 by jrocha            #+#    #+#             */
+/*   Updated: 2022/07/11 11:23:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/libft.h"
-#include <stdlib.h>
 
 static long long	intinit(const char *nptr);
 static char			*truncator(char *nptr);
 
-// The ps_atoi() function converts the initial portion of 
-// the string pointed to by nptr to int (extra for push_swap).
-long long	ps_atoi(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	char			*ptr;
-	long long		res;
 	int				sign;
+	long long		res;
 
 	res = 0;
 	sign = 0;
@@ -37,14 +34,15 @@ long long	ps_atoi(const char *nptr)
 		res = intinit(ptr);
 		if (sign == 2)
 			res = res * -1;
-		return (res);
 	}
-	return (0);
+	if (res > INT_MAX || res < 0)
+		return (-1);
+	return (res);
 }
 
 static long long	intinit(const char *nptr)
 {
-	long long	i;
+	int			i;
 	long long	res;
 
 	res = 0;
@@ -54,6 +52,8 @@ static long long	intinit(const char *nptr)
 		res = res * 10 + nptr[i] - '0';
 		i++;
 	}
+	if (ft_isdigit(nptr[i]) != 1 && nptr[i] != '\0')
+		res = -1;
 	return (res);
 }
 
