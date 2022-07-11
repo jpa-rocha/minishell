@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:00:27 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 16:52:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_cmd	*ms_cmd_init(char **env, char **argv)
 	cmd->symb = ft_calloc(1, sizeof(t_symbols));
 	if (cmd->symb == NULL)
 		return (NULL);
-	cmd->line = readline("minishell> ");
+	//cmd->line = readline("minishell> ");
 	cmd->builtin_num = 0;
 	return (cmd);
 }
@@ -57,4 +57,15 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 	return (0);
 }
 
-
+int	ms_shell_cleanup(t_shell *shell)
+{
+	if (shell->cmd != NULL)
+		ms_cmd_cleanup(shell->cmd);
+	if (shell->env != NULL)
+		ms_free_args(shell->env);
+	if (shell->workenv != NULL)
+		ms_list_data_cleaner(shell->workenv);
+	if (shell != NULL)
+		free(shell);
+	return (0);
+}
