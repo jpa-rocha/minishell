@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:02:36 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 17:07:05 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@ int	ms_export(t_shell *shell, t_list *env, char *newvar)
 		if (value)
 			value += 1;
 		line->value = ft_strdup(value);
-		//
-		node = ms_export_find_entry(env, newvar);
-		line = (t_envvar *) node->data;
-		printf("%s\n", line->value);
-		//
 		free(shell->env);
 		shell->env = ms_env_init_env(env);
 	}
@@ -48,21 +43,21 @@ int	ms_export(t_shell *shell, t_list *env, char *newvar)
 static void	ms_export_empty_call(t_node *node, t_envvar *line)
 {
 	while (node)
-		{
-			line = (t_envvar *) node->data;
-			printf("declare -x ");
-			printf("%s", line->name);
-			printf("\"%s\"\n", line->value);
-			node = node->next;
-		}
+	{
+		line = (t_envvar *) node->data;
+		printf("declare -x ");
+		printf("%s", line->name);
+		printf("\"%s\"\n", line->value);
+		node = node->next;
+	}
 }
 
-static t_node *ms_export_find_entry(t_list *env, char *newvar)
+static t_node	*ms_export_find_entry(t_list *env, char *newvar)
 {
-	t_node *node;
-	t_node *search;
-	t_envvar *line;
-	int		i;
+	t_node		*node;
+	t_node		*search;
+	t_envvar	*line;
+	int			i;
 
 	node = NULL;
 	search = env->first;
@@ -80,5 +75,5 @@ static t_node *ms_export_find_entry(t_list *env, char *newvar)
 		}
 		search = search->next;
 	}
-	return (node);	
+	return (node);
 }
