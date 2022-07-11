@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/10 22:11:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/11 10:09:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,5 @@ int	ms_exec(char **args);
 void	ms_env(t_list *env);
 char	**ms_env_init_env(t_list *env);
 t_list	*ms_env_create_work_env(char **env, char **argv);
-
+int	ms_export(t_list *env, char *newvar);
 #endif
