@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/07/11 10:09:31 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/07/10 14:26:55 by mgulenay         ###   ########.fr       */
->>>>>>> mgulenay
+/*   Updated: 2022/07/11 11:03:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +58,7 @@ typedef struct s_cmd {
 	char		*line;
 	char		**args;
 	char		**env;
+	int			num_args;
 	t_list 		*workenv;
   	t_symbols	*symb;
 } t_cmd;
