@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/07/11 10:09:31 by jrocha           ###   ########.fr       */
+=======
+/*   Updated: 2022/07/10 14:26:55 by mgulenay         ###   ########.fr       */
+>>>>>>> mgulenay
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +97,23 @@ void	ms_env(t_list *env);
 char	**ms_env_init_env(t_list *env);
 t_list	*ms_env_create_work_env(char **env, char **argv);
 int	ms_export(t_list *env, char *newvar);
+	int			num_args;
+  	t_symbols	*symb;
+} t_cmd;
+
+t_cmd	*ms_cmd_init(char **env);
+int		ms_cmd_cleanup(t_cmd *cmd);
+int		ms_error_management(int errnum);
+void	ms_logo(void);
+int		ms_parser(t_cmd *cmd);
+int		ms_args_len(char **args);
+int		ms_exec(char **args);
+void	ms_signals(void);
+
+/* built-in functions */
+int		ms_pwd(void);
+int		check_if_int(char *s );
+int		ms_exit(void);
+int		ms_echo(char **argv);
+
 #endif
