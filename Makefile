@@ -54,6 +54,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 		$(SIGNALS)ms_signals.c		\
 		$(PARSER)ms_parser.c		\
 		$(EXECUTER)ms_exec.c		\
+		$(EXECUTER)ms_exec_ctrl.c	\
 		$(BUILTINS)env.c		\
 		$(BUILTINS)export.c		\
 		$(BUILTINS)pwd.c		\
