@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 12:05:12 by jrocha            #+#    #+#             */
-/*   Updated: 2022/03/18 13:02:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 11:22:15 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int	strend(char *str, char *set)
 	len = ft_strlen(str);
 	if (len > 0)
 		len--;
-	while (set[j] != '\0')
+	while (set[j] != '\0' && len > 0)
 	{
 		if (str[len] != set[j])
 		{
