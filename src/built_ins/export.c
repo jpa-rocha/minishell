@@ -6,15 +6,14 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 17:07:05 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 14:06:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static void	ms_export_empty_call(t_node *node, t_envvar *line);
-static t_node *ms_export_find_entry(t_list *env, char *newvar);
-// SHOULD BE ALPHABETIC
+
 int	ms_export(t_shell *shell, t_list *env, char *newvar)
 {
 	t_node		*node;
@@ -27,7 +26,7 @@ int	ms_export(t_shell *shell, t_list *env, char *newvar)
 		ms_export_empty_call(node, line);
 	else
 	{
-		node = ms_export_find_entry(env, newvar);
+		node = ms_env_find_entry(env, newvar);
 		line = (t_envvar *) node->data;
 		free(line->value);
 		value = ft_strchr(newvar, '=');
@@ -36,10 +35,11 @@ int	ms_export(t_shell *shell, t_list *env, char *newvar)
 		line->value = ft_strdup(value);
 		free(shell->env);
 		shell->env = ms_env_init_env(env);
+		shell->path = ms_shell_path_creator(shell);
 	}
 	return (0);
 }
-
+// SHOULD BE ALPHABETIC -> Empty declaration of minishell
 static void	ms_export_empty_call(t_node *node, t_envvar *line)
 {
 	while (node)
@@ -52,7 +52,7 @@ static void	ms_export_empty_call(t_node *node, t_envvar *line)
 	}
 }
 
-static t_node	*ms_export_find_entry(t_list *env, char *newvar)
+t_node	*ms_env_find_entry(t_list *env, char *name)
 {
 	t_node		*node;
 	t_node		*search;
@@ -62,13 +62,13 @@ static t_node	*ms_export_find_entry(t_list *env, char *newvar)
 	node = NULL;
 	search = env->first;
 	i = 0;
-	while (newvar[i] != '=')
+	while (name[i] != '=')
 		i += 1;
 	i += 1;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
-		if (ft_strncmp(line->name, newvar, i) == 0)
+		if (ft_strncmp(line->name, name, i) == 0)
 		{
 			node = search;
 			break ;

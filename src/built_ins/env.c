@@ -6,20 +6,20 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 15:06:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 13:53:37 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static t_envvar	ms_env_create_data(char *env_line, char **argv);
+static t_envvar	ms_env_create_data(t_shell *shell, char *env_line);
 
-int	ms_env(t_list *env)
+int	ms_env(t_shell *shell)
 {
 	t_envvar	*line;
 	t_node		*node;
 
-	node = env->first;
+	node = shell->workenv->first;
 	while (node->next != NULL)
 	{
 		line = (t_envvar *) node->data;
@@ -30,7 +30,7 @@ int	ms_env(t_list *env)
 	return (0);
 }
 
-t_list	*ms_env_create_work_env(char **env, char **argv)
+t_list	*ms_env_create_work_env(t_shell *shell, char **env)
 {
 	t_list		*w_env;
 	t_envvar	data;
@@ -40,20 +40,19 @@ t_list	*ms_env_create_work_env(char **env, char **argv)
 	w_env = list_creator(ms_args_len(env), sizeof(t_envvar));
 	while (i < ms_args_len(env))
 	{
-		data = ms_env_create_data(env[i], argv);
+		data = ms_env_create_data(shell, env[i]);
 		list_add_back(&data, w_env);
 		i += 1;
 	}
 	return (w_env);
 }
 
-static t_envvar	ms_env_create_data(char *env_line, char **argv)
+static t_envvar	ms_env_create_data(t_shell *shell, char *env_line)
 {
 	t_envvar	line;
 	char		*value;
 	int			i;
 
-	(void) argv;
 	i = 0;
 	while (env_line[i] != '=')
 		i += 1;
@@ -61,7 +60,7 @@ static t_envvar	ms_env_create_data(char *env_line, char **argv)
 	line.name = ft_calloc(i, sizeof(char));
 	ft_strlcpy(line.name, env_line, i);
 	if (ft_strncmp(line.name, "SHELL=", 5) == 0)
-		line.value = ft_strdup(argv[0]);
+		line.value = ft_strdup(shell->name);
 	else
 	{	
 		value = ft_strchr(env_line, '=');
@@ -74,7 +73,7 @@ static t_envvar	ms_env_create_data(char *env_line, char **argv)
 	return (line);
 }
 
-char	**ms_env_init_env(t_list *env)
+char	**ms_env_init_env(t_list *workenv)
 {
 	char		**newenv;
 	t_node		*node;
@@ -82,8 +81,8 @@ char	**ms_env_init_env(t_list *env)
 	int			i;
 
 	i = 0;
-	node = env->first;
-	newenv = ft_calloc(ms_list_env_len(env) + 1, sizeof(char *));
+	node = workenv->first;
+	newenv = ft_calloc(ms_list_env_len(workenv) + 1, sizeof(char *));
 	if (newenv == NULL)
 		return (NULL);
 	while (node)
@@ -96,4 +95,3 @@ char	**ms_env_init_env(t_list *env)
 	newenv[i] = NULL;
 	return (newenv);
 }
-
