@@ -6,26 +6,34 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 13:53:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/13 10:59:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static t_envvar	ms_env_create_data(t_shell *shell, char *env_line);
+static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order);
 
 int	ms_env(t_shell *shell)
 {
 	t_envvar	*line;
 	t_node		*node;
+	int			i;
 
+	i = 0;
 	node = shell->workenv->first;
-	while (node->next != NULL)
+	while (i < shell->workenv->capacity)
 	{
 		line = (t_envvar *) node->data;
-		printf("%s", line->name);
-		printf("%s\n", line->value);
-		node = node->next;
+		if (line->env_order == i)
+		{
+			printf("%s", line->name);
+			printf("%s\n", line->value);
+			node = shell->workenv->first;
+			i ++;
+		}
+		else
+			node = node->next;
 	}
 	return (0);
 }
@@ -40,14 +48,15 @@ t_list	*ms_env_create_work_env(t_shell *shell, char **env)
 	w_env = list_creator(ms_args_len(env), sizeof(t_envvar));
 	while (i < ms_args_len(env))
 	{
-		data = ms_env_create_data(shell, env[i]);
+		data = ms_env_create_data(shell, env[i], i);
 		list_add_back(&data, w_env);
 		i += 1;
 	}
 	return (w_env);
 }
 
-static t_envvar	ms_env_create_data(t_shell *shell, char *env_line)
+//TAKE CARE OF NULLS
+static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 {
 	t_envvar	line;
 	char		*value;
@@ -58,6 +67,7 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line)
 		i += 1;
 	i += 2;
 	line.name = ft_calloc(i, sizeof(char));
+	line.env_order = order;
 	ft_strlcpy(line.name, env_line, i);
 	if (ft_strncmp(line.name, "SHELL=", 5) == 0)
 		line.value = ft_strdup(shell->name);
