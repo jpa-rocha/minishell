@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 14:15:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 15:27:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ms_is_built_in(t_shell *shell, char *builtin);
 static int	ms_call_built_in(t_shell *shell);
-static int	ms_exec_first_check(char **args);
+static int	ms_exec_first_check(t_shell *shell);
 
 static int	ms_valid_command(t_shell *shell);
 
@@ -24,23 +24,29 @@ int	ms_exec(t_shell *shell)
 
 	if (ms_args_len(shell->cmd->args) == 1)
 	{
-		check = ms_exec_first_check(shell->cmd->args);
+		check = ms_exec_first_check(shell);
 		if (check != 2)
-			return (check);
+			return (shell->exitcode);
 	}
 	return (ms_valid_command(shell));
 }
 
-static int	ms_exec_first_check(char **args)
+static int	ms_exec_first_check(t_shell *shell)
 {
-	if (ft_strlen(args[0]) == 1 && (args[0][0] <= 32 || args[0][0] == 58))
-		return (0);
-	else if (ft_strlen(args[0]) == 1 && args[0][0] == 33)
-		return (1);
-	else
-		return (2);
-}
+	int	exitcode;
 
+	if (ft_strlen(shell->cmd->args[0]) == 1
+		&& (shell->cmd->args[0][0] <= 32 || shell->cmd->args[0][0] == 58))
+		exitcode = 0;
+	else if (ft_strlen(shell->cmd->args[0]) == 1
+		&& shell->cmd->args[0][0] == 33)
+		exitcode = 1;
+	else
+		exitcode = 2;
+	if (exitcode != 2)
+		shell->exitcode = exitcode;
+	return (exitcode);
+}
 
 // Check if arguments are valid commands, if not print error
 // message and return

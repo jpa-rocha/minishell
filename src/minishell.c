@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 14:16:50 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:04:03 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@
 
 int	main(int argc, char **argv, char **env)
 {
+	int	exitcode;
+
 	if (argc > 1 || !argv[0])
-		return (ms_error_management(1));
-	ms_shell(env, argv);
-	return (0);
+	{
+		printf("%s", ERR_ARG);
+		return (1);
+	}
+	exitcode = ms_shell(env, argv);
+	return (exitcode);
 }
 
 // Entry point for the minishell logic
@@ -30,16 +35,23 @@ int	ms_shell(char **env, char **argv)
 	ms_logo();
 	ms_signals();
 	shell = ms_shell_init(env, argv);
+	if (shell == NULL)
+		return (ms_error_management(shell));
 	while (1)
 	{
-		shell->cmd = ms_cmd_init();
-		if (shell->cmd->line == NULL)
-			break ;
-		if (ms_parser(shell) != 0)
-			return (ms_error_management(shell->errnum));
-		add_history(shell->cmd->line);
-		ms_exec(shell);
-		ms_cmd_cleanup(shell->cmd);
+		shell->cmd = ms_cmd_init(shell);
+		if (shell->cmd == NULL)
+			ms_error_management(shell);
+		if (shell->exitcode == 0)
+		{
+			if (shell->cmd->line == NULL)
+				break ;
+			if (ms_parser(shell) != 0)
+				return (ms_error_management(shell));
+			add_history(shell->cmd->line);
+			ms_exec(shell);
+			ms_cmd_cleanup(shell->cmd);
+		}
 	}
 	write(1, "exit\n", 5);
 	return (ms_shell_cleanup(shell));

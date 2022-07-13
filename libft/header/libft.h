@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 10:02:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 11:20:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/13 10:03:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int			ft_isascii(int c);
 int			ft_isprint(int c);
 int			ft_isplusminus(int c);
 size_t		ft_strlen(const char *s);
+size_t		ft_short_strlen(char *s1, char *s2);
 size_t		ft_strlcpy(char *dest, const char *src, size_t size);
 char		*ft_strnstr(const char	*big, const char *little, size_t len);
 size_t		ft_strlcat(char *dest, const char *src, size_t size);
