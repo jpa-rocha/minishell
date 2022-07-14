@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 12:05:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 23:51:58 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_cmd {
 	char		**args;
 	char		**env;
 	char		**path;
-	int			num_args;
 	t_symbols	*symb;
 }	t_cmd;
 
@@ -115,7 +114,6 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 int			ms_export(t_shell *shell, char *newvar);
 int			ms_export_order(t_list *env);
 int			ms_pwd(void);
-int			check_if_int(char *str);
 int			ms_exit(t_shell *shell);
 int			ms_echo(t_cmd *cmd);
 
