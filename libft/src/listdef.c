@@ -6,12 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:32:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/10 18:59:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:07:02 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/libft.h"
 #include "../header/datastructures.h"
+#include "../../header/minishell.h"
 
 static void	**node_init(int capacity, int data_size);
 
@@ -29,6 +30,37 @@ t_list	*list_creator(int capacity, int data_size)
 	newlist->last = newlist->first;
 	newlist->current = newlist->last;
 	return (newlist);
+}
+
+void	**list_resize(t_list *list)
+{
+	void	**new;
+	void	**temp_nodes;
+	t_node	*temp_old;
+	int		old_index;
+	int		i;
+
+	i = 0;
+	new = node_init(list->capacity * 2, list->data_size);
+	if (new == NULL)
+		return (NULL);
+	temp_nodes = list->nodes;
+	list->nodes = new;
+	old_index = list->total;
+	list->total = 0;
+	while (i < old_index)
+	{
+		temp_old = (t_node *) temp_nodes[i];
+		list_add_back(temp_old->data, list);
+		i++;
+	}
+	list->capacity = list->capacity * 2;
+	free(temp_nodes[0]);
+	free(temp_nodes);
+/*	list->first = list->nodes[0];
+	list->last = list->nodes[old_index - 1];
+	list->current = list->last;*/
+	return (new);
 }
 
 static void	**node_init(int capacity, int data_size)
@@ -65,7 +97,7 @@ void	list_add_back(void *data, t_list *list)
 	t_node	*temp;
 
 	if (list->total == list->capacity)
-		list = list_resize(list);
+		list->nodes = list_resize(list);
 	temp = list->nodes[list->total];
 	ft_memcpy(temp->data, data, list->data_size);
 	if (list->total == 0)

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 10:59:12 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 15:04:42 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@ int	ms_env(t_shell *shell)
 
 	i = 0;
 	node = shell->workenv->first;
-	while (i < shell->workenv->capacity)
+	while (i < shell->workenv->total)
 	{
 		line = (t_envvar *) node->data;
 		if (line->env_order == i)
 		{
-			printf("%s", line->name);
-			printf("%s\n", line->value);
+			if (line->name[ft_strlen(line->name) - 1] == '=')
+			{
+				printf("%s", line->name);
+				printf("%s\n", line->value);
+			}
 			node = shell->workenv->first;
 			i ++;
 		}
@@ -63,7 +66,7 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	int			i;
 
 	i = 0;
-	while (env_line[i] != '=')
+	while (env_line[i] != '=' && env_line[i] != '\0')
 		i += 1;
 	i += 2;
 	line.name = ft_calloc(i, sizeof(char));
@@ -83,6 +86,7 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	return (line);
 }
 
+// TAKE CARE OF NULLS
 char	**ms_env_init_env(t_list *workenv)
 {
 	char		**newenv;

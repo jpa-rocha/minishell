@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 23:31:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/13 12:05:41 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ int			ms_env(t_shell *shell);
 char		**ms_env_init_env(t_list *workenv);
 t_list		*ms_env_create_work_env(t_shell *shell, char **env);
 t_node		*ms_env_find_entry(t_list *env, char *name);
-int			ms_export(t_shell *shell, t_list *env, char *newvar);
+
+// Entry point into the export function
+int			ms_export(t_shell *shell, char *newvar);
+int			ms_export_order(t_list *env);
 int			ms_pwd(void);
 int			check_if_int(char *str);
 int			ms_exit(t_shell *shell);
