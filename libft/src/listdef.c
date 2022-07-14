@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:32:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 14:07:02 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 15:35:13 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,6 @@ void	**list_resize(t_list *list)
 	list->capacity = list->capacity * 2;
 	free(temp_nodes[0]);
 	free(temp_nodes);
-/*	list->first = list->nodes[0];
-	list->last = list->nodes[old_index - 1];
-	list->current = list->last;*/
 	return (new);
 }
 

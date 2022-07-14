@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 15:32:10 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 17:06:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,27 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 static int	ms_create_var_check(t_shell	*shell, char *newvar)
 {
 	int	i;
+	int	first_check;
+	int	check;
 
+	first_check = 0;
+	check = 0;
 	i = 0;
 	while (newvar[i] != '=' && newvar[i] != '\0')
+	{
+		if (newvar[i] == '=' || newvar[i] == '%' || newvar[i] == '?'
+			|| ft_isdigit(newvar[0]) == 1)
+			first_check = 1;
+		if (ft_isdigit(newvar[i]) != 1)
+			check = 1;
 		i += 1;
+	}
 	i += 2;
+	if (first_check == 1 || check != 1)
+	{
+		shell->exitcode = 1;
+		printf("minishell: export: `%s\': not a valid identifier\n", newvar);
+		return (-1);
+	}
 	return (i);
 }
