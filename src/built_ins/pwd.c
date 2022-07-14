@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:31:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/10 11:04:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/14 15:56:37 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ int	ms_pwd(void)
 		perror("Error in getcwd\n");
 		return (1);
 	}
-	else
-	{
-		printf("%s\n", path);
-		return (0);
-	}
+	printf("%s\n", path);
 	return (0);
 }
