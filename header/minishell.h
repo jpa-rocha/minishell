@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 22:59:16 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/14 23:14:36 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_cmd {
 	char		**args;
 	char		**env;
 	char		**path;
-	int			num_args;
 	t_symbols	*symb;
 }	t_cmd;
 
@@ -112,7 +111,6 @@ t_list		*ms_env_create_work_env(t_shell *shell, char **env);
 t_node		*ms_env_find_entry(t_list *env, char *name);
 int			ms_export(t_shell *shell, t_list *env, char *newvar);
 int			ms_pwd(void);
-int			check_if_int(char *str);
 int			ms_exit(t_shell *shell);
 int			ms_echo(t_cmd *cmd);
 
