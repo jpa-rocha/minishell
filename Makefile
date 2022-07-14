@@ -48,18 +48,19 @@ INCLUDES = 		$(FT_INC)
 ################################## SRCS & OBJS #################################
 ################################################################################
 SRCS	=	$(SRCDIR)minishell.c		\
-		$(SRCDIR)ms_def.c		\
-		$(SRCDIR)ms_extra.c		\
-		$(SRCDIR)ms_utils.c		\
-		$(SIGNALS)ms_signals.c		\
-		$(PARSER)ms_parser.c		\
-		$(EXECUTER)ms_exec.c		\
-		$(EXECUTER)ms_exec_ctrl.c	\
-		$(BUILTINS)env.c		\
-		$(BUILTINS)export.c		\
-		$(BUILTINS)pwd.c		\
-		$(BUILTINS)exit.c		\
-		$(BUILTINS)echo.c		\
+			$(SRCDIR)ms_def.c			\
+			$(SRCDIR)ms_extra.c			\
+			$(SRCDIR)ms_utils.c			\
+			$(SIGNALS)ms_signals.c		\
+			$(PARSER)ms_parser.c		\
+			$(EXECUTER)ms_exec.c		\
+			$(EXECUTER)ms_exec_ctrl.c	\
+			$(BUILTINS)env.c			\
+			$(BUILTINS)export.c			\
+			$(BUILTINS)export_utils.c	\
+			$(BUILTINS)pwd.c			\
+			$(BUILTINS)exit.c			\
+			$(BUILTINS)echo.c			\
 ################################################################################
 #################################### PROGRAM ###################################
 ################################################################################

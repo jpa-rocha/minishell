@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 14:16:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/13 10:15:34 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,16 @@ t_shell	*ms_shell_init(char **env, char **argv)
 		return (NULL);
 	shell->name = argv[0];
 	shell->workenv = ms_env_create_work_env(shell, env);
+	if (shell->workenv == NULL)
+		ms_shell_cleanup(shell);
 	shell->env = ms_env_init_env(shell->workenv);
+	if (shell->env == NULL)
+		ms_shell_cleanup(shell);
 	shell->path = ms_shell_path_creator(shell);
+	if (shell->path == NULL)
+		ms_shell_cleanup(shell);
 	shell->argv = argv;
-	shell->errnum = 0;
+	shell->exitcode = 0;
 	return (shell);
 }
 
@@ -47,18 +53,26 @@ char	**ms_shell_path_creator(t_shell *shell)
 	return (path);
 }
 
-t_cmd	*ms_cmd_init(void)
+t_cmd	*ms_cmd_init(t_shell *shell)
 {
 	t_cmd	*cmd;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (cmd == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (NULL);
+	}
 	cmd->symb = ft_calloc(1, sizeof(t_symbols));
 	if (cmd->symb == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		free(cmd);
 		return (NULL);
+	}
 	cmd->line = readline("minishell> ");
 	cmd->builtin_num = 0;
+	shell->exitcode = 0;
 	return (cmd);
 }
 

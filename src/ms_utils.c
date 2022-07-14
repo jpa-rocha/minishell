@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 15:39:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 11:44:09 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 // Collects error numbers, and outputs the correct error message, in case the
 // error occurs after allocations were made, a cleanup function must be called.
-int ms_error_management(int errnum)
+int	ms_error_management(t_shell *shell)
 {
-  if (errnum == 1)
-    printf("%s", ERR_ARG);
-  if (errnum == 2)
-    printf("%s", ERR_NULL);
-  return (errnum);
+	if (shell == NULL)
+	{
+		printf("%s", ERR_NULL);
+		return (ALLOCATION_PROBLEM_EXIT);
+	}
+	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
+	{
+		ms_cmd_cleanup(shell->cmd);
+		printf("%s", ERR_NULL);
+	}
+	return (shell->exitcode);
 }
 
-void	ms_list_data_cleaner(t_list *list)
+void	ms_list_data_cleaner(t_list *list)//, void *del)
 {
 	t_node		*last;
 	t_envvar	*line;
