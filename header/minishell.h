@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 12:05:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 11:25:56 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,19 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 // Entry point into the export function
 int			ms_export(t_shell *shell, char *newvar);
 int			ms_export_order(t_list *env);
+int			ms_create_var_check(t_shell	*shell, char *newvar);
+
+// Entry point into the unset function
+int			ms_unset(t_shell *shell, char *newvar);
+
+// Return the current working path
 int			ms_pwd(void);
 int			check_if_int(char *str);
+
+// Exit description
 int			ms_exit(t_shell *shell);
+
+// Echo description
 int			ms_echo(t_cmd *cmd);
 
 #endif

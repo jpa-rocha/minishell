@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:32:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 15:35:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 09:44:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../../header/minishell.h"
 
 static void	**node_init(int capacity, int data_size);
+static void	**list_resize(t_list *list, int new_capacity);
 
 t_list	*list_creator(int capacity, int data_size)
 {
@@ -32,33 +33,6 @@ t_list	*list_creator(int capacity, int data_size)
 	return (newlist);
 }
 
-void	**list_resize(t_list *list)
-{
-	void	**new;
-	void	**temp_nodes;
-	t_node	*temp_old;
-	int		old_index;
-	int		i;
-
-	i = 0;
-	new = node_init(list->capacity * 2, list->data_size);
-	if (new == NULL)
-		return (NULL);
-	temp_nodes = list->nodes;
-	list->nodes = new;
-	old_index = list->total;
-	list->total = 0;
-	while (i < old_index)
-	{
-		temp_old = (t_node *) temp_nodes[i];
-		list_add_back(temp_old->data, list);
-		i++;
-	}
-	list->capacity = list->capacity * 2;
-	free(temp_nodes[0]);
-	free(temp_nodes);
-	return (new);
-}
 
 static void	**node_init(int capacity, int data_size)
 {
@@ -89,12 +63,14 @@ static void	**node_init(int capacity, int data_size)
 	return (nodes);
 }
 
-void	list_add_back(void *data, t_list *list)
+void	list_add_back(void *data, t_list *list, int resize_check)
 {
 	t_node	*temp;
 
 	if (list->total == list->capacity)
-		list->nodes = list_resize(list);
+		list->nodes = list_resize(list, list->capacity * 2);
+	if (list->total < list->capacity / 4 && resize_check != 1)
+		list->nodes = list_resize(list, list->capacity / 2);
 	temp = list->nodes[list->total];
 	ft_memcpy(temp->data, data, list->data_size);
 	if (list->total == 0)
@@ -112,9 +88,30 @@ void	list_add_back(void *data, t_list *list)
 	list->total++;
 }
 
-void	list_destroyer(t_list *list)
+static void	**list_resize(t_list *list, int new_capacity)
 {
-	free(list->nodes[0]);
-	free(list->nodes);
-	free(list);
+	void	**new;
+	void	**temp_nodes;
+	t_node	*temp_old;
+	int		old_index;
+	int		i;
+
+	i = 0;
+	new = node_init(new_capacity, list->data_size);
+	if (new == NULL)
+		return (NULL);
+	temp_nodes = list->nodes;
+	list->nodes = new;
+	old_index = list->total;
+	list->total = 0;
+	while (i < old_index)
+	{
+		temp_old = (t_node *) temp_nodes[i];
+		list_add_back(temp_old->data, list, 1);
+		i++;
+	}
+	list->capacity = new_capacity;
+	free(temp_nodes[0]);
+	free(temp_nodes);
+	return (new);
 }

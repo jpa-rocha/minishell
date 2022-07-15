@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 10:15:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 10:07:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_shell	*ms_shell_init(char **env, char **argv)
 	return (shell);
 }
 
-// CONTROLL NULL
+// CONTROLL NULL WHAT IF PATH IS NULL
 char	**ms_shell_path_creator(t_shell *shell)
 {
 	t_node		*node;

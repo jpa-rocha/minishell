@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:33:59 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 12:40:58 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 09:44:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct s_matrix
 
 t_list		*list_creator(int capacity, int data_size);
 void		list_destroyer(t_list *list);
-void		**list_resize(t_list *list);
-void			list_add_back(void *data, t_list *list);
+void		**list_grow(t_list *list);
+void		list_add_back(void *data, t_list *list, int resize_check);
 void		*list_check_top(t_list *list);
 void		*list_check_bottom(t_list *list);
 void		*list_check_next(t_list *list);

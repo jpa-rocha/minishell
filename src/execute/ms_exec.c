@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 12:06:07 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 11:25:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,14 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 		shell->cmd->builtin_num = 5;
 		return (1);
 	}
-	if (ft_strncmp(builtin, "./minishell", ft_strlen(builtin)) == 0)
+	if (ft_strncmp(builtin, "unset", ft_strlen(builtin)) == 0)
 	{
 		shell->cmd->builtin_num = 6;
+		return (1);
+	}
+	if (ft_strncmp(builtin, "./minishell", ft_strlen(builtin)) == 0)
+	{
+		shell->cmd->builtin_num = 7;
 		return (1);
 	}
 	return (0);
@@ -123,6 +128,8 @@ static int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 5)
 		return (ms_export(shell, shell->cmd->args[1]));
 	if (shell->cmd->builtin_num == 6)
+		return (ms_unset(shell, shell->cmd->args[1]));
+	if (shell->cmd->builtin_num == 7)
 		return (ms_shell(shell->env, shell->argv));
 	return (1);
 }

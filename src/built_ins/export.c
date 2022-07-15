@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 17:06:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 10:25:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	ms_export_empty_call(t_node *node);
 static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node);
-static int	ms_create_var_check(t_shell *shell, char *newvar);
 static int	ms_export_create_var(t_shell *shell, char *newvar);
+static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar);
 
 int	ms_export(t_shell *shell, char *newvar)
 {
@@ -61,72 +61,76 @@ static void	ms_export_empty_call(t_node *node)
 static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 {
 	t_envvar	*line;
-	char		*value;
+	int			i;
 
 	line = (t_envvar *) node->data;
+	free(line->name);
 	free(line->value);
-	value = ft_strchr(newvar, '=');
-	if (value)
-		value += 1;
-	line->value = ft_strdup(value);
+	i = ms_create_var_check(shell, newvar);
+	if (i < 0)
+		return (shell->exitcode);
+	line->name = ft_calloc(i, sizeof(char));
+	if (line->name == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		return (shell->exitcode);
+	}
+	ft_strlcpy(line->name, newvar, i);
+	shell->exitcode = ms_export_value_check(shell, line, newvar);
 	free(shell->env);
 	shell->env = ms_env_init_env(shell->workenv);
 	shell->path = ms_shell_path_creator(shell);
-	return (0);
+	return (shell->exitcode);
 }
 
 // CONTROLL FOR NULL
 static int	ms_export_create_var(t_shell *shell, char *newvar)
 {
 	t_envvar	line;
-	char		*value;
 	int			i;
 
 	i = ms_create_var_check(shell, newvar);
 	if (i < 0)
 		return (shell->exitcode);
 	line.name = ft_calloc(i, sizeof(char));
+	if (line.name == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		return (shell->exitcode);
+	}
 	line.env_order = shell->workenv->total;
 	ft_strlcpy(line.name, newvar, i);
-	value = ft_strchr(newvar, '=');
-	if (value != NULL)
-	{
-		value += 1;
-		i = ft_strlen(value);
-		line.value = ft_calloc(i + 1, sizeof(char));
-		ft_strlcpy(line.value, value, i + 1);
-	}
-	else
-		line.value = ft_calloc(1, sizeof(char));
-	list_add_back(&line, shell->workenv);
+	shell->exitcode = ms_export_value_check(shell, &line, newvar);
+	list_add_back(&line, shell->workenv, 0);
 	shell->exitcode = 0;
 	return (shell->exitcode);
 }
 
-static int	ms_create_var_check(t_shell	*shell, char *newvar)
+static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 {
-	int	i;
-	int	first_check;
-	int	check;
+	char		*value;
 
-	first_check = 0;
-	check = 0;
-	i = 0;
-	while (newvar[i] != '=' && newvar[i] != '\0')
+	value = ft_strchr(newvar, '=');
+	if (value != NULL)
 	{
-		if (newvar[i] == '=' || newvar[i] == '%' || newvar[i] == '?'
-			|| ft_isdigit(newvar[0]) == 1)
-			first_check = 1;
-		if (ft_isdigit(newvar[i]) != 1)
-			check = 1;
-		i += 1;
+		value += 1;
+		line->value = ft_calloc(ft_strlen(value) + 1, sizeof(char));
+		if (line->value == NULL)
+		{
+			shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+			return (shell->exitcode);
+		}
+		ft_strlcpy(line->value, value, ft_strlen(value) + 1);
 	}
-	i += 2;
-	if (first_check == 1 || check != 1)
+	else
 	{
-		shell->exitcode = 1;
-		printf("minishell: export: `%s\': not a valid identifier\n", newvar);
-		return (-1);
+		line->value = ft_calloc(1, sizeof(char));
+		if (line->value == NULL)
+		{
+			shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+			return (shell->exitcode);
+		}
 	}
-	return (i);
+	shell->exitcode = 0;
+	return (shell->exitcode);
 }

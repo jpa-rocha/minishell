@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 18:48:48 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 10:14:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 	i = 0;
 	while (name[i] != '=' && name[i] != '\0')
 		i += 1;
-	i += 1;
+	//i += 1;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
@@ -78,4 +78,32 @@ static void	ms_export_order_innerloop(t_envvar *temp, t_list *env)
 		if (swap == 0)
 			node = node->next;
 	}
+}
+
+int	ms_create_var_check(t_shell	*shell, char *newvar)
+{
+	int	i;
+	int	first_check;
+	int	check;
+
+	first_check = 0;
+	check = 0;
+	i = 0;
+	while (newvar[i] != '=' && newvar[i] != '\0')
+	{
+		if (newvar[i] == '=' || newvar[i] == '%' || newvar[i] == '?'
+			|| ft_isdigit(newvar[0]) == 1)
+			first_check = 1;
+		if (ft_isdigit(newvar[i]) != 1)
+			check = 1;
+		i += 1;
+	}
+	i += 2;
+	if (first_check == 1 || check != 1)
+	{
+		shell->exitcode = 1;
+		printf("minishell: export: `%s\': not a valid identifier\n", newvar);
+		return (-1);
+	}
+	return (i);
 }
