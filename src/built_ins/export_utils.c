@@ -6,13 +6,11 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 10:14:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 15:19:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-
-static void	ms_export_order_innerloop(t_envvar *temp, t_list *env);
 
 t_node	*ms_env_find_entry(t_list *env, char *name)
 {
@@ -26,7 +24,6 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 	i = 0;
 	while (name[i] != '=' && name[i] != '\0')
 		i += 1;
-	//i += 1;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
@@ -41,18 +38,6 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 }
 
 int	ms_export_order(t_list *env)
-{
-	t_envvar	*temp;
-
-	temp = ft_calloc(1, sizeof(t_envvar));
-	if (temp == NULL)
-		return (ALLOCATION_PROBLEM_EXIT);
-	ms_export_order_innerloop(temp, env);
-	free (temp);
-	return (0);
-}
-
-static void	ms_export_order_innerloop(t_envvar *temp, t_list *env)
 {
 	t_node		*node;
 	t_envvar	*line;
@@ -69,15 +54,29 @@ static void	ms_export_order_innerloop(t_envvar *temp, t_list *env)
 		if (ft_strncmp(line->name, nline->name,
 				ft_short_strlen(line->name, nline->name)) > 0)
 		{
-			ft_memmove(temp, line, sizeof(t_envvar));
-			ft_memmove(line, nline, sizeof(t_envvar));
-			ft_memmove(nline, temp, sizeof(t_envvar));
+			if (ms_env_swap_data(line, nline) == ALLOCATION_PROBLEM_EXIT)
+				return (ALLOCATION_PROBLEM_EXIT);
 			node = env->first;
 			swap = 1;
 		}
 		if (swap == 0)
 			node = node->next;
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	ms_env_swap_data(t_envvar *line, t_envvar *nline)
+{
+	t_envvar	*temp;
+
+	temp = ft_calloc(1, sizeof(t_envvar));
+	if (temp == NULL)
+		return (ALLOCATION_PROBLEM_EXIT);
+	ft_memmove(temp, line, sizeof(t_envvar));
+	ft_memmove(line, nline, sizeof(t_envvar));
+	ft_memmove(nline, temp, sizeof(t_envvar));
+	free(temp);
+	return (EXIT_SUCCESS);
 }
 
 int	ms_create_var_check(t_shell	*shell, char *newvar)

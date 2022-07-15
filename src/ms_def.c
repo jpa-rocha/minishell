@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 10:07:39 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:11:58 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_shell	*ms_shell_init(char **env, char **argv)
 	shell->workenv = ms_env_create_work_env(shell, env);
 	if (shell->workenv == NULL)
 		ms_shell_cleanup(shell);
-	shell->env = ms_env_init_env(shell->workenv);
+	shell->env = ms_env_init_env(shell);
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
 	shell->path = ms_shell_path_creator(shell);
@@ -34,7 +34,7 @@ t_shell	*ms_shell_init(char **env, char **argv)
 	return (shell);
 }
 
-// CONTROLL NULL WHAT IF PATH IS NULL
+// CONTROLL NULL WHAT IF PATH IS NULL NEEDS TO BE FREED AT END?
 char	**ms_shell_path_creator(t_shell *shell)
 {
 	t_node		*node;
@@ -72,15 +72,12 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	}
 	cmd->line = readline("minishell> ");
 	cmd->builtin_num = 0;
-	shell->exitcode = 0;
+	shell->exitcode = EXIT_SUCCESS;
 	return (cmd);
 }
 
 int	ms_cmd_cleanup(t_cmd *cmd)
 {
-	//int	errnum;
-
-	//errnum = cmd->errnum;
 	if (cmd->symb != NULL)
 		free(cmd->symb);
 	if (cmd->line != NULL)
@@ -88,7 +85,7 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 	if (cmd->args != NULL)
 		ms_free_args(cmd->args);
 	free(cmd);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	ms_shell_cleanup(t_shell *shell)
@@ -106,5 +103,5 @@ int	ms_shell_cleanup(t_shell *shell)
 	}
 	if (shell != NULL)
 		free(shell);
-	return (0);
+	return (EXIT_SUCCESS);
 }

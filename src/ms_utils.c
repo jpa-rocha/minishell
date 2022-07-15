@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 11:44:09 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:24:34 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ void	ms_free_args(char **args)
 {
 	int	i;
 
-	i = ms_args_len(args);
+	i = ms_args_len(args) -1;
 	while (i >= 0)
 	{
-		free(args[i]);
+		if (args[i] != NULL)
+			free(args[i]);
 		i -= 1;
 	}
 	free(args);

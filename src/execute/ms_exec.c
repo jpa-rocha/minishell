@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 11:25:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 11:49:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	ms_valid_command(t_shell *shell)
 		{
 			execve("./src/built_ins/env", shell->cmd->args, shell->env);
 			perror("Problem ocurred");
-			return (0);
+			return (EXIT_SUCCESS);
 		}
 		i += 1;
 	}
@@ -110,9 +110,9 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 	if (ft_strncmp(builtin, "./minishell", ft_strlen(builtin)) == 0)
 	{
 		shell->cmd->builtin_num = 7;
-		return (1);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 static int	ms_call_built_in(t_shell *shell)
@@ -131,5 +131,5 @@ static int	ms_call_built_in(t_shell *shell)
 		return (ms_unset(shell, shell->cmd->args[1]));
 	if (shell->cmd->builtin_num == 7)
 		return (ms_shell(shell->env, shell->argv));
-	return (1);
+	return (EXIT_FAILURE);
 }

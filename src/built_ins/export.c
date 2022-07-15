@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 10:25:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:40:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	ms_export(t_shell *shell, char *newvar)
 			ms_export_var_exists(shell, newvar, node);
 		else
 			shell->exitcode = ms_export_create_var(shell, newvar);
-		if (shell->exitcode != 0)
+		if (shell->exitcode != EXIT_SUCCESS)
 			return (shell->exitcode);
 	}
-	shell->exitcode = 0;
+	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
 }
 
@@ -77,8 +77,7 @@ static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 	}
 	ft_strlcpy(line->name, newvar, i);
 	shell->exitcode = ms_export_value_check(shell, line, newvar);
-	free(shell->env);
-	shell->env = ms_env_init_env(shell->workenv);
+	shell->env = ms_env_init_env(shell);
 	shell->path = ms_shell_path_creator(shell);
 	return (shell->exitcode);
 }
@@ -102,7 +101,7 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 	ft_strlcpy(line.name, newvar, i);
 	shell->exitcode = ms_export_value_check(shell, &line, newvar);
 	list_add_back(&line, shell->workenv, 0);
-	shell->exitcode = 0;
+	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
 }
 
@@ -131,6 +130,6 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 			return (shell->exitcode);
 		}
 	}
-	shell->exitcode = 0;
+	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
 }

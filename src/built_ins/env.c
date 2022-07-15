@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 09:45:08 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:31:07 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	ms_env(t_shell *shell)
 		else
 			node = node->next;
 	}
-	return (0);
+	shell->exitcode = EXIT_SUCCESS;
+	return (shell->exitcode);
 }
 
 t_list	*ms_env_create_work_env(t_shell *shell, char **env)
@@ -87,16 +88,18 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 }
 
 // TAKE CARE OF NULLS
-char	**ms_env_init_env(t_list *workenv)
+char	**ms_env_init_env(t_shell *shell)
 {
 	char		**newenv;
 	t_node		*node;
 	t_envvar	*line;
 	int			i;
 
+	if (shell->env != NULL)
+		ms_free_args(shell->env);
 	i = 0;
-	node = workenv->first;
-	newenv = ft_calloc(ms_list_env_len(workenv) + 1, sizeof(char *));
+	node = shell->workenv->first;
+	newenv = ft_calloc(ms_list_env_len(shell->workenv) + 1, sizeof(char *));
 	if (newenv == NULL)
 		return (NULL);
 	while (node)

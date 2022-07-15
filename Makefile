@@ -58,6 +58,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)env.c			\
 			$(BUILTINS)export.c			\
 			$(BUILTINS)export_utils.c	\
+			$(BUILTINS)unset.c			\
 			$(BUILTINS)pwd.c			\
 			$(BUILTINS)exit.c			\
 			$(BUILTINS)echo.c			\

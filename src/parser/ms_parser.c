@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/12 15:42:10 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 11:54:59 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ int	ms_parser(t_shell *shell)
 	shell->cmd->args = ft_split(shell->cmd->line, ' ');
 	if (shell->cmd->args == NULL)
 	{
-		shell->exitcode = 12;
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
-	return (0);
+	shell->exitcode = EXIT_SUCCESS;
+	return (shell->exitcode);
 }

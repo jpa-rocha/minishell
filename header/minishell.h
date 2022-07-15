@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 11:28:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:11:07 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
 void		ms_free_args(char **args);
 char		**ms_shell_path_creator(t_shell *shell);
+int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 
 // Signal Functions
 
@@ -106,7 +107,7 @@ int			ms_exec(t_shell *shell);
 
 // Entry point into the env function
 int			ms_env(t_shell *shell);
-char		**ms_env_init_env(t_list *workenv);
+char		**ms_env_init_env(t_shell *shell);
 t_list		*ms_env_create_work_env(t_shell *shell, char **env);
 t_node		*ms_env_find_entry(t_list *env, char *name);
 
