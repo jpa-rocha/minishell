@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 11:25:56 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 11:28:13 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_cmd {
 	char		**args;
 	char		**env;
 	char		**path;
-	int			num_args;
 	t_symbols	*symb;
 }	t_cmd;
 
@@ -121,9 +120,6 @@ int			ms_unset(t_shell *shell, char *newvar);
 
 // Return the current working path
 int			ms_pwd(void);
-int			check_if_int(char *str);
-
-// Exit description
 int			ms_exit(t_shell *shell);
 
 // Echo description
