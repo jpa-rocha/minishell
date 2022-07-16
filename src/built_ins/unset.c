@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 16:43:40 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/15 17:19:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static int	ms_unset_var_exists(t_shell *shell, t_node *node)
 		return (shell->exitcode);
 	shell->workenv->last = shell->workenv->last->prev;
 	shell->workenv->last->next = NULL;
+	shell->workenv->current = shell->workenv->last;
 	node = shell->workenv->first;
 	while (node)
 	{
