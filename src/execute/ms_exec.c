@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:50:28 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 15:27:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,38 @@
 
 static int	ms_is_built_in(t_shell *shell, char *builtin);
 static int	ms_call_built_in(t_shell *shell);
+static int	ms_exec_first_check(t_shell *shell);
 
 static int	ms_valid_command(t_shell *shell);
 
-int ms_exec(t_shell *shell)
+int	ms_exec(t_shell *shell)
 {
-  if (ms_valid_command(shell) != 0)
-    return (1);
-  return (0);
+	int	check;
+
+	if (ms_args_len(shell->cmd->args) == 1)
+	{
+		check = ms_exec_first_check(shell);
+		if (check != 2)
+			return (shell->exitcode);
+	}
+	return (ms_valid_command(shell));
+}
+
+static int	ms_exec_first_check(t_shell *shell)
+{
+	int	exitcode;
+
+	if (ft_strlen(shell->cmd->args[0]) == 1
+		&& (shell->cmd->args[0][0] <= 32 || shell->cmd->args[0][0] == 58))
+		exitcode = 0;
+	else if (ft_strlen(shell->cmd->args[0]) == 1
+		&& shell->cmd->args[0][0] == 33)
+		exitcode = 1;
+	else
+		exitcode = 2;
+	if (exitcode != 2)
+		shell->exitcode = exitcode;
+	return (exitcode);
 }
 
 // Check if arguments are valid commands, if not print error
@@ -38,11 +62,12 @@ static int	ms_valid_command(t_shell *shell)
 		else if (access(shell->cmd->args[i], F_OK) == -1)
 		{
 			printf("%s%s", shell->cmd->args[i], ERR_INV);
-			return (1);
+			return (127);
 		}
 		else if (access(shell->cmd->args[i], F_OK) != -1)
 		{
-			printf("%s: lets do it\n", shell->cmd->args[i]);
+			execve("./src/built_ins/env", shell->cmd->args, shell->env);
+			perror("Problem ocurred");
 			return (0);
 		}
 		i += 1;
@@ -59,7 +84,7 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 	}
 	if (ft_strncmp(builtin, "env", ft_strlen(builtin)) == 0)
 	{
-		shell->cmd->builtin_num = 2;	
+		shell->cmd->builtin_num = 2;
 		return (1);
 	}
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
@@ -77,6 +102,11 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 		shell->cmd->builtin_num = 5;
 		return (1);
 	}
+	if (ft_strncmp(builtin, "./minishell", ft_strlen(builtin)) == 0)
+	{
+		shell->cmd->builtin_num = 6;
+		return (1);
+	}
 	return (0);
 }
 
@@ -85,12 +115,14 @@ static int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 1)
 		return (ms_exit(shell));
 	if (shell->cmd->builtin_num == 2)
-		return (ms_env(shell->workenv));
+		return (ms_env(shell));
 	if (shell->cmd->builtin_num == 3)
 		return (ms_echo(shell->cmd));
 	if (shell->cmd->builtin_num == 4)
 		return (ms_pwd());
 	if (shell->cmd->builtin_num == 5)
 		return (ms_export(shell, shell->workenv, shell->cmd->args[1]));
-	return(1);
+	if (shell->cmd->builtin_num == 6)
+		return (ms_shell(shell->env, shell->argv));
+	return (1);
 }

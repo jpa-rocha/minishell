@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/14 15:45:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/17 13:27:04 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
+# define BI_PATH "./src/built_ins/"
 # define SQ '\''
 # define DQ '\"'
 # define PIPE '|'
@@ -42,6 +43,7 @@
 typedef struct s_envvar {
 	char	*name;
 	char	*value;
+	int		env_order;
 }	t_envvar;
 
 typedef struct s_symbols {
@@ -60,54 +62,59 @@ typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
 	char		**args;
-	int			num_args;
+	char		**env;
+	char		**path;
 	t_symbols	*symb;
 }	t_cmd;
 
 typedef struct s_shell {
+	char		*name;
 	t_cmd		*cmd;
 	t_list		*workenv;
 	char		**env;
-	int			errnum;
+	char		**argv;
+	char		**path;
+	int			exitcode;
 }	t_shell;
-
 
 // General Functions
 
-t_shell 	*ms_shell_init(char **env, char **argv);
-t_cmd		*ms_cmd_init(char **env, char **argv);
+int			ms_shell(char **env, char **argv);
+t_shell		*ms_shell_init(char **env, char **argv);
+t_cmd		*ms_cmd_init(t_shell *shell);
 int			ms_cmd_cleanup(t_cmd *cmd);
 int			ms_shell_cleanup(t_shell *shell);
 void		ms_list_data_cleaner(t_list *list);
-int			ms_error_management(int errnum);
+int			ms_error_management(t_shell *shell);
 void		ms_logo(void);
 int			ms_args_len(char **args);
 int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
 void		ms_free_args(char **args);
+char		**ms_shell_path_creator(t_shell *shell);
 
 // Signal Functions
 
-void	ms_signals(void);
+void		ms_signals(void);
 
 // Parsing Functions
 
-int		ms_parser(t_shell *shell);
+int			ms_parser(t_shell *shell);
 
 // Executing Functions
 
-int		ms_exec(t_shell *shell);
+int			ms_exec(t_shell *shell);
 
 // Built-in Functions
 
 // Entry point into the env function
-int		ms_env(t_list *env);
-char	**ms_env_init_env(t_list *env);
-t_list	*ms_env_create_work_env(char **env, char **argv);
-int		ms_export(t_shell *shell, t_list *env, char *newvar);
-int		ms_pwd(void);
-int		check_if_int(char *str);
-int		ms_exit(t_shell *shell);
-int		ms_echo(t_cmd *cmd);
+int			ms_env(t_shell *shell);
+char		**ms_env_init_env(t_list *workenv);
+t_list		*ms_env_create_work_env(t_shell *shell, char **env);
+t_node		*ms_env_find_entry(t_list *env, char *name);
+int			ms_export(t_shell *shell, t_list *env, char *newvar);
+int			ms_pwd(void);
+int			ms_exit(t_shell *shell);
+int			ms_echo(t_cmd *cmd);
 
 #endif

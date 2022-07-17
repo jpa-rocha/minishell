@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/07 11:21:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/12 15:10:48 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void ms_signal_handler(int num)
 
 static void ms_signal_sigint()
 {
-  write(1, "^C", 2);
+  //write(1, "\n", 1);
 }
 
 static void ms_signal_sigquit()
