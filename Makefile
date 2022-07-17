@@ -53,6 +53,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 		$(SRCDIR)ms_utils.c		\
 		$(SIGNALS)ms_signals.c		\
 		$(PARSER)ms_parser.c		\
+		$(PARSER)ms_lexer.c		\
 		$(EXECUTER)ms_exec.c		\
 		$(EXECUTER)ms_exec_ctrl.c	\
 		$(BUILTINS)env.c		\

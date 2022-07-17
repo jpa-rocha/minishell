@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_def.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/13 10:15:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/17 21:10:50 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 {
 	t_cmd	*cmd;
 
-	cmd = ft_calloc(1, sizeof(t_cmd));
+	//cmd = ft_calloc(1, sizeof(t_cmd));
+	cmd = (t_cmd *)malloc((shell->cmd->n_cmd) * sizeof(t_cmd));
 	if (cmd == NULL)
 	{
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;

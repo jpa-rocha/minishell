@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/17 13:27:04 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/17 21:15:10 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_symbols {
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
+	int			n_cmd;
 	char		**args;
 	char		**env;
 	char		**path;
@@ -100,10 +101,13 @@ void		ms_signals(void);
 // Parsing Functions
 
 int			ms_parser(t_shell *shell);
+int			n_commands(t_cmd *cmd);
+void		ms_lexer(t_cmd *cmd);
 
 // Executing Functions
 
 int			ms_exec(t_shell *shell);
+int			ms_check_pipe(t_cmd *cmd);
 
 // Built-in Functions
 
