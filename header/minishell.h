@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/11 16:50:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/14 15:45:36 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 # define SM '<'
 # define SMSM '<<'
 # define DOLLAR '$'
+
+# define PATH_SIZE_MAC 1024
+# define PATH_SIZE_LINUX 4096
 
 typedef struct s_envvar {
 	char	*name;

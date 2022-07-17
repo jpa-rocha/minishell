@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:31:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/10 11:04:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/14 16:24:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+/* pwd -- print working directory -- prints the path
+	the max. path size/length in mac 1024 & 4096 in linux
+	buffer stores the current working directory
+*/
 int	ms_pwd(void)
 {
-	char	buffer[1024]; // stores the current working directory
-	char	*path;
+	char	buffer[PATH_SIZE_MAC];
+	char	*cwd;
 	
-	path = getcwd(buffer, 1024);
- 	if (path == NULL)
+	cwd = getcwd(buffer, PATH_SIZE_MAC);
+ 	if (cwd == NULL)
 	{
-		perror("Error in getcwd\n");
+		perror("Error in current working directory\n");
 		return (1);
 	}
-	else
-	{
-		printf("%s\n", path);
-		return (0);
-	}
+	printf("%s\n", cwd);
 	return (0);
 }
