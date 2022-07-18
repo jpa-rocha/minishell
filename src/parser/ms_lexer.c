@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/18 13:16:12 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 18:05:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,21 @@
 the pipe itself ; look for the closing
 quotes; if not print error message; if there is continue */
 
-int	n_commands(t_cmd *cmd)
+/* int	get_nmb_cmd(t_cmd *cmd)
 {
 	int	i;
 	int	quote_end;
 	int	count;
-
+// && (cmd->line[quote_end] != cmd->line[i])
 	i = 0;
-	quote_end = 0;
 	count = 1;
-
 	while (cmd->line[i])
 	{
-		if (cmd->line[i] == '"' ||cmd->line[i] == '\'')
+		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
 		{
-			quote_end = i + 1;
-			while (cmd->line[quote_end] != cmd->line[i] && cmd->line[i])
+			//quote_end = i + 1;
+			quote_end = 0;
+			while (cmd->line[i])
 			{
 				if (!cmd->line[quote_end])
 				{
@@ -40,9 +39,9 @@ int	n_commands(t_cmd *cmd)
 				}
 				quote_end++;
 			}
-			i = quote_end;
+		i = quote_end;
 		}
-		else if (cmd->line[i] == '|')
+		else if (cmd->line[i] == PIPE)
 		{
 			i++;
 			while (cmd->line[i] == ' ')
@@ -53,94 +52,87 @@ int	n_commands(t_cmd *cmd)
 		i++;
 	}
 	return (count);
-}
+} */
 
-int ms_lexer(t_shell *shell)
+int	get_nmb_cmd(t_cmd *cmd)
 {
 	int	i;
-	int	j;
 	int	count;
+
+	i = 0;
+	count = 1;
+	while (cmd->line[i])
+	{
+		if (cmd->line[i] == PIPE)
+		{
+			i += 1;
+			while (cmd->line[i] == ' ')
+				i += 1;
+			if (cmd->line[i])
+				count += 1;
+		}
+		i += 1;
+	}
+	return (count);
+}
+
+static int	check_temp(char *temp, t_shell *shell)
+{
+	if (!temp)
+	{
+		free(temp);
+		ms_free_args(shell->lexer);
+		return (ALLOCATION_PROBLEM_EXIT);
+	}
+	return (0);
+}
+
+static int	check_lexer(t_shell *shell)
+{
+	ms_free_args(shell->lexer);
+	return (ALLOCATION_PROBLEM_EXIT);
+}
+
+void	alloc_lexer(t_shell *shell)
+{
+	shell->cmd->n_cmd = get_nmb_cmd(shell->cmd);
+	shell->lexer = ft_calloc(shell->cmd->n_cmd + 1, sizeof(char *));
+}
+
+int	ms_lexer(t_shell *shell)
+{
+	int		i;
+	int		j;
+	int		count;
+	char	*temp;
 
 	i = 0;
 	j = 0;
 	count = 0;
-	shell->cmd->n_cmd = n_commands(shell->cmd);
-	shell->lexer = ft_calloc(shell->cmd->n_cmd + 1, sizeof(char *));
-
+	alloc_lexer(shell);
 	while (1)
 	{
-		if (shell->cmd->line[i] == '|' || shell->cmd->line[i] == '\0')
+		if (shell->cmd->line[i] == PIPE || shell->cmd->line[i] == '\0')
 		{
-			shell->lexer[j] = ft_calloc(count + 2, sizeof(char));
+			temp = ft_calloc(count + 2, sizeof(char));
+			check_temp(temp, shell);
+			ft_strlcpy(temp, &shell->cmd->line[i] - count, count + 1);
+			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
-			{
-				ms_free_args(shell->lexer);
-				return (ALLOCATION_PROBLEM_EXIT);
-			}
-			ft_strlcpy(shell->lexer[j], &shell->cmd->line[i] - count , count + 1);
-			printf("%s\n", shell->lexer[j]);
+				check_lexer(shell);
+			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
-				break;
+				break ;
 			i += 1;
 			count = 0;
 		}
 		count += 1;
 		i += 1;
 	}
-	shell->lexer[j] = NULL;
 	return (EXIT_SUCCESS);
 }
 
-/* void	ms_lexer(t_cmd *cmd)
-{
-	int	i;
-	int	j;
-	int	start;
-	int	end;
+			//printf("%s\n", shell->lexer[j]);
 
-	i = 0;
-	j = 0;
-	start = 0;
-	end = 0;
-	while (cmd->line[start])
-		start++;
-	while (cmd->line[i])
-	{
-		if (cmd->line[i] == '"' ||cmd->line[i] == '\'')
-		{
-			end = i + 1;
-			while (cmd->line[end] != cmd->line[i] && cmd->line[i])
-			{
-				if (!cmd->line[end])
-				{
-					perror("not closing quotes\n");
-					break ;
-				}
-				end++;
-			}
-			i = end;
-		}
-		else if (cmd->line[i] == '|')
-		{
-		
-		i++;
-	}
-	end = i;
-	
-} */
-
-/* int	ms_check_pipe(t_cmd *cmd)
-{
-	//char	**split;
-	int		i;
-
-	i = 0;
-	cmd->args = ft_split(cmd->line, '|');
-	while (cmd->args[i])
-	{
-			printf("%s\n", cmd->args[i]);
-		i++;
-	}
-	return (0);
-} */
+				//shell->lexer[j] = NULL;

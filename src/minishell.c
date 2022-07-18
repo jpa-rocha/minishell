@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 12:36:11 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 17:22:15 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	ms_shell(char **env, char **argv)
 	while (1)
 	{
 		shell->cmd = ms_cmd_init(shell);
-	/* 	int n = n_commands(shell->cmd);
-		printf("%d\n", n); */
+		int n = get_nmb_cmd(shell->cmd);
+		printf("%d\n", n);
 		//ms_lexer(shell->cmd);
 /* 		int i=0;
 		while (i < shell->cmd->n_cmd)
