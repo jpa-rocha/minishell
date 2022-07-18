@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 18:06:20 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 21:43:18 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int			ms_parser(t_shell *shell);
 int			get_nmb_cmd(t_cmd *cmd);
 int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
+
 
 // Executing Functions
 

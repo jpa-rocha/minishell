@@ -6,31 +6,24 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/18 18:05:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 21:54:14 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-/* check how many group of commands we have - - our separetor is
-the pipe itself ; look for the closing
-quotes; if not print error message; if there is continue */
-
-/* int	get_nmb_cmd(t_cmd *cmd)
+static int	check_quotes(t_cmd *cmd)
 {
 	int	i;
 	int	quote_end;
-	int	count;
-// && (cmd->line[quote_end] != cmd->line[i])
+
 	i = 0;
-	count = 1;
 	while (cmd->line[i])
 	{
 		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
 		{
-			//quote_end = i + 1;
-			quote_end = 0;
-			while (cmd->line[i])
+			quote_end = i + 1;
+			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
 			{
 				if (!cmd->line[quote_end])
 				{
@@ -39,21 +32,17 @@ quotes; if not print error message; if there is continue */
 				}
 				quote_end++;
 			}
-		i = quote_end;
-		}
-		else if (cmd->line[i] == PIPE)
-		{
-			i++;
-			while (cmd->line[i] == ' ')
-				i++;
-			if (cmd->line[i])
-				count++;
+			i = quote_end;
 		}
 		i++;
 	}
-	return (count);
-} */
+	return (0);
+}
 
+/* check how many group of commands we have - - the separator is the pipe */
+/* aa | f | , this is ok, cmd nmb is 2; 
+	but here: aa | f | | , cmd num is 3, need to fix 
+*/
 int	get_nmb_cmd(t_cmd *cmd)
 {
 	int	i;
@@ -109,6 +98,8 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
+	if (check_quotes(shell->cmd))
+		printf("err");
 	alloc_lexer(shell);
 	while (1)
 	{
@@ -120,6 +111,7 @@ int	ms_lexer(t_shell *shell)
 			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
 				check_lexer(shell);
+			printf("%s\n", shell->lexer[j]);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
@@ -130,9 +122,40 @@ int	ms_lexer(t_shell *shell)
 		count += 1;
 		i += 1;
 	}
+	//shell->lexer[j] = NULL;
 	return (EXIT_SUCCESS);
 }
 
-			//printf("%s\n", shell->lexer[j]);
+/*  int	check_quotes(t_shell *shell)
+{
+	int	i;
+	int	j;
+	int	quote_end;
+	char	c;
 
-				//shell->lexer[j] = NULL;
+	i = 0;
+	j = 0;
+	while (j < shell->cmd->n_cmd)
+	{
+		while (shell->lexer[j][i])
+		{
+			if (shell->lexer[j][i] == SQ || shell->lexer[j][i] == DQ)
+			{
+				c = shell->lexer[j][i];
+				quote_end = i + 1;
+				while (shell->lexer[j][i] && shell->lexer[j][quote_end] != c)
+				{
+					quote_end++;
+				}
+				if (shell->lexer[j][quote_end] == '\0')
+				{
+					perror("not closing quotes\n");
+					break ;
+				}
+			}
+			i++;
+		}
+		j++;
+	}
+	return (0);
+} */

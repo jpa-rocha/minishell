@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 12:35:35 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 21:42:35 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	ms_parser(t_shell *shell)
 {
-	//shell->cmd->args = ft_split(shell->cmd->line, ' ');
+	//shell->cmd->args = ft_split(shell->cmd->line, ' ')
 	ms_lexer(shell);
+/* 	if (check_quotes(shell))
+		printf("err"); */
 	if (shell->cmd->args == NULL)
 	{
 		shell->exitcode = 12;
