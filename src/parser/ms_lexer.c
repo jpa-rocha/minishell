@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/17 21:23:58 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/18 13:16:12 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,44 @@ int	n_commands(t_cmd *cmd)
 	return (count);
 }
 
-void	ms_lexer(t_cmd *cmd)
+int ms_lexer(t_shell *shell)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	shell->cmd->n_cmd = n_commands(shell->cmd);
+	shell->lexer = ft_calloc(shell->cmd->n_cmd + 1, sizeof(char *));
+
+	while (1)
+	{
+		if (shell->cmd->line[i] == '|' || shell->cmd->line[i] == '\0')
+		{
+			shell->lexer[j] = ft_calloc(count + 2, sizeof(char));
+			if (!shell->lexer[j])
+			{
+				ms_free_args(shell->lexer);
+				return (ALLOCATION_PROBLEM_EXIT);
+			}
+			ft_strlcpy(shell->lexer[j], &shell->cmd->line[i] - count , count + 1);
+			printf("%s\n", shell->lexer[j]);
+			j += 1;
+			if (shell->cmd->line[i] == '\0')
+				break;
+			i += 1;
+			count = 0;
+		}
+		count += 1;
+		i += 1;
+	}
+	shell->lexer[j] = NULL;
+	return (EXIT_SUCCESS);
+}
+
+/* void	ms_lexer(t_cmd *cmd)
 {
 	int	i;
 	int	j;
@@ -91,7 +128,7 @@ void	ms_lexer(t_cmd *cmd)
 	}
 	end = i;
 	
-}
+} */
 
 /* int	ms_check_pipe(t_cmd *cmd)
 {
