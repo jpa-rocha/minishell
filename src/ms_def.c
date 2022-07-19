@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 16:11:58 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/19 15:03:35 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ char	**ms_shell_path_creator(t_shell *shell)
 t_cmd	*ms_cmd_init(t_shell *shell)
 {
 	t_cmd	*cmd;
+	char	*prompt;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (cmd == NULL)
@@ -70,7 +71,11 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 		free(cmd);
 		return (NULL);
 	}
-	cmd->line = readline("minishell> ");
+	prompt = ms_prompt(shell);
+	if (prompt == NULL)
+		return (NULL);
+	cmd->line = readline(prompt);
+	free(prompt);
 	cmd->builtin_num = 0;
 	shell->exitcode = EXIT_SUCCESS;
 	return (cmd);

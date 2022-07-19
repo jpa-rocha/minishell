@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:32:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 09:44:47 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/18 10:50:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "../../header/minishell.h"
 
 static void	**node_init(int capacity, int data_size);
-static void	**list_resize(t_list *list, int new_capacity);
 
 t_list	*list_creator(int capacity, int data_size)
 {
@@ -63,14 +62,12 @@ static void	**node_init(int capacity, int data_size)
 	return (nodes);
 }
 
-void	list_add_back(void *data, t_list *list, int resize_check)
+void	list_add_back(void *data, t_list *list)
 {
 	t_node	*temp;
 
 	if (list->total == list->capacity)
 		list->nodes = list_resize(list, list->capacity * 2);
-	if (list->total < list->capacity / 4 && resize_check != 1)
-		list->nodes = list_resize(list, list->capacity / 2);
 	temp = list->nodes[list->total];
 	ft_memcpy(temp->data, data, list->data_size);
 	if (list->total == 0)
@@ -88,7 +85,7 @@ void	list_add_back(void *data, t_list *list, int resize_check)
 	list->total++;
 }
 
-static void	**list_resize(t_list *list, int new_capacity)
+void	**list_resize(t_list *list, int new_capacity)
 {
 	void	**new;
 	void	**temp_nodes;
@@ -107,7 +104,7 @@ static void	**list_resize(t_list *list, int new_capacity)
 	while (i < old_index)
 	{
 		temp_old = (t_node *) temp_nodes[i];
-		list_add_back(temp_old->data, list, 1);
+		list_add_back(temp_old->data, list);
 		i++;
 	}
 	list->capacity = new_capacity;

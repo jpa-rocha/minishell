@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 17:06:45 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/18 11:26:18 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ms_env_swap_data(t_envvar *line, t_envvar *nline)
 	return (EXIT_SUCCESS);
 }
 
-int	ms_create_var_check(t_shell	*shell, char *newvar)
+int	ms_var_check(t_shell	*shell, char *called_from, char *newvar)
 {
 	int	i;
 	int	first_check;
@@ -91,7 +91,7 @@ int	ms_create_var_check(t_shell	*shell, char *newvar)
 	while (newvar[i] != '=' && newvar[i] != '\0')
 	{
 		if (newvar[i] == '=' || newvar[i] == '%' || newvar[i] == '?'
-			|| ft_isdigit(newvar[0]) == 1)
+			|| ft_isdigit(newvar[0]) == 1 || newvar[i] == '-')
 			first_check = 1;
 		if (ft_isdigit(newvar[i]) != 1)
 			check = 1;
@@ -101,7 +101,7 @@ int	ms_create_var_check(t_shell	*shell, char *newvar)
 	if (first_check == 1 || check != 1)
 	{
 		shell->exitcode = 1;
-		printf("minishell: export: `%s\': not a valid identifier\n", newvar);
+		printf("minishell: %s: `%s\': not a valid identifier\n",called_from, newvar);
 		return (-1);
 	}
 	return (i);

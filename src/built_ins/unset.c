@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 17:19:57 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/18 11:27:23 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	ms_unset(t_shell *shell, char *to_unset)
 		shell->exitcode = EXIT_SUCCESS;
 		return (shell->exitcode);
 	}
+	if (ms_var_check(shell, "unset", to_unset) == -1)
+		return (shell->exitcode);
 	node = ms_env_find_entry(shell->workenv, to_unset);
 	if (node != NULL)
 	{
@@ -33,11 +35,6 @@ int	ms_unset(t_shell *shell, char *to_unset)
 		shell->exitcode = ms_export_order(shell->workenv);
 		shell->env = ms_env_init_env(shell);
 		shell->path = ms_shell_path_creator(shell);
-	}
-	else
-	{
-		shell->exitcode = EXIT_FAILURE;
-		printf("minishell: unset:`%s\': not a valid identifier\n", to_unset);
 	}
 	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
@@ -65,6 +62,10 @@ static int	ms_unset_var_exists(t_shell *shell, t_node *node)
 		node = node->next;
 	}
 	shell->workenv->total -= 1;
+	if (shell->workenv->total < (int) shell->workenv->capacity / 4)
+		list_resize(shell->workenv, (int) shell->workenv->capacity / 4);
+	if (shell->workenv->nodes == NULL)
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 	return (shell->exitcode);
 }
 
