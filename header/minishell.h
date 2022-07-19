@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 21:54:56 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 17:21:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@
 # define SMSM '<<'
 # define DOLLAR '$'
 
-# define PATH_SIZE_MAC 1024
-# define PATH_SIZE_LINUX 4096
+# define PATH_SIZE 1024
 
 typedef struct s_envvar {
 	char	*name;

@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:31:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/17 13:27:19 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 17:22:27 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 */
 int	ms_pwd(void)
 {
-	char	buffer[PATH_SIZE_MAC];
+	char	buffer[PATH_SIZE];
 	char	*cwd;
 	
-	cwd = getcwd(buffer, PATH_SIZE_MAC);
+	cwd = getcwd(buffer, PATH_SIZE);
  	if (cwd == NULL)
 	{
 		perror("Error in current working directory\n");
