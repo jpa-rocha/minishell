@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 16:40:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/18 11:28:09 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 	line = (t_envvar *) node->data;
 	free(line->name);
 	free(line->value);
-	i = ms_create_var_check(shell, newvar);
+	i = ms_var_check(shell, "export", newvar);
 	if (i < 0)
 		return (shell->exitcode);
 	line->name = ft_calloc(i, sizeof(char));
@@ -88,7 +88,7 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 	t_envvar	line;
 	int			i;
 
-	i = ms_create_var_check(shell, newvar);
+	i = ms_var_check(shell, "export", newvar);
 	if (i < 0)
 		return (shell->exitcode);
 	line.name = ft_calloc(i, sizeof(char));
@@ -100,7 +100,7 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 	line.env_order = shell->workenv->total;
 	ft_strlcpy(line.name, newvar, i);
 	shell->exitcode = ms_export_value_check(shell, &line, newvar);
-	list_add_back(&line, shell->workenv, 0);
+	list_add_back(&line, shell->workenv);
 	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
 }

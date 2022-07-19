@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 16:11:07 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/19 15:15:27 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int			ms_shell_cleanup(t_shell *shell);
 void		ms_list_data_cleaner(t_list *list);
 int			ms_error_management(t_shell *shell);
 void		ms_logo(void);
+char		*ms_prompt(t_shell *shell);
 int			ms_args_len(char **args);
 int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
@@ -114,10 +115,13 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 // Entry point into the export function
 int			ms_export(t_shell *shell, char *newvar);
 int			ms_export_order(t_list *env);
-int			ms_create_var_check(t_shell	*shell, char *newvar);
+int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char *newvar);
+
+// Entry point into cd
+int			ms_cd(t_shell *shell, char *newpath);
 
 // Return the current working path
 int			ms_pwd(void);

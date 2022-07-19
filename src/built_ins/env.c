@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 16:31:07 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/18 10:45:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_list	*ms_env_create_work_env(t_shell *shell, char **env)
 	while (i < ms_args_len(env))
 	{
 		data = ms_env_create_data(shell, env[i], i);
-		list_add_back(&data, w_env, 0);
+		list_add_back(&data, w_env);
 		i += 1;
 	}
 	return (w_env);
