@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 12:22:18 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 14:25:41 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	ms_shell(char **env, char **argv)
 	while (1)
 	{
 		shell->cmd = ms_cmd_init(shell);
-		if (shell->cmd == NULL)
+		ms_parser(shell);
+/* 	if (shell->cmd == NULL)
 			ms_error_management(shell);
 		if (shell->exitcode == EXIT_SUCCESS)
 		{
@@ -51,7 +52,8 @@ int	ms_shell(char **env, char **argv)
 			add_history(shell->cmd->line);
 			ms_exec(shell);
 			ms_cmd_cleanup(shell->cmd);
-		}
+		} */
+		add_history(shell->cmd->line);
 	}
 	write(1, "exit\n", 5);
 	return (ms_shell_cleanup(shell));

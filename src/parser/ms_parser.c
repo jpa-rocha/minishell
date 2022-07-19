@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 12:22:32 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 14:00:31 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	ms_parser(t_shell *shell)
 {
-	//shell->cmd->args = ft_split(shell->cmd->line, ' ')
-	ms_lexer(shell);
+	shell->exitcode = ms_lexer(shell);
+/* 	shell->cmd->args = ft_split(shell->cmd->line, ' ');
 	if (shell->cmd->args == NULL)
 	{
-		shell->exitcode = 12;
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
-	}
+	} */
 	return (EXIT_SUCCESS);
 }

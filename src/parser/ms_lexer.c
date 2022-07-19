@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/19 12:15:41 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 15:23:24 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ static int	check_quotes(t_cmd *cmd)
 			i = quote_end;
 		}
 		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	check_only_io(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->line[i] == ' ')
+		i++;
+	if (cmd->line[i] == SM || cmd->line[i] == GR)
+	{
+		perror("syntax error near unexpected token `newline'\n");
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -95,6 +110,8 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
+	if (!check_only_io(shell->cmd))
+		return (EXIT_FAILURE);
 	if (!check_quotes(shell->cmd))
 		return (EXIT_FAILURE);
 	alloc_lexer(shell);
