@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/18 21:54:14 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 12:15:41 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,10 @@ static int	check_quotes(t_cmd *cmd)
 		}
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* check how many group of commands we have - - the separator is the pipe */
-/* aa | f | , this is ok, cmd nmb is 2; 
-	but here: aa | f | | , cmd num is 3, need to fix 
-*/
 int	get_nmb_cmd(t_cmd *cmd)
 {
 	int	i;
@@ -55,7 +52,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 		if (cmd->line[i] == PIPE)
 		{
 			i += 1;
-			while (cmd->line[i] == ' ')
+			while (cmd->line[i] == ' ' | cmd->line[i] == PIPE)
 				i += 1;
 			if (cmd->line[i])
 				count += 1;
@@ -98,8 +95,8 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	if (check_quotes(shell->cmd))
-		printf("err");
+	if (!check_quotes(shell->cmd))
+		return (EXIT_FAILURE);
 	alloc_lexer(shell);
 	while (1)
 	{
