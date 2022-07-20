@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/20 14:12:47 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:44:53 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	check_quotes(t_cmd *cmd)
 	int	quote_end;
 
 	i = 0;
-	while (cmd->line[i])
+	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
 		{
@@ -39,34 +39,57 @@ static int	check_quotes(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+static int	counter_io(t_cmd *cmd)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (cmd->line[i])
+	{
+		if (cmd->line[i] == SM)
+			count++;
+		else if (cmd->line[i] == GR)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 /* Exit code needs to be 2 , perror returns already errnum ? */
 static int	check_only_io(t_cmd *cmd)
 {
 	int	i;
+	int	c;
 
 	i = 0;
+	c = counter_io(cmd);
 	while (cmd->line[i] == ' ')
 		i++;
-	if ((cmd->line[i] == SM && cmd->line[i + 1] == '\0')
-		|| (cmd->line[i] == SM && cmd->line[i + 1] == SM
-			&& cmd->line[i + 2] == '\0'))
+	if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
+		|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
+		|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
 	{
 		printf(ERR_MU, "newline");
 		return (EXIT_FAILURE);
 	}
-	else if ((cmd->line[i] == GR && cmd->line[i + 1] == '\0')
-		|| (cmd->line[i] == GR && cmd->line[i + 1] == GR
-			&& cmd->line[i + 2] == '\0'))
+	else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
 	{
-		printf(ERR_MU, "newline");
+		printf(ERR_MU, "<");
 		return (EXIT_FAILURE);
 	}
-	else if (cmd->line[i] == SM && cmd->line[i + 1] == SM)
+	else if (cmd->line[i] == SM && c > 2)
 	{
 		printf(ERR_MU, "<<");
 		return (EXIT_FAILURE);
 	}
-	else if (cmd->line[i] == GR && cmd->line[i + 1] == GR)
+	else if (cmd->line[i] == GR && c > 2 && cmd->line[i + 1] == ' ')
+	{
+		printf(ERR_MU, ">");
+		return (EXIT_FAILURE);
+	}
+	else if (cmd->line[i] == GR && c > 2)
 	{
 		printf(ERR_MU, ">>");
 		return (EXIT_FAILURE);
