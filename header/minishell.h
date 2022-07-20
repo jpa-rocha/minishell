@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 18:39:28 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:19:45 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@
 # define DQ '\"'
 # define PIPE '|'
 # define GR '>'
-# define GRGR '>>'
+# define GRGR ">>"
 # define SM '<'
-# define SMSM '<<'
+# define SMSM "<<"
 # define DOLLAR '$'
+# define SLASH '/'
+# define BSLASH '\\'
 
 # define PATH_SIZE 1024
 
@@ -104,6 +106,10 @@ int			ms_parser(t_shell *shell);
 int			get_nmb_cmd(t_cmd *cmd);
 int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
+int			check_quotes(t_cmd *cmd);
+int			counter_io(t_cmd *cmd);
+int			check_only_io(t_cmd *cmd);
+int			check_slash(t_cmd *cmd);
 
 // Executing Functions
 

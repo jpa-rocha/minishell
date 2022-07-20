@@ -6,96 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/20 15:44:53 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:21:57 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-
-static int	check_quotes(t_cmd *cmd)
-{
-	int	i;
-	int	quote_end;
-
-	i = 0;
-	while (cmd->line[i] != '\0')
-	{
-		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
-		{
-			quote_end = i + 1;
-			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
-			{
-				if (!cmd->line[quote_end])
-				{
-					perror("not closing quotes\n");
-					return (EXIT_FAILURE);
-				}
-				quote_end++;
-			}
-			i = quote_end;
-		}
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
-
-static int	counter_io(t_cmd *cmd)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (cmd->line[i])
-	{
-		if (cmd->line[i] == SM)
-			count++;
-		else if (cmd->line[i] == GR)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-/* Exit code needs to be 2 , perror returns already errnum ? */
-static int	check_only_io(t_cmd *cmd)
-{
-	int	i;
-	int	c;
-
-	i = 0;
-	c = counter_io(cmd);
-	while (cmd->line[i] == ' ')
-		i++;
-	if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
-		|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
-		|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
-	{
-		printf(ERR_MU, "newline");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
-	{
-		printf(ERR_MU, "<");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == SM && c > 2)
-	{
-		printf(ERR_MU, "<<");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == GR && c > 2 && cmd->line[i + 1] == ' ')
-	{
-		printf(ERR_MU, ">");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == GR && c > 2)
-	{
-		printf(ERR_MU, ">>");
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
 
 /* check how many group of commands we have - - the separator is the pipe */
 int	get_nmb_cmd(t_cmd *cmd)
@@ -120,6 +35,12 @@ int	get_nmb_cmd(t_cmd *cmd)
 	return (count);
 }
 
+void	alloc_lexer(t_shell *shell)
+{
+	shell->cmd->n_cmd = get_nmb_cmd(shell->cmd);
+	shell->lexer = ft_calloc(shell->cmd->n_cmd + 1, sizeof(char *));
+}
+
 static int	check_temp(char *temp, t_shell *shell)
 {
 	if (!temp)
@@ -137,12 +58,6 @@ static int	check_lexer(t_shell *shell)
 	return (ALLOCATION_PROBLEM_EXIT);
 }
 
-void	alloc_lexer(t_shell *shell)
-{
-	shell->cmd->n_cmd = get_nmb_cmd(shell->cmd);
-	shell->lexer = ft_calloc(shell->cmd->n_cmd + 1, sizeof(char *));
-}
-
 int	ms_lexer(t_shell *shell)
 {
 	int		i;
@@ -156,6 +71,8 @@ int	ms_lexer(t_shell *shell)
 	if (check_quotes(shell->cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (check_only_io(shell->cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (check_slash(shell->cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	alloc_lexer(shell);
 	while (1)

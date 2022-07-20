@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:33:14 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/20 11:56:40 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:36:48 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 
 # define MISSUSED_BUILTIN 2
 # define ERR_MU "minishell: syntax error near unexpected token `%s'\n"
+
+# define IS_DIR_SLASH 126
+# define IS_DIR_BSLASH 127
+# define ERR_ISDIR "minishell: %s: Is a directory\n"
+# define ERR_NF "minishell: %s: command not found\n"
 
 # define ERR_INV ": command not found\n"
 
