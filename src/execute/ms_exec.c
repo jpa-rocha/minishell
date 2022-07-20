@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 15:14:12 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/20 12:56:17 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,11 @@ static int	ms_is_built_in(t_shell *shell, char *builtin)
 		shell->cmd->builtin_num = 5;
 		return (1);
 	}
-	
+	if (ft_strncmp(builtin, "unset", ft_strlen(builtin)) == 0)
+	{
+		shell->cmd->builtin_num = 6;
+		return (1);
+	}
 	if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)
 	{
 		shell->cmd->builtin_num = 7;
