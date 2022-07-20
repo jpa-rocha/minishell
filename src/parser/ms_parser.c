@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 14:00:31 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/19 18:41:05 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int	ms_parser(t_shell *shell)
 	{
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
-	} */
-	return (EXIT_SUCCESS);
+	}  */
+	return (0);
 }

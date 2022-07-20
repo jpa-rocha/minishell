@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/19 15:23:24 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 11:58:04 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	check_quotes(t_cmd *cmd)
 				if (!cmd->line[quote_end])
 				{
 					perror("not closing quotes\n");
-					break ;
+					return (EXIT_FAILURE);
 				}
 				quote_end++;
 			}
@@ -39,6 +39,7 @@ static int	check_quotes(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/* Exit code needs to be 2 , perror returns already errnum ? */
 static int	check_only_io(t_cmd *cmd)
 {
 	int	i;
@@ -48,7 +49,7 @@ static int	check_only_io(t_cmd *cmd)
 		i++;
 	if (cmd->line[i] == SM || cmd->line[i] == GR)
 	{
-		perror("syntax error near unexpected token `newline'\n");
+		printf(ERR_MU, "newline");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -110,9 +111,9 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	if (!check_only_io(shell->cmd))
+	if (check_quotes(shell->cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (!check_quotes(shell->cmd))
+	if (check_only_io(shell->cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	alloc_lexer(shell);
 	while (1)
@@ -125,7 +126,6 @@ int	ms_lexer(t_shell *shell)
 			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
 				check_lexer(shell);
-			printf("%s\n", shell->lexer[j]);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
