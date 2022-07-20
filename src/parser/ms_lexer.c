@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/20 11:58:04 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/20 14:12:47 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,28 @@ static int	check_only_io(t_cmd *cmd)
 	i = 0;
 	while (cmd->line[i] == ' ')
 		i++;
-	if (cmd->line[i] == SM || cmd->line[i] == GR)
+	if ((cmd->line[i] == SM && cmd->line[i + 1] == '\0')
+		|| (cmd->line[i] == SM && cmd->line[i + 1] == SM
+			&& cmd->line[i + 2] == '\0'))
 	{
 		printf(ERR_MU, "newline");
+		return (EXIT_FAILURE);
+	}
+	else if ((cmd->line[i] == GR && cmd->line[i + 1] == '\0')
+		|| (cmd->line[i] == GR && cmd->line[i + 1] == GR
+			&& cmd->line[i + 2] == '\0'))
+	{
+		printf(ERR_MU, "newline");
+		return (EXIT_FAILURE);
+	}
+	else if (cmd->line[i] == SM && cmd->line[i + 1] == SM)
+	{
+		printf(ERR_MU, "<<");
+		return (EXIT_FAILURE);
+	}
+	else if (cmd->line[i] == GR && cmd->line[i + 1] == GR)
+	{
+		printf(ERR_MU, ">>");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
