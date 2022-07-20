@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:11:47 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 15:02:56 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/20 16:04:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	ms_prompt_create(char *prompt, t_envvar *user,
 				t_envvar *path, t_envvar *home);
 static char	*ms_colour(char *colour);
+static char	*ms_prompt_null_handle(t_shell *shell);
 
 void	ms_logo(void)
 {
@@ -48,15 +49,37 @@ char	*ms_prompt(t_shell *shell)
 	t_envvar	*home;
 	char		*prompt;
 
-	user = (t_envvar *) ms_env_find_entry(shell->workenv, "USER")->data;
-	path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
-	home = (t_envvar *) ms_env_find_entry(shell->workenv, "HOME")->data;
+	user = NULL;
+	path = NULL;
+	home = NULL;
+	if (ms_env_find_entry(shell->workenv, "USER") != NULL)
+		user = (t_envvar *) ms_env_find_entry(shell->workenv, "USER")->data;
+	if (ms_env_find_entry(shell->workenv, "PWD") != NULL)
+		path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
+	if (ms_env_find_entry(shell->workenv, "HOME") != NULL)
+		home = (t_envvar *) ms_env_find_entry(shell->workenv, "HOME")->data;
+	if (user == NULL || path == NULL || home == NULL)
+		return (ms_prompt_null_handle(shell));
 	prompt = ft_calloc(26 + ft_strlen(user->value) + ft_strlen(path->value)
 			+ 7, sizeof(char));
 	if (prompt == NULL)
-		return (NULL);
+		return (ms_prompt_null_handle(shell));
 	if (ms_prompt_create(prompt, user, path, home) != EXIT_SUCCESS)
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+	return (prompt);
+}
+
+static char	*ms_prompt_null_handle(t_shell *shell)
+{
+	char	*prompt;
+
+	prompt = ft_calloc(ft_strlen("minishell$ ") + 1, sizeof(char));
+	if (prompt == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		return (prompt);
+	}
+	ft_strlcpy(prompt, "minishell$ ", ft_strlen("minishell$ ") + 1);
 	return (prompt);
 }
 
@@ -71,7 +94,7 @@ static int	ms_prompt_create(char *prompt, t_envvar *user,
 	ft_strlcpy(&prompt[ft_strlen(prompt)], ms_colour("reset"), 5);
 	prompt[ft_strlen(prompt)] = ':';
 	ft_strlcpy(&prompt[ft_strlen(prompt)], ms_colour("blue"), 8);
-	if (path->value >= home->value)
+	if (ft_strncmp(path->value, home->value, ft_strlen(home->value)) == 0)
 	{
 		relative = ft_strjoin("~/", &path->value[ft_strlen(home->value) + 1]);
 		if (relative == NULL)
