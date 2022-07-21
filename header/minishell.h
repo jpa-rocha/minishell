@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/19 15:15:27 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/21 15:38:17 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,11 @@ int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
 int			ms_unset(t_shell *shell, char *newvar);
 
 // Entry point into cd
-int			ms_cd(t_shell *shell, char *newpath);
+int			ms_cd(t_shell *shell, char **args);
+int			ms_cd_new_path(t_shell *shell, t_envvar *path);
+int			ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath);
+int			ms_cd_switch_path(t_envvar *oldpath, char *newpath);
+t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 
 // Return the current working path
 int			ms_pwd(void);

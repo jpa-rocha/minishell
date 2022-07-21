@@ -6,51 +6,46 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/20 15:47:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/21 15:53:06 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int	ms_cd_switch_path(t_envvar *oldpath, char *newpath);
 static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
 				t_envvar *oldpath);
-static int	ms_cd_new_path(t_shell *shell, t_envvar *path);
-static int	ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath);
+static int	ms_cd_paths_null(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath);
+static int	ms_cd_edge(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath, char *newpath);
+static int	ms_cd_minus(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath);
 
-int	ms_cd(t_shell *shell, char *newpath)
+int	ms_cd(t_shell *shell, char **args)
 {
 	t_envvar	*oldpath;
 	t_envvar	*path;
+	int			argslen;
 
-	oldpath = NULL;
-	path = NULL;
-	if (ms_env_find_entry(shell->workenv, "OLDPWD") != NULL)
-		oldpath = (t_envvar *)
-			ms_env_find_entry(shell->workenv, "OLDPWD")->data;
-	if (ms_env_find_entry(shell->workenv, "PWD") != NULL)
-		path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
-	shell->exitcode = EXIT_SUCCESS;
-	if (newpath == NULL)
-		ms_pwd();
-	else if (chdir(newpath) == 0)
-		shell->exitcode = ms_cd_path_exists(shell, path, oldpath);
-	else
+	argslen = ms_args_len(args);
+	if (argslen <= 2)
 	{
-		shell->exitcode = EXIT_FAILURE;
-		printf("minishell: cd: %s: no such file or directory\n", newpath);
+		oldpath = ms_init_vars(shell, "OLDPWD");
+		path = ms_init_vars(shell, "PWD");
+		if (args[1] == NULL || (ft_strlen(args[1]) == 1))
+			shell->exitcode = ms_cd_edge(shell, path, oldpath, args[1]);
+		else if (chdir(args[1]) == 0)
+			shell->exitcode = ms_cd_path_exists(shell, path, oldpath);
+		else
+		{
+			shell->exitcode = EXIT_FAILURE;
+			printf(ERR_CD, args[1]);
+		}
+		return (shell->exitcode);
 	}
+	shell->exitcode = EXIT_FAILURE;
+	printf("minishell: cd: too many arguments\n");
 	return (shell->exitcode);
-}
-
-static int	ms_cd_switch_path(t_envvar *oldpath, char *newpath)
-{
-	free(oldpath->value);
-	oldpath->value = ft_calloc(ft_strlen(newpath) + 2, sizeof(char));
-	if (oldpath->value == NULL)
-		return (ALLOCATION_PROBLEM_EXIT);
-	ft_strlcpy(oldpath->value, newpath, ft_strlen(newpath) + 1);
-	return (EXIT_SUCCESS);
 }
 
 static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
@@ -59,17 +54,7 @@ static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
 	char		*temp;
 	char		*update;
 
-	if (path == NULL || oldpath == NULL)
-	{
-		shell->exitcode = ms_cd_new_path(shell, path);
-		path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
-	}
-	if (oldpath == NULL)
-	{
-		shell->exitcode = ms_cd_new_oldpath(shell, oldpath);
-		oldpath = (t_envvar *)
-			ms_env_find_entry(shell->workenv, "OLDPWD")->data;
-	}
+	shell->exitcode = ms_cd_paths_null(shell, path, oldpath);
 	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
 		return (shell->exitcode);
 	temp = ft_strdup(path->value);
@@ -83,46 +68,63 @@ static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
 	return (shell->exitcode);
 }
 
-static int	ms_cd_new_path(t_shell *shell, t_envvar *path)
-{	
-	char		*setter;
-	char		*update;
+static int	ms_cd_edge(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath, char *newpath)
+{
+	t_envvar	*home;
 
-	update = NULL;
-	update = getcwd(update, 1024);
-	if (path == NULL)
+	home = NULL;
+	if (ms_env_find_entry(shell->workenv, "HOME") != NULL)
+		home = (t_envvar *) ms_env_find_entry(shell->workenv, "HOME")->data;
+	shell->exitcode = ms_cd_paths_null(shell, path, oldpath);
+	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
+		return (shell->exitcode);
+	if (home == NULL)
 	{
-		setter = ft_calloc(4 + ft_strlen(update) + 1, sizeof(char));
-		if (setter == NULL)
-			return (ALLOCATION_PROBLEM_EXIT);
-		ft_strlcpy(setter, "PWD=", ft_strlen("PWD=") + 1);
-		ft_strlcpy(&setter[ft_strlen(setter)], update, ft_strlen(update) + 1);
-		ms_export(shell, setter);
-		free(setter);
+		printf("minishell: cd: HOME not set\n");
+		shell->exitcode = EXIT_FAILURE;
 	}
-	if (update != NULL)
-		free(update);
-	return (EXIT_SUCCESS);
+	else if (newpath == NULL || newpath[0] == '~')
+	{
+			shell->exitcode = ms_cd_switch_path(oldpath, path->value);
+			shell->exitcode = ms_cd_switch_path(path, home->value);
+			chdir(home->value);
+	}
+	else if (newpath[0] == '-' && path != NULL)
+		shell->exitcode = ms_cd_minus(shell, path, oldpath);
+	return (shell->exitcode);
 }
 
-static int	ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath)
+static int	ms_cd_minus(t_shell *shell, t_envvar *path, t_envvar *oldpath)
 {
-	char		*setter;
-	char		*update;
+	char		*temp;
 
-	update = NULL;
-	update = getcwd(update, 1024);
 	if (oldpath == NULL)
 	{
-		setter = ft_calloc(7 + ft_strlen(update) + 1, sizeof(char));
-		if (setter == NULL)
-			return (ALLOCATION_PROBLEM_EXIT);
-		ft_strlcpy(setter, "OLDPWD=", ft_strlen("OLDPWD="));
-		ft_strlcpy(&setter[ft_strlen(setter)], update, ft_strlen(update) + 1);
-		ms_export(shell, setter);
-		free(setter);
+		printf("minishell: cd: OLDPWD not set\n");
+		return (EXIT_FAILURE);
 	}
-	if (update != NULL)
-		free(update);
-	return (EXIT_SUCCESS);
+	chdir(oldpath->value);
+	temp = ft_strdup(path->value);
+	shell->exitcode = ms_cd_switch_path(path, oldpath->value);
+	shell->exitcode = ms_cd_switch_path(oldpath, temp);
+	ms_pwd();
+	free(temp);
+	return (shell->exitcode);
+}
+
+static int	ms_cd_paths_null(t_shell *shell, t_envvar *path, t_envvar *oldpath)
+{
+	if (path == NULL)
+	{
+		shell->exitcode = ms_cd_new_path(shell, path);
+		path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
+	}
+	if (oldpath == NULL)
+	{
+		shell->exitcode = ms_cd_new_oldpath(shell, oldpath);
+		oldpath = (t_envvar *)
+			ms_env_find_entry(shell->workenv, "OLDPWD")->data;
+	}
+	return (shell->exitcode);
 }

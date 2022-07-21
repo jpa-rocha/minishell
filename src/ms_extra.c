@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:11:47 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/20 16:04:33 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/21 15:46:09 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,10 @@ char	*ms_prompt(t_shell *shell)
 	t_envvar	*home;
 	char		*prompt;
 
-	user = NULL;
-	path = NULL;
-	home = NULL;
-	if (ms_env_find_entry(shell->workenv, "USER") != NULL)
-		user = (t_envvar *) ms_env_find_entry(shell->workenv, "USER")->data;
-	if (ms_env_find_entry(shell->workenv, "PWD") != NULL)
-		path = (t_envvar *) ms_env_find_entry(shell->workenv, "PWD")->data;
-	if (ms_env_find_entry(shell->workenv, "HOME") != NULL)
-		home = (t_envvar *) ms_env_find_entry(shell->workenv, "HOME")->data;
-	if (user == NULL || path == NULL || home == NULL)
+	user = ms_init_vars(shell, "USER");
+	path = ms_init_vars(shell, "PWD");
+	home = ms_init_vars(shell, "HOME");
+	if (user == NULL || path == NULL)
 		return (ms_prompt_null_handle(shell));
 	prompt = ft_calloc(26 + ft_strlen(user->value) + ft_strlen(path->value)
 			+ 7, sizeof(char));
@@ -94,7 +88,8 @@ static int	ms_prompt_create(char *prompt, t_envvar *user,
 	ft_strlcpy(&prompt[ft_strlen(prompt)], ms_colour("reset"), 5);
 	prompt[ft_strlen(prompt)] = ':';
 	ft_strlcpy(&prompt[ft_strlen(prompt)], ms_colour("blue"), 8);
-	if (ft_strncmp(path->value, home->value, ft_strlen(home->value)) == 0)
+	if (home != NULL &&
+		ft_strncmp(path->value, home->value, ft_strlen(home->value)) == 0)
 	{
 		relative = ft_strjoin("~/", &path->value[ft_strlen(home->value) + 1]);
 		if (relative == NULL)
