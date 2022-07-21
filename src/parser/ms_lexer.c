@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/20 16:21:57 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:28:05 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,7 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	if (check_quotes(shell->cmd) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (check_only_io(shell->cmd) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (check_slash(shell->cmd) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	check_char_errors(shell->cmd);
 	alloc_lexer(shell);
 	while (1)
 	{
@@ -95,40 +90,5 @@ int	ms_lexer(t_shell *shell)
 		count += 1;
 		i += 1;
 	}
-	//shell->lexer[j] = NULL;
 	return (EXIT_SUCCESS);
 }
-
-/*  int	check_quotes(t_shell *shell)
-{
-	int	i;
-	int	j;
-	int	quote_end;
-	char	c;
-
-	i = 0;
-	j = 0;
-	while (j < shell->cmd->n_cmd)
-	{
-		while (shell->lexer[j][i])
-		{
-			if (shell->lexer[j][i] == SQ || shell->lexer[j][i] == DQ)
-			{
-				c = shell->lexer[j][i];
-				quote_end = i + 1;
-				while (shell->lexer[j][i] && shell->lexer[j][quote_end] != c)
-				{
-					quote_end++;
-				}
-				if (shell->lexer[j][quote_end] == '\0')
-				{
-					perror("not closing quotes\n");
-					break ;
-				}
-			}
-			i++;
-		}
-		j++;
-	}
-	return (0);
-} */

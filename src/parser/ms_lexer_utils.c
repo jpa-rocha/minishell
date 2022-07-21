@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/20 16:38:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:27:18 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,36 @@ int	check_only_io(t_cmd *cmd)
 	c = counter_io(cmd);
 	while (cmd->line[i] == ' ')
 		i++;
-	if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
-		|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
-		|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
+	while (cmd->line[i] != '\0')
 	{
-		printf(ERR_MU, "newline");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
-	{
-		printf(ERR_MU, "<");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == SM && c > 2)
-	{
-		printf(ERR_MU, "<<");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == GR && c > 2 && cmd->line[i + 1] == ' ')
-	{
-		printf(ERR_MU, ">");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == GR && c > 2)
-	{
-		printf(ERR_MU, ">>");
-		return (EXIT_FAILURE);
+		if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
+			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
+			|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
+		{
+			printf(ERR_MU, "newline");
+			return (EXIT_FAILURE);
+		}
+		else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
+		{
+			printf(ERR_MU, "<");
+			return (EXIT_FAILURE);
+		}
+		else if (cmd->line[i] == SM && c > 2)
+		{
+			printf(ERR_MU, "<<");
+			return (EXIT_FAILURE);
+		}
+		else if (cmd->line[i] == GR && c > 2 && cmd->line[i + 1] == ' ')
+		{
+			printf(ERR_MU, ">");
+			return (EXIT_FAILURE);
+		}
+		else if (cmd->line[i] == GR && c > 2)
+		{
+			printf(ERR_MU, ">>");
+			return (EXIT_FAILURE);
+		}
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -104,7 +108,7 @@ int	check_slash(t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd->line[i])
+	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == SLASH)
 		{
@@ -116,6 +120,18 @@ int	check_slash(t_cmd *cmd)
 			printf(ERR_NF, &cmd->line[i++]);
 			return (EXIT_FAILURE);
 		}
+		i++;
 	}
+	return (EXIT_SUCCESS);
+}
+
+int	check_char_errors(t_cmd *cmd)
+{
+	if (check_quotes(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (check_only_io(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (check_slash(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
