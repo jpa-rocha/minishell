@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:33:14 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/21 11:57:45 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:52:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # define ERR_NULL "Cannot allocate memory\n"
 
 # define ERR_INV ": command not found\n"
-
-
+# define ERR_INV_ID "minishell: %s: `%s\': not a valid identifier\n"
 # define ERR_CD "minishell: cd: %s: no such file or directory\n"
 #endif

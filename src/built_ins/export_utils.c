@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 11:26:18 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:58:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,10 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 
 	node = NULL;
 	search = env->first;
-	i = 0;
-	while (name[i] != '=' && name[i] != '\0')
-		i += 1;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
-		if (ft_strncmp(line->name, name, i) == 0)
+		if (ft_strncmp(line->name, name, ft_strlen(line->name) - 1) == 0)
 		{
 			node = search;
 			break ;
@@ -101,7 +98,7 @@ int	ms_var_check(t_shell	*shell, char *called_from, char *newvar)
 	if (first_check == 1 || check != 1)
 	{
 		shell->exitcode = 1;
-		printf("minishell: %s: `%s\': not a valid identifier\n",called_from, newvar);
+		printf(ERR_INV_ID, called_from, newvar);
 		return (-1);
 	}
 	return (i);
