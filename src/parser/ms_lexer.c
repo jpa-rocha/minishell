@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/21 12:28:05 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/15 18:15:53 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 		if (cmd->line[i] == PIPE)
 		{
 			i += 1;
-			while (cmd->line[i] == ' ' | cmd->line[i] == PIPE)
+			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
 				i += 1;
 			if (cmd->line[i])
 				count += 1;
@@ -80,6 +80,7 @@ int	ms_lexer(t_shell *shell)
 			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
 				check_lexer(shell);
+			printf("%s\n", shell->lexer[j]);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')

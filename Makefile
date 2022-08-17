@@ -55,6 +55,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 		$(PARSER)ms_parser.c		\
 		$(PARSER)ms_lexer.c		\
 		$(PARSER)ms_lexer_utils.c		\
+		$(PARSER)ms_token.c        \
 		$(EXECUTER)ms_exec.c		\
 		$(EXECUTER)ms_exec_ctrl.c	\
 		$(BUILTINS)env.c		\
