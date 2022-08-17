@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/22 15:58:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/22 16:32:21 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 	t_node		*node;
 	t_node		*search;
 	t_envvar	*line;
-	int			i;
 
 	node = NULL;
 	search = env->first;
