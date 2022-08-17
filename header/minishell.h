@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/21 15:38:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/17 12:14:07 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
+# define BI_NUM 8
 # define BI_PATH "./src/built_ins/"
 # define SQ '\''
 # define DQ '\"'
@@ -129,6 +130,8 @@ t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 
 // Return the current working path
 int			ms_pwd(void);
+
+// Exits current program
 int			ms_exit(t_shell *shell);
 
 // Echo description
