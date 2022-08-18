@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/15 18:15:53 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/18 12:04:06 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,3 +93,4 @@ int	ms_lexer(t_shell *shell)
 	}
 	return (EXIT_SUCCESS);
 }
+

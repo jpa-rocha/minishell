@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/17 10:37:10 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/17 10:48:21 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_each_token(t_shell *shell)
 	j = 0;
 	while (shell->lexer[j])
 	{
-		token = malloc(sizeof(char) * length);
+		token = malloc(sizeof(char) * length + 1);
 		if (!token)
 			return (NULL);
 		while (shell->lexer[j][i])

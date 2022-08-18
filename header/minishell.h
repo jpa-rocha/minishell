@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/17 10:19:35 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/18 14:01:21 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,6 @@ typedef struct s_envvar {
 	int		env_order;
 }	t_envvar;
 
-typedef struct s_symbols {
-	int	sq;
-	int	dq;
-	int	pipe;
-	int	gr;
-	int	grgr;
-	int	sm;
-	int	smsm;
-	int	dollar;
-
-}	t_symbols;
-
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
@@ -66,7 +54,6 @@ typedef struct s_cmd {
 	char		**args;
 	char 		*cmd_path;
 	char		**path;
-	t_symbols	*symb;
 }	t_cmd;
 
 typedef struct s_shell {
