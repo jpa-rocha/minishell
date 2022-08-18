@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/15 11:54:59 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/18 12:19:23 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 int	ms_parser(t_shell *shell)
 {
-	shell->cmd->args = ft_split(shell->cmd->line, ' ');
+	if (shell->cmd->line != NULL)
+		shell->exitcode = ms_lexer(shell);
+	shell->cmd->args = shell->lexer;
 	if (shell->cmd->args == NULL)
 	{
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	//char *t = get_each_token(shell);
+	//printf("%s\n", t);
+/* 	shell->cmd->args = ft_split(shell->cmd->line, ' ');
+	if (shell->cmd->args == NULL)
+	{
+		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		return (shell->exitcode);
+	}  */
+	return (EXIT_SUCCESS);
 }
