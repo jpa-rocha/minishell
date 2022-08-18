@@ -3,12 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 11:23:16 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/18 18:10:27 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-

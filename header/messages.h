@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   messages.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:33:14 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/16 12:53:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/18 18:09:51 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@
 # define ERR_NULL "Cannot allocate memory\n"
 
 #define COMMAND_NOT_FOUND 127
+
+# define ERR_INV ": command not found\n"
+# define ERR_INV_ID "minishell: %s: `%s\': not a valid identifier\n"
+# define ERR_CD "minishell: cd: %s: no such file or directory\n"
+
+# define MISSUSED_BUILTIN 2
+# define ERR_MU "minishell: syntax error near unexpected token `%s'\n"
+
+# define IS_DIR_SLASH 126
+# define IS_DIR_BSLASH 127
+# define ERR_ISDIR "minishell: %s: Is a directory\n"
+# define ERR_NF "minishell: %s: command not found\n"
 
 # define ERR_INV ": command not found\n"
 # define ERR_INV_ID "minishell: %s: `%s\': not a valid identifier\n"
