@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 14:01:21 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/18 18:06:29 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct s_cmd {
 	char		*line;
 	int			n_cmd;
 	char		**args;
-	char 		*cmd_path;
 	char		**path;
 }	t_cmd;
 
@@ -62,7 +61,6 @@ typedef struct s_shell {
 	t_list		*workenv;
 	char		**env;
 	char		**argv;
-	char		**path;
 	char		**lexer;
 	int			exitcode;
 }	t_shell;
