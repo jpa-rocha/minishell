@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/17 11:26:04 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/18 10:59:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ms_exec(t_shell *shell)
 {
 	int	check;
 
-	if (ms_args_len(shell->cmd->args) == 1)
+	if (ms_args_len(shell->cmd->args) >= 1)
 	{
 		check = ms_exec_first_check(shell);
 		if (check != 0)
@@ -57,6 +57,8 @@ static int	ms_valid_command(t_shell *shell)
 	{
 		if (ms_is_built_in(shell, shell->cmd->args[i]) == 0)
 			return (ms_call_built_in(shell));
+		// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
+		// UNLESS ITS A BUILTIN THE REAL PATH NEEDS TO BE CHECKED		
 		else if (access(shell->cmd->args[i], F_OK) == -1)
 		{
 			printf("%s%s", shell->cmd->args[i], ERR_INV);
@@ -64,7 +66,6 @@ static int	ms_valid_command(t_shell *shell)
 		}
 		else if (access(shell->cmd->args[i], F_OK) != -1)
 		{
-			// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
 			execve(BI_PATH, shell->cmd->args, shell->env);
 			perror("Problem ocurred");
 			return (EXIT_SUCCESS);

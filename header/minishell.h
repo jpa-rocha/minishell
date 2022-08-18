@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/17 12:14:07 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/18 11:48:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,12 @@ typedef struct s_envvar {
 	int		env_order;
 }	t_envvar;
 
-typedef struct s_symbols {
-	int	sq;
-	int	dq;
-	int	pipe;
-	int	gr;
-	int	grgr;
-	int	sm;
-	int	smsm;
-	int	dollar;
-
-}	t_symbols;
-
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
 	char		**args;
 	char		**env;
 	char		**path;
-	t_symbols	*symb;
 }	t_cmd;
 
 typedef struct s_shell {
@@ -71,7 +58,6 @@ typedef struct s_shell {
 	t_list		*workenv;
 	char		**env;
 	char		**argv;
-	char		**path;
 	int			exitcode;
 }	t_shell;
 
@@ -90,7 +76,7 @@ int			ms_args_len(char **args);
 int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
 void		ms_free_args(char **args);
-char		**ms_shell_path_creator(t_shell *shell);
+char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 
 // Signal Functions
