@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 18:11:02 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/19 16:27:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-/* prints substrings within the lexer in case we need */
+/* 
+	prints substrings within the lexer in case we need 
+
+*/
 void	print_lexer(t_shell *shell)
 {
 	int	i;

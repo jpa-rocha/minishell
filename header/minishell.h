@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 18:09:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/19 16:06:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int			check_slash(t_cmd *cmd);
 int			check_char_errors(t_cmd *cmd);
 char		*get_each_token(t_shell *shell);
 int			count_words(t_shell *shell);
-void		pirnt_lexer(t_shell *shell);
+void		print_lexer(t_shell *shell);
 
 // Executing Functions
 

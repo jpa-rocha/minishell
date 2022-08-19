@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/18 12:04:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/19 16:25:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	ms_lexer(t_shell *shell)
 			if (!shell->lexer[j])
 				check_lexer(shell);
 			//printf("%s\n", shell->lexer[j]);
-			print_lexer(shell);
+			//print_lexer(shell);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')

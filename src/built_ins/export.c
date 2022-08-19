@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/18 12:41:09 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/08/18 17:59:23 by mgulenay         ###   ########.fr       */
->>>>>>> mgulenay
+/*   Updated: 2022/08/19 16:05:35 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +87,6 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 {
 	t_envvar	line;
 	int			i;
-<<<<<<< HEAD
 
 	i = ms_var_check(shell, "export", newvar);
 	if (i < 0)
@@ -117,33 +112,6 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 	value = ft_strchr(newvar, '=');
 	if (value != NULL)
 	{
-=======
-
-	i = ms_var_check(shell, "export", newvar);
-	if (i < 0)
-		return (shell->exitcode);
-	line.name = ft_calloc(i, sizeof(char));
-	if (line.name == NULL)
-	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-		return (shell->exitcode);
-	}
-	line.env_order = shell->workenv->total;
-	ft_strlcpy(line.name, newvar, i);
-	shell->exitcode = ms_export_value_check(shell, &line, newvar);
-	list_add_back(&line, shell->workenv);
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
-}
-
-static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
-{
-	char		*value;
-
-	value = ft_strchr(newvar, '=');
-	if (value != NULL)
-	{
->>>>>>> mgulenay
 		value += 1;
 		line->value = ft_calloc(ft_strlen(value) + 1, sizeof(char));
 		if (line->value == NULL)
@@ -164,8 +132,4 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 	}
 	shell->exitcode = EXIT_SUCCESS;
 	return (shell->exitcode);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> mgulenay

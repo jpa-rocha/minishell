@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 18:11:32 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/19 16:07:16 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	ms_shell(char **env, char **argv)
 				return (ms_error_management(shell));
 			add_history(shell->cmd->line);
 			ms_exec(shell);
-			ms_exit(shell);
 			ms_cmd_cleanup(shell->cmd);
 		}
 	}
