@@ -12,6 +12,20 @@
 
 #include "../../header/minishell.h"
 
+/* prints substrings within the lexer in case we need */
+void	print_lexer(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->lexer[i])
+	{
+		printf("[%d] %s\n", i , shell->lexer[i]);
+		free(shell->lexer[i]);
+		i++;
+	}
+}
+
 int	ms_parser(t_shell *shell)
 {
 	if (shell->cmd->line != NULL)
@@ -22,13 +36,6 @@ int	ms_parser(t_shell *shell)
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
-	//char *t = get_each_token(shell);
-	//printf("%s\n", t);
-/* 	shell->cmd->args = ft_split(shell->cmd->line, ' ');
-	if (shell->cmd->args == NULL)
-	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-		return (shell->exitcode);
-	}  */
+
 	return (EXIT_SUCCESS);
 }
