@@ -5,16 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/02 16:02:26 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/18 18:11:02 by mgulenay         ###   ########.fr       */
-=======
-/*   Updated: 2022/08/18 12:19:23 by mgulenay         ###   ########.fr       */
->>>>>>> 514f56a053ccbe07f009c5ace228c4a99bda6d83
+/*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
+/*   Updated: 2022/08/19 08:31:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
+/* prints substrings within the lexer in case we need */
+void	print_lexer(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->lexer[i])
+	{
+		printf("[%d] %s\n", i , shell->lexer[i]);
+		free(shell->lexer[i]);
+		i++;
+	}
+}
 
 int	ms_parser(t_shell *shell)
 {
@@ -26,13 +36,5 @@ int	ms_parser(t_shell *shell)
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
-	//char *t = get_each_token(shell);
-	//printf("%s\n", t);
-/* 	shell->cmd->args = ft_split(shell->cmd->line, ' ');
-	if (shell->cmd->args == NULL)
-	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-		return (shell->exitcode);
-	}  */
 	return (EXIT_SUCCESS);
 }

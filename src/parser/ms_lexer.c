@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/18 12:04:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/19 08:38:43 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	ms_lexer(t_shell *shell)
 			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
 				check_lexer(shell);
-			printf("%s\n", shell->lexer[j]);
+			//printf("%s\n", shell->lexer[j]);
+			//print_lexer(shell);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
