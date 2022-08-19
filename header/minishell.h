@@ -101,6 +101,8 @@ int			check_slash(t_cmd *cmd);
 int			check_char_errors(t_cmd *cmd);
 char		*get_each_token(t_shell *shell);
 int			count_words(t_shell *shell);
+void		pirnt_lexer(t_shell *shell);
+
 // Executing Functions
 
 int			ms_exec(t_shell *shell);
