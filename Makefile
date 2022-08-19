@@ -47,8 +47,7 @@ INCLUDES = 		$(FT_INC)
 ################################################################################
 ################################## SRCS & OBJS #################################
 ################################################################################
-SRCS	=	$(SRCDIR)minishell.c		\
-<<<<<<< HEAD
+SRCS	=		$(SRCDIR)minishell.c		\
 			$(SRCDIR)ms_def.c			\
 			$(SRCDIR)ms_extra.c			\
 			$(SRCDIR)ms_utils.c			\
@@ -65,23 +64,10 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)pwd.c			\
 			$(BUILTINS)exit.c			\
 			$(BUILTINS)echo.c			\
-=======
-		$(SRCDIR)ms_def.c		\
-		$(SRCDIR)ms_extra.c		\
-		$(SRCDIR)ms_utils.c		\
-		$(SIGNALS)ms_signals.c		\
-		$(PARSER)ms_parser.c		\
-		$(PARSER)ms_lexer.c		\
-		$(PARSER)ms_lexer_utils.c		\
-		$(PARSER)ms_token.c        \
-		$(EXECUTER)ms_exec.c		\
-		$(EXECUTER)ms_exec_aux.c	\
-		$(BUILTINS)env.c		\
-		$(BUILTINS)export.c		\
-		$(BUILTINS)pwd.c		\
-		$(BUILTINS)exit.c		\
-		$(BUILTINS)echo.c		\
->>>>>>> mgulenay
+			$(PARSER)ms_lexer.c		\
+			$(PARSER)ms_lexer_utils.c		\
+			$(PARSER)ms_token.c        \
+
 ################################################################################
 #################################### PROGRAM ###################################
 ################################################################################
