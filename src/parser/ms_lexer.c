@@ -80,7 +80,8 @@ int	ms_lexer(t_shell *shell)
 			shell->lexer[j] = ft_strtrim(temp, " ");
 			if (!shell->lexer[j])
 				check_lexer(shell);
-			printf("%s\n", shell->lexer[j]);
+			//printf("%s\n", shell->lexer[j]);
+			print_lexer(shell);
 			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
