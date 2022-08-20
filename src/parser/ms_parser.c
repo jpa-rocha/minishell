@@ -24,7 +24,6 @@ void	print_lexer(t_shell *shell)
 	while (shell->lexer[i])
 	{
 		printf("[%d] %s\n", i , shell->lexer[i]);
-		free(shell->lexer[i]);
 		i++;
 	}
 }
