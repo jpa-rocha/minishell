@@ -119,5 +119,6 @@ re: fclean all
 
 run: re
 	$(RUN)
+
 test: fclean debug
 	$(VAL) $(RUN)
