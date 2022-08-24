@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/21 12:27:18 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/24 12:43:15 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,7 @@ int	check_char_errors(t_cmd *cmd)
 		return (EXIT_FAILURE);
 	if (check_slash(cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+/* 	if (check_if_only_pipe(cmd) == EXIT_FAILURE)
+		return (EXIT_FAILURE); */
 	return (EXIT_SUCCESS);
 }

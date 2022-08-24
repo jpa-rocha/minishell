@@ -66,6 +66,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)echo.c			\
 			$(PARSER)ms_lexer.c		\
 			$(PARSER)ms_lexer_utils.c		\
+			$(PARSER)ms_lexer_utils2.c		\
 			$(PARSER)ms_token.c        \
 
 ################################################################################
