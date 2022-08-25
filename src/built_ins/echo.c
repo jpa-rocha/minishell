@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/17 14:03:51 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/23 11:39:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ int	ms_echo(t_cmd *cmd)
 	flag_n = 0;	
 
 	i = 1;
-	while (cmd->args[i] && n_check(cmd->args[i]))
+	while (cmd->curr_cmd[i] && n_check(cmd->curr_cmd[i]))
 	{
 		flag_n = 1;
 		i++;
 	}
-	while (cmd->args[i])
+	while (cmd->curr_cmd[i])
 	{
-		ft_putstr_fd(cmd->args[i], 1);
+		ft_putstr_fd(cmd->curr_cmd[i], 1);
 		i++;
-		if (cmd->args[i])
+		if (cmd->curr_cmd[i])
 			write (1, " ", 1);
 	}
 	if (flag_n == 1)

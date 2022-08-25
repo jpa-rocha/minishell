@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/19 16:06:12 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 14:06:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,17 @@ typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
 	int			n_cmd;
-	char		**args;
+	int			input;
+	int			output;
+	int			heredoc;
+	int			rdir_idx;
+	int			cmd_idx;
+	char		*limiter;
+	char		*cmd_name;
+	char		**curr_cmd;
 	char		**path;
+	char		***seq;
+	int			pfd[2];
 }	t_cmd;
 
 typedef struct s_shell {
@@ -81,6 +90,7 @@ int			ms_args_len(char **args);
 int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
 void		ms_free_args(char **args);
+void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 
@@ -107,6 +117,12 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
+int			ms_exec_set_in_out(t_shell *shell, char ***seq);
+int			ms_exec_here_doc(t_shell *shell);
+int			ms_top_pipe(t_shell *shell);
+int			ms_bot_pipe(t_shell *shell);
+int			ms_cmd_executing(t_shell *shell);
+int			ms_call_built_in(t_shell *shell);
 
 // Built-in Functions
 
@@ -117,12 +133,12 @@ t_list		*ms_env_create_work_env(t_shell *shell, char **env);
 t_node		*ms_env_find_entry(t_list *env, char *name);
 
 // Entry point into the export function
-int			ms_export(t_shell *shell, char *newvar);
+int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
 int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
-int			ms_unset(t_shell *shell, char *newvar);
+int			ms_unset(t_shell *shell, char **args);
 
 // Entry point into cd
 int			ms_cd(t_shell *shell, char **args);

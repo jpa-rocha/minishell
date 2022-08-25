@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/19 16:07:16 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 09:44:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ int	ms_shell(char **env, char **argv)
 			if (ms_parser(shell) != EXIT_SUCCESS)
 				return (ms_error_management(shell));
 			add_history(shell->cmd->line);
-			ms_exec(shell);
+			shell->exitcode = ms_exec(shell);
 			ms_cmd_cleanup(shell->cmd);
+			ms_free_args(shell->lexer);
 		}
 	}
 	write(1, "exit\n", 5);
