@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/19 08:04:14 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/25 21:23:09 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node);
 static int	ms_export_create_var(t_shell *shell, char *newvar);
 static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar);
 
-int	ms_export(t_shell *shell, char *newvar)
+int	ms_export(t_shell *shell, char **args)
 {
 	t_node		*node;
 
@@ -25,15 +25,15 @@ int	ms_export(t_shell *shell, char *newvar)
 	shell->exitcode = ms_export_order(shell->workenv);
 	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
 		return (shell->exitcode);
-	if (newvar == NULL)
+	if (ms_args_len(args) == 1)
 		ms_export_empty_call(node);
-	else
+	else if (ms_args_len(args) > 1)
 	{
-		node = ms_env_find_entry(shell->workenv, newvar);
+		node = ms_env_find_entry(shell->workenv, args[1]);
 		if (node != NULL)
-			ms_export_var_exists(shell, newvar, node);
+			ms_export_var_exists(shell, args[1], node);
 		else
-			shell->exitcode = ms_export_create_var(shell, newvar);
+			shell->exitcode = ms_export_create_var(shell, args[1]);
 		if (shell->exitcode != EXIT_SUCCESS)
 			return (shell->exitcode);
 	}

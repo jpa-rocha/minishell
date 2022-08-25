@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 12:41:50 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 21:24:52 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 static int	ms_unset_var_exists(t_shell *shell, t_node *node);
 static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line);
 
-int	ms_unset(t_shell *shell, char *to_unset)
+int	ms_unset(t_shell *shell, char **args)
 {
 	t_node		*node;
 
-	if (to_unset == NULL)
+	if (ms_args_len(args) == 1)
 	{
 		shell->exitcode = EXIT_SUCCESS;
 		return (shell->exitcode);
 	}
-	if (ms_var_check(shell, "unset", to_unset) == -1)
+	if (ms_var_check(shell, "unset", args[1]) == -1)
 		return (shell->exitcode);
-	node = ms_env_find_entry(shell->workenv, to_unset);
+	node = ms_env_find_entry(shell->workenv, args[1]);
 	if (node != NULL)
 	{
 		ms_unset_var_exists(shell, node);

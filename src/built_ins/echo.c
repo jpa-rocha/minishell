@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/17 14:03:51 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/25 22:02:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

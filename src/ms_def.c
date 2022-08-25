@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/18 18:13:21 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/25 21:41:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,47 +50,21 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	char	*prompt;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
-	//cmd = (t_cmd *)malloc((shell->cmd->n_cmd) * sizeof(t_cmd));
 	if (cmd == NULL)
 	{
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (NULL);
 	}
-	// IS THIS BEING USED?? PATH GOES HERE
 	cmd->path = ms_cmd_path_creator(shell);
 	prompt = ms_prompt(shell);
 	if (prompt == NULL)
 		return (NULL);
 	cmd->line = readline(prompt);
 	free(prompt);
+	cmd->cmd_idx = 0;
+	cmd->rdir_idx = 0;
+	cmd->input = STDIN_FILENO;
+	cmd->output = STDOUT_FILENO;
 	shell->exitcode = EXIT_SUCCESS;
 	return (cmd);
-}
-
-int	ms_cmd_cleanup(t_cmd *cmd)
-{
-	if (cmd->line != NULL)
-		free(cmd->line);
-	if (cmd->args != NULL)
-		ms_free_args(cmd->args);
-	if (cmd->path != NULL)
-		ms_free_args(cmd->path);
-	free(cmd);
-	return (EXIT_SUCCESS);
-}
-
-int	ms_shell_cleanup(t_shell *shell)
-{
-	if (shell->cmd != NULL)
-		ms_cmd_cleanup(shell->cmd);
-	if (shell->env != NULL)
-		ms_free_args(shell->env);
-	if (shell->workenv != NULL)
-	{
-		ms_list_data_cleaner(shell->workenv);
-		list_destroyer(shell->workenv);
-	}
-	if (shell != NULL)
-		free(shell);
-	return (EXIT_SUCCESS);
 }
