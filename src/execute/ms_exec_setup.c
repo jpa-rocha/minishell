@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/24 15:14:48 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 14:06:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,13 @@ int	ms_bot_pipe(t_shell *shell)
 
 int	ms_cmd_executing(t_shell *shell)
 {
-	execve(shell->cmd->cmd_name, shell->cmd->curr_cmd, shell->env);
-	perror("Problem ocurred");
-	return (EXIT_SUCCESS);
+	if (shell->cmd->builtin_num == -1)
+	{
+		execve(shell->cmd->cmd_name, shell->cmd->curr_cmd, shell->env);
+		perror("Problem ocurred");
+	}
+	else
+		return (ms_call_built_in(shell));
 }
 
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET

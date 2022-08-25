@@ -6,13 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 09:38:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 14:05:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int	ms_is_built_in(t_shell *shell, char *builtin);
+static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
 static int	ms_call_built_in(t_shell *shell);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
@@ -51,6 +51,14 @@ static int	ms_command_processing(t_shell *shell)
 {
 	int pid;
 	
+	// TEST AREA
+	/* char *test[2];
+
+	test[0] = "pwd.c";
+	test[1] = NULL;
+	execve("./src/buil_ins/pwd.c", test, shell->env);
+	 */
+	// END OF TEST AREA
 	if (shell->cmd->seq != NULL)
 		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
 	else
@@ -60,9 +68,10 @@ static int	ms_command_processing(t_shell *shell)
 	// <= or just <
 	while (shell->cmd->cmd_idx <= shell->cmd->n_cmd)
 	{
+		// what does this mean??
 		if (shell->cmd->cmd_idx > 0)
 			shell->cmd->rdir_idx = 2;
-		if (ms_is_built_in(shell, shell->cmd->curr_cmd[0]) == 0)
+		if (shell->cmd->n_cmd == 1 && ms_is_built_in(shell, shell->cmd->curr_cmd) == 0)
 			return (ms_call_built_in(shell));
 		// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
 		// UNLESS ITS A BUILTIN THE REAL PATH NEEDS TO BE CHECKED
@@ -78,23 +87,12 @@ static int	ms_command_processing(t_shell *shell)
 		shell->exitcode = ms_bot_pipe(shell);
 		if (shell->exitcode != 0)
 			return (shell->exitcode);	
-		/* else if (access(shell->cmd->curr_cmd[i], F_OK) == -1)
-		{
-			printf("%s%s", shell->cmd->curr_cmd[i], ERR_INV);
-			return (COMMAND_NOT_FOUND);
-		}
-		else if (access(shell->cmd->curr_cmd[i], F_OK) != -1)
-		{
-			execve(BI_PATH, shell->cmd->curr_cmd, shell->env);
-			perror("Problem ocurred");
-			return (EXIT_SUCCESS);
-		} */
 	}
 	// MIGHT NEED TO CORRECT THE ERROR NUM
 	return (EXIT_FAILURE);
 }
 
-static int ms_is_built_in(t_shell *shell, char *builtin)
+static int ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
 	char *builtins[BI_NUM];
 	int i;
@@ -110,7 +108,8 @@ static int ms_is_built_in(t_shell *shell, char *builtin)
 	builtins[7] = "minishell";
 	while (i < BI_NUM)
 	{
-		if (ft_strncmp(builtins[i], builtin, ft_strlen(builtin)) == 0)
+		if (ft_strncmp(builtins[i], curr_cmd[shell->cmd->rdir_idx],
+			ft_strlen(curr_cmd[shell->cmd->rdir_idx])) == 0)
 		{
 			shell->cmd->builtin_num = i;
 			return (EXIT_SUCCESS);
@@ -121,7 +120,7 @@ static int ms_is_built_in(t_shell *shell, char *builtin)
 	return (EXIT_FAILURE);
 }
 
-static int	ms_call_built_in(t_shell *shell)
+int	ms_call_built_in(t_shell *shell)
 {
 	if (shell->cmd->builtin_num == 0)
 		return (ms_exit(shell));
@@ -132,9 +131,9 @@ static int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 3)
 		return (ms_pwd());
 	if (shell->cmd->builtin_num == 4)
-		return (ms_export(shell, shell->cmd->curr_cmd[shell->cmd->rdir_idx]));
+		return (ms_export(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 5)
-		return (ms_unset(shell, shell->cmd->curr_cmd[shell->cmd->rdir_idx]));
+		return (ms_unset(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 6)
 		return (ms_cd(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 7)
