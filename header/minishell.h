@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/24 15:36:30 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 14:06:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int			ms_exec_here_doc(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
+int			ms_call_built_in(t_shell *shell);
 
 // Built-in Functions
 
@@ -132,12 +133,12 @@ t_list		*ms_env_create_work_env(t_shell *shell, char **env);
 t_node		*ms_env_find_entry(t_list *env, char *name);
 
 // Entry point into the export function
-int			ms_export(t_shell *shell, char *newvar);
+int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
 int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
-int			ms_unset(t_shell *shell, char *newvar);
+int			ms_unset(t_shell *shell, char **args);
 
 // Entry point into cd
 int			ms_cd(t_shell *shell, char **args);
