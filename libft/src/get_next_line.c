@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 15:57:34 by jrocha            #+#    #+#             */
-/*   Updated: 2022/04/01 13:20:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/22 15:59:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@ static char	*linecatcher(char **reader);
 static char	*newlinegen(char *str, int *i);
 static char	*freepointer(char *str, char *ret);
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int term)
 {
-	static char	*reader[4096];
-	char		buf[10000 + 1];
+	static char	*reader;
+	char		buf[100 + 1];
 	int			readlen;
 
-	if (fd < 0 || fd > 4096)
+	if (term == 1)
+	{
+		return (freepointer(reader, NULL));
+	}
+	if (fd < 0)
 		return (NULL);
 	readlen = read(fd, buf, 100);
 	if (readlen < 0)
@@ -33,14 +37,14 @@ char	*get_next_line(int fd)
 	while (readlen > 0)
 	{
 		buf[readlen] = '\0';
-		reader[fd] = readjoin(buf, reader[fd], readlen);
-		if (ft_strchr(reader[fd], '\n') != NULL)
+		reader = readjoin(buf, reader, readlen);
+		if (ft_strchr(reader, '\n') != NULL)
 			break ;
 		readlen = read(fd, buf, 100);
 	}
-	if (readlen == 0 && reader[fd] == NULL)
+	if (readlen == 0 && reader == NULL)
 		return (NULL);
-	return (linecatcher(&reader[fd]));
+	return (linecatcher(&reader));
 }
 
 static char	*readjoin(char *buf, char *reader, int rl)
