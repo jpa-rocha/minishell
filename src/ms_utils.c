@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/24 15:31:47 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 22:10:37 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-// Collects error numbers, and outputs the correct error message, in case the
+/// Collects error numbers, and outputs the correct error message, in case the
 // error occurs after allocations were made, a cleanup function must be called.
 int	ms_error_management(t_shell *shell)
 {
@@ -75,4 +75,3 @@ int	ms_args_len(char **args)
 		i += 1;
 	return (i);
 }
-

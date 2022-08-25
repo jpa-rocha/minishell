@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 14:05:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 22:12:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int	ms_command_processing(t_shell *shell)
 	
 	// TEST AREA
 	/* char *test[2];
-
 	test[0] = "pwd.c";
 	test[1] = NULL;
 	execve("./src/buil_ins/pwd.c", test, shell->env);
