@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/19 16:06:12 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/24 15:36:30 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,17 @@ typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
 	int			n_cmd;
-	char		**args;
+	int			input;
+	int			output;
+	int			heredoc;
+	int			rdir_idx;
+	int			cmd_idx;
+	char		*limiter;
+	char		*cmd_name;
+	char		**curr_cmd;
 	char		**path;
+	char		***seq;
+	int			pfd[2];
 }	t_cmd;
 
 typedef struct s_shell {
@@ -81,6 +90,7 @@ int			ms_args_len(char **args);
 int			ms_list_env_len(t_list *env);
 char		**ms_create_env(char **env, char **argv);
 void		ms_free_args(char **args);
+void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 
@@ -107,6 +117,11 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
+int			ms_exec_set_in_out(t_shell *shell, char ***seq);
+int			ms_exec_here_doc(t_shell *shell);
+int			ms_top_pipe(t_shell *shell);
+int			ms_bot_pipe(t_shell *shell);
+int			ms_cmd_executing(t_shell *shell);
 
 // Built-in Functions
 

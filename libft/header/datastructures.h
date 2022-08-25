@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:33:59 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 10:45:08 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/22 15:16:16 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "libft.h"
 # include <stdlib.h>
-
 
 typedef struct s_node
 {
