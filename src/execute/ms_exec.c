@@ -6,14 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 14:05:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 20:53:08 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
-static int	ms_call_built_in(t_shell *shell);
+static int ms_is_built_in(t_shell *shell, char **curr_cmd);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
 
@@ -52,12 +51,25 @@ static int	ms_command_processing(t_shell *shell)
 	int pid;
 	
 	// TEST AREA
-	/* char *test[2];
+	char ***test;
+	char *set1;
+	char *set2;
 
-	test[0] = "pwd.c";
-	test[1] = NULL;
-	execve("./src/buil_ins/pwd.c", test, shell->env);
-	 */
+	set1 = "sentence with 4 words";
+	set2 = "other sentence";
+	
+	test = ft_calloc(3, sizeof(char *));
+	test[0] = ft_split(set1, ' ');
+	test[1] = ft_split(set2, ' ');
+	
+	printf("test[0][0] = %s\n", test[0][0]);
+	printf("test[0][1] = %s\n", test[0][1]);
+	printf("test[0][2] = %s\n", test[0][2]);
+	printf("test[0][3] = %s\n", test[0][3]);
+	printf("\n");
+	printf("test[1][0] = %s\n", test[1][0]);
+	printf("test[1][1] = %s\n", test[1][1]);
+	printf("\n");
 	// END OF TEST AREA
 	if (shell->cmd->seq != NULL)
 		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
