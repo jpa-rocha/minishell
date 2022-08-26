@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/08/25 10:25:44 by jrocha           ###   ########.fr       */
+=======
+/*   Updated: 2022/08/25 21:54:38 by mgulenay         ###   ########.fr       */
+>>>>>>> mgulenay
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +94,8 @@ static char	**ms_cd_alloc_setter(char *update)
 	if (setter[1] == NULL)
 		return (NULL);
 	return (setter);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> mgulenay

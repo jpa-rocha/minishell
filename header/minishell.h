@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 14:06:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 22:16:06 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ typedef struct s_envvar {
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
+	char		**args;
 	int			n_cmd;
+	int			n_words;
 	int			input;
 	int			output;
 	int			heredoc;
@@ -104,13 +106,22 @@ int			ms_parser(t_shell *shell);
 int			get_nmb_cmd(t_cmd *cmd);
 int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
+int			count_words(char *str);
+char		***create_seq_from_lexer(t_shell *shell);
+int			get_nb_words_store(t_shell *shell);
+char		**get_each_word(char *str);
+
+// Error checks for the variable line
 int			check_quotes(t_cmd *cmd);
 int			counter_io(t_cmd *cmd);
 int			check_only_io(t_cmd *cmd);
 int			check_slash(t_cmd *cmd);
 int			check_char_errors(t_cmd *cmd);
-char		*get_each_token(t_shell *shell);
-int			count_words(t_shell *shell);
+int			check_if_only_pipe(t_cmd *cmd);
+int			count_pipes(t_cmd *cmd);
+
+// for printing
+void		print_nb_words(t_shell *shell);
 void		print_lexer(t_shell *shell);
 
 // Executing Functions

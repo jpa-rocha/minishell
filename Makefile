@@ -67,9 +67,16 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)pwd.c			\
 			$(BUILTINS)exit.c			\
 			$(BUILTINS)echo.c			\
+<<<<<<< HEAD
 			$(PARSER)ms_lexer.c			\
 			$(PARSER)ms_lexer_utils.c	\
 			$(PARSER)ms_token.c			\
+=======
+			$(PARSER)ms_lexer.c		\
+			$(PARSER)ms_lexer_utils.c		\
+			$(PARSER)ms_lexer_utils2.c		\
+			$(PARSER)ms_token.c        \
+>>>>>>> mgulenay
 
 ################################################################################
 #################################### PROGRAM ###################################
@@ -122,5 +129,6 @@ re: fclean all
 
 run: re
 	$(RUN)
+
 test: fclean debug
 	$(VAL) $(RUN)

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/08/25 20:53:08 by jrocha           ###   ########.fr       */
+=======
+/*   Updated: 2022/08/25 22:12:07 by mgulenay         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +55,7 @@ static int	ms_command_processing(t_shell *shell)
 	int pid;
 	
 	// TEST AREA
+<<<<<<< HEAD
 	char ***test;
 	char *set1;
 	char *set2;
@@ -70,6 +75,13 @@ static int	ms_command_processing(t_shell *shell)
 	printf("test[1][0] = %s\n", test[1][0]);
 	printf("test[1][1] = %s\n", test[1][1]);
 	printf("\n");
+=======
+	/* char *test[2];
+	test[0] = "pwd.c";
+	test[1] = NULL;
+	execve("./src/buil_ins/pwd.c", test, shell->env);
+	 */
+>>>>>>> main
 	// END OF TEST AREA
 	if (shell->cmd->seq != NULL)
 		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
