@@ -6,12 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/24 12:43:15 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/27 09:44:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+/* ERROR CHECKS AT THE BEGINNING -- checks whether quotes are closed,
+	redirections are properly used, backslash and pipes */
 int	check_quotes(t_cmd *cmd)
 {
 	int	i;

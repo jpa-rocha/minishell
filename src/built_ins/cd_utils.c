@@ -6,11 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/25 10:25:44 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/08/25 21:54:38 by mgulenay         ###   ########.fr       */
->>>>>>> mgulenay
+/*   Updated: 2022/08/26 15:22:26 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +90,4 @@ static char	**ms_cd_alloc_setter(char *update)
 	if (setter[1] == NULL)
 		return (NULL);
 	return (setter);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> mgulenay

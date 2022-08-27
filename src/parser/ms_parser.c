@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/25 22:09:05 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/26 15:53:06 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	ms_parser(t_shell *shell)
 		}
 		j++;
 	} */
-	
-	char ***a;
+/* 	char ***a;
 	a = create_seq_from_lexer(shell);
 	int i, j, k;
 	j = 0;
@@ -74,6 +73,6 @@ int	ms_parser(t_shell *shell)
 		}
 		k = 0;
 		j++;
-	}
+	} */
 	return (EXIT_SUCCESS);
 }

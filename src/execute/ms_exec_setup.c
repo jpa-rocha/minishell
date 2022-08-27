@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:11:56 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/26 15:20:55 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	ms_cmd_executing(t_shell *shell)
 	}
 	else
 		return (ms_call_built_in(shell));
+	return (EXIT_FAILURE);
 }
 
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET

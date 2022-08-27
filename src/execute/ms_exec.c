@@ -6,14 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:12:07 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/26 15:20:09 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
-static int	ms_call_built_in(t_shell *shell);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
 

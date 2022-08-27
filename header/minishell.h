@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:16:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/27 11:00:12 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,13 @@ int			count_words(char *str);
 char		***create_seq_from_lexer(t_shell *shell);
 int			get_nb_words_store(t_shell *shell);
 char		**get_each_word(char *str);
+void		check_remove_quotes(char *str);
+char		*remove_sq(char *str);
+char		*remove_dq(char *str);
+bool		dq_closed(char *str);
+bool		sq_closed(char *str);
+void		check_quotes_for_lexer(char *str);
+
 
 // Error checks for the variable line
 int			check_quotes(t_cmd *cmd);

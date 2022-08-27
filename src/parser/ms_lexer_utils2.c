@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/24 12:29:22 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/27 10:05:30 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	count_pipes(t_cmd *cmd)
 	return (count);
 }
 
+/* if we pass just pipes, nothing else as arguments, bash prints error messages */
 int	check_if_only_pipe(t_cmd *cmd)
 {
 	int	i;
@@ -52,6 +53,24 @@ int	check_if_only_pipe(t_cmd *cmd)
 		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ')
 		{
 			printf(ERR_MU, "||");
+			return (EXIT_FAILURE);
+		}
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+/* if there is nothiig in btw two pipes, bash prints an error message | | */
+int	if_pipes_are_empty(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->line[i])
+	{
+		if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' && cmd->line[i + 2] == PIPE)
+		{
+			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
 		i++;

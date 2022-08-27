@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/25 21:19:42 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/27 10:59:48 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,141 @@
 	echo "hello 'world' ", 
 we need to remove just the double quote
 */
-/* sub_string is needs to be created from lexer , 
-in this case : echo , "hello" */
-/*  void	check_remove_quotes(t_shell **sub_string)
+
+bool	sq_closed(char *str)
 {
-	char	*new_str;
+	int	i;
+	int	quote_end;
+	int	sq_closed;
+
+	sq_closed = false;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == SQ)
+		{
+			quote_end = i + 1;
+			while (str[i] && (str[quote_end] != str[i]))
+			{
+				if (str[quote_end] == SQ)
+				{
+					sq_closed = true;
+				}
+				quote_end++;
+			}
+			i = quote_end;
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	dq_closed(char *str)
+{
+	int	i;
+	int	quote_end;
+	int	dq_closed;
+
+	dq_closed = false;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == DQ)
+		{
+			quote_end = i + 1;
+			while (str[i] && (str[quote_end] != str[i]))
+			{
+				if (str[quote_end] == SQ)
+				{
+					dq_closed = true;
+				}
+				quote_end++;
+			}
+			i = quote_end;
+		}
+		i++;
+	}
+	return (true);
+
+}
+
+void	check_quotes_for_lexer(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == SQ && sq_closed(str))
+			remove_sq(str);
+		else if (str[i] == DQ && dq_closed(str))
+			remove_dq(str);
+		i++;				
+	}
+}
+
+char	*remove_sq(char *str)
+{
+	char	*temp;
 	int		i;
 	int		k;
 	char	c;
 	
 	i = 0;
 	k = 0;
-	new_str = ft_strdup(*sub_string);
-	while (sub_string[i])
+	while (str[i] != '\0')
 	{
-		c = sub_string[i];
-		if (c == SQ || c == DQ )
+		c = str[i];
+		if (c == '\'')
 		{
 			i++;
-			while (sub_string[i])
+			temp = ft_calloc(ft_strlen(str) - 2 + 1, sizeof(char));
+			while (str[i] != '\0' && str[i] != '\'')
 			{
-				new_str[k] = sub_string[i];
+				temp[k] = str[i];					
+				k++;
+				i++;
+			}
+		}			
+		i++;
+	}
+	temp[k] = '\0';
+	str = ft_strdup(temp);
+	printf("%s\n", str);
+	return(str);
+}
+
+char	*remove_dq(char *str)
+{
+	char	*temp;
+	int		i;
+	int		k;
+	char	c;
+	
+	i = 0;
+	k = 0;
+	while (str[i] != '\0')
+	{
+		c = str[i];
+		if (c == '\"')
+		{
+			i++;
+			temp = ft_calloc(ft_strlen(str) - 2 + 1, sizeof(char));
+			while (str[i] != '\0' && str[i] != '\"')
+			{
+				temp[k] = str[i];		
 				k++;
 				i++;
 			}
 		}
+		i++;
 	}
-	new_str[k] = '\0';
-} */
+	temp[k] = '\0';
+	str = ft_strdup(temp);
+	free(temp);
+	printf("%s\n", str);
+	return (str);
+}
 
 /* count number of words in a string */
 int	count_words(char *str)

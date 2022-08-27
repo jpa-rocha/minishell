@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:15:57 by mgulenay          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/23 11:38:51 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/08/25 22:02:57 by mgulenay         ###   ########.fr       */
->>>>>>> mgulenay
+/*   Updated: 2022/08/26 15:23:21 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
