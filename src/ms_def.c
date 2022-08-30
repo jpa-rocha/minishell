@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_def.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:10:55 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 11:33:16 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ t_shell	*ms_shell_init(char **env, char **argv)
 char	**ms_cmd_path_creator(t_shell *shell)
 {
 	t_envvar	*line;
+	t_node		*node;
 	char		**path;
 
 	path = NULL;
-	line = (t_envvar *) ms_env_find_entry(shell->workenv, "PATH=");
+	node = ms_env_find_entry(shell->workenv, "PATH=");
+	line = (t_envvar *) node->data;
 	if (line != NULL)
 		path = ft_split(line->value, ':');
 	return (path);
@@ -56,15 +58,15 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 		return (NULL);
 	}
 	cmd->path = ms_cmd_path_creator(shell);
+	cmd->cmd_idx = 0;
+	cmd->rdir_idx = 0;
+	cmd->input = STDIN_FILENO;
+	cmd->output = STDOUT_FILENO;
 	prompt = ms_prompt(shell);
 	if (prompt == NULL)
 		return (NULL);
 	cmd->line = readline(prompt);
 	free(prompt);
-	cmd->cmd_idx = 0;
-	cmd->rdir_idx = 0;
-	cmd->input = STDIN_FILENO;
-	cmd->output = STDOUT_FILENO;
 	shell->exitcode = EXIT_SUCCESS;
 	return (cmd);
 }

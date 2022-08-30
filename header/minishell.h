@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:16:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 10:04:34 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
 int			ms_call_built_in(t_shell *shell);
+int			ms_cmd_separator(t_shell *shell);
 
 // Built-in Functions
 

@@ -3,102 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/25 20:53:08 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/08/25 22:12:07 by mgulenay         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2022/08/30 15:38:36 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int ms_is_built_in(t_shell *shell, char **curr_cmd);
+static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
 
 int	ms_exec(t_shell *shell)
 {
 	int	check;
+	int	tmp_fd[2];
 
-	if (ms_args_len(shell->cmd->curr_cmd) >= 1)
-	{
-		check = ms_exec_first_check(shell);
-		if (check != 0)
-			return (shell->exitcode);
-	}
-	return (ms_command_processing(shell));
+	tmp_fd[0] = dup(0);
+	tmp_fd[1] = dup(1);
+	shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
+	check = ms_exec_first_check(shell);
+	if (check != 0)
+		return (shell->exitcode);
+	if (shell->cmd->seq != NULL)
+		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
+	else
+		return (EXIT_FAILURE);
+	shell->exitcode = ms_command_processing(shell);
+	dup2(tmp_fd[0], STDIN_FILENO);
+	dup2(tmp_fd[1], STDOUT_FILENO);
+	close(tmp_fd[0]);
+	close(tmp_fd[1]);
+	return (shell->exitcode);
 }
 
 // Check if there are arguments, and if so if they are printable characters
 // MIGHT BE MADE UNUSABLE BY LEXER
 static int	ms_exec_first_check(t_shell *shell)
 {
-	if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
-		&& (shell->cmd->curr_cmd[0][0] <= 32 || shell->cmd->curr_cmd[0][0] == 58))
-		shell->exitcode = EXIT_FAILURE;
+	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
+		|| (shell->cmd->curr_cmd[0][0] <= 32 ||
+		shell->cmd->curr_cmd[0][0] == 58))
+		return (EXIT_FAILURE);
 	else if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
 		&& shell->cmd->curr_cmd[0][0] == 33)
-		shell->exitcode = EXIT_FAILURE;
-	else
-		shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 // Check if arguments are valid commands, if not print error
 // message and return
 static int	ms_command_processing(t_shell *shell)
 {
-	int pid;
-	
-	// TEST AREA
-<<<<<<< HEAD
-	char ***test;
-	char *set1;
-	char *set2;
+	int	pid;
 
-	set1 = "sentence with 4 words";
-	set2 = "other sentence";
-	
-	test = ft_calloc(3, sizeof(char *));
-	test[0] = ft_split(set1, ' ');
-	test[1] = ft_split(set2, ' ');
-	
-	printf("test[0][0] = %s\n", test[0][0]);
-	printf("test[0][1] = %s\n", test[0][1]);
-	printf("test[0][2] = %s\n", test[0][2]);
-	printf("test[0][3] = %s\n", test[0][3]);
-	printf("\n");
-	printf("test[1][0] = %s\n", test[1][0]);
-	printf("test[1][1] = %s\n", test[1][1]);
-	printf("\n");
-=======
-	/* char *test[2];
-	test[0] = "pwd.c";
-	test[1] = NULL;
-	execve("./src/buil_ins/pwd.c", test, shell->env);
-	 */
->>>>>>> main
-	// END OF TEST AREA
-	if (shell->cmd->seq != NULL)
-		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
-	else
-		return (EXIT_FAILURE);
 	if (ms_exec_set_in_out(shell, shell->cmd->seq) == EXIT_FAILURE)
-		return(EXIT_FAILURE);
-	// <= or just <
-	while (shell->cmd->cmd_idx <= shell->cmd->n_cmd)
+		return (EXIT_FAILURE);
+	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
-		// what does this mean??
 		if (shell->cmd->cmd_idx > 0)
-			shell->cmd->rdir_idx = 2;
+			shell->cmd->rdir_idx = 0;
 		if (shell->cmd->n_cmd == 1 && ms_is_built_in(shell, shell->cmd->curr_cmd) == 0)
 			return (ms_call_built_in(shell));
 		// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
 		// UNLESS ITS A BUILTIN THE REAL PATH NEEDS TO BE CHECKED
+		if (shell->cmd->builtin_num == -1)
+		{
+			shell->exitcode = ms_cmd_separator(shell);
+			if (shell->exitcode != EXIT_SUCCESS)
+				return (shell->exitcode);
+		}
 		shell->exitcode = ms_top_pipe(shell);
 		if (shell->exitcode != 0)
 			return (shell->exitcode);
@@ -110,16 +86,15 @@ static int	ms_command_processing(t_shell *shell)
 		waitpid(-1, &shell->exitcode, 0);
 		shell->exitcode = ms_bot_pipe(shell);
 		if (shell->exitcode != 0)
-			return (shell->exitcode);	
+			return (shell->exitcode);
 	}
-	// MIGHT NEED TO CORRECT THE ERROR NUM
-	return (EXIT_FAILURE);
+	return (shell->exitcode);
 }
 
 static int ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
-	char *builtins[BI_NUM];
-	int i;
+	char	*builtins[BI_NUM];
+	int		i;
 
 	i = 0;
 	builtins[0] = "exit";
@@ -133,7 +108,7 @@ static int ms_is_built_in(t_shell *shell, char **curr_cmd)
 	while (i < BI_NUM)
 	{
 		if (ft_strncmp(builtins[i], curr_cmd[shell->cmd->rdir_idx],
-			ft_strlen(curr_cmd[shell->cmd->rdir_idx])) == 0)
+				ft_strlen(builtins[i])) == 0)
 		{
 			shell->cmd->builtin_num = i;
 			return (EXIT_SUCCESS);

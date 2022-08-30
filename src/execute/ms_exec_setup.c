@@ -3,21 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_setup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/08/25 20:51:50 by jrocha           ###   ########.fr       */
-=======
-/*   Updated: 2022/08/25 22:11:56 by mgulenay         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2022/08/30 14:31:21 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_find_cmd_loop(t_shell *shell);
-static int	ms_cmd_separator(t_shell *shell);
 static int	ms_next_cmd(t_shell *shell);
 
 int	ms_top_pipe(t_shell *shell)
@@ -65,11 +60,11 @@ int	ms_cmd_executing(t_shell *shell)
 }
 
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET
-static int	ms_cmd_separator(t_shell *shell)
+int	ms_cmd_separator(t_shell *shell)
 {
 	char	*cmdctrl;
-	
-	if (shell->cmd->cmd_idx <= shell->cmd->n_cmd)
+
+	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
 		cmdctrl = ft_strrchr(shell->cmd->curr_cmd[shell->cmd->rdir_idx], '/');
 		if (cmdctrl != NULL)
@@ -83,7 +78,7 @@ static int	ms_cmd_separator(t_shell *shell)
 			return (COMMAND_NOT_FOUND);
 		}
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 // Checks if command exists in the path variables

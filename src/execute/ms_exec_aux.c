@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:11:45 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 14:33:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ int	ms_exec_set_in_out(t_shell *shell, char ***seq)
 {
 	int	seq_len2;
 
-	seq_len2 = ms_args_len(seq[shell->cmd->n_cmd]);
-	if ((seq[0][0][0] == '<' && ft_strlen(seq[0][0]) == 1) || ft_strncmp(seq[0][1], "<<", 2))
+	seq_len2 = ms_args_len(seq[shell->cmd->n_cmd - 1]);
+	if ((seq[0][0][0] == '<' && ft_strlen(seq[0][0]) == 1)
+		|| ft_strncmp(seq[0][0], "<<", 2) == 0)
 		shell->exitcode = ms_exec_set_input(shell, seq);
-	if ((seq[shell->cmd->n_cmd][seq_len2 - 2][0] == '>'
-		&& ft_strlen(seq[shell->cmd->n_cmd][seq_len2 - 2]) == 1)
-		|| ft_strncmp(seq[shell->cmd->n_cmd][seq_len2], "<<", 2))
+	if (ms_args_len(seq[shell->cmd->n_cmd - 1]) == 3
+		&& ((seq[shell->cmd->n_cmd - 1][seq_len2 - 2][0] == '>'
+		&& ft_strlen(seq[shell->cmd->n_cmd - 1][seq_len2 - 2]) == 1)
+		|| ft_strncmp(seq[shell->cmd->n_cmd - 1][seq_len2], ">>", 2) == 0))
 		shell->exitcode = ms_exec_set_output(shell, seq);
 	return (shell->exitcode);
 }
@@ -35,7 +37,7 @@ int	ms_exec_here_doc(t_shell *shell)
 	char	*line;
 	int		len;
 
-	if(ms_exec_here_doc_setup(shell) != 0)
+	if (ms_exec_here_doc_setup(shell) != 0)
 		return (EXIT_FAILURE);
 	while (1)
 	{
@@ -63,7 +65,7 @@ static int	ms_exec_set_input(t_shell *shell, char ***seq)
 {
 	shell->cmd->input = open(seq[0][1], O_RDONLY);
 	if (shell->cmd->input < 0)
-		return (7);
+		return (EXIT_FAILURE);
 	if (ft_strncmp(seq[0][1], "<<", 2) == 0)
 	{
 		if (ms_exec_here_doc(shell) != 0)
@@ -80,12 +82,12 @@ static int	ms_exec_set_output(t_shell *shell, char ***seq)
 	int	seq_len2;
 
 	seq_len2 = ms_args_len(seq[shell->cmd->n_cmd - 1]);
-	if (seq[shell->cmd->n_cmd][seq_len2 - 2][0] == '>')
-		shell->cmd->output = open(seq[shell->cmd->n_cmd][seq_len2 - 1], O_CREAT
-				| O_RDWR | O_TRUNC, 00777);
+	if (seq[shell->cmd->n_cmd - 1][seq_len2 - 2][0] == '>')
+		shell->cmd->output = open(seq[shell->cmd->n_cmd - 1][seq_len2 - 1]
+				, O_CREAT | O_RDWR | O_TRUNC, 00777);
 	else
-		shell->cmd->output = open(seq[shell->cmd->n_cmd][seq_len2 - 1], O_WRONLY
-				| O_APPEND | O_CREAT, 00777);
+		shell->cmd->output = open(seq[shell->cmd->n_cmd - 1][seq_len2 - 1]
+				, O_WRONLY | O_APPEND | O_CREAT, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -94,7 +96,8 @@ static int	ms_exec_set_output(t_shell *shell, char ***seq)
 static int	ms_exec_here_doc_setup(t_shell *shell)
 {
 	shell->cmd->heredoc = 1;
-	shell->cmd->input = open("heredoc_aux.txt", O_CREAT | O_RDWR | O_TRUNC, 00777);
+	shell->cmd->input = open("heredoc_aux.txt"
+			, O_CREAT | O_RDWR | O_TRUNC, 00777);
 	if (shell->cmd->input < 0)
 		return (EXIT_FAILURE);
 	shell->cmd->limiter = shell->cmd->seq[0][2];
