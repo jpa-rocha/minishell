@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_lexer_utils.c                                   :+:      :+:    :+:   */
+/*   ms_error_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/27 09:44:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:48:46 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-/* ERROR CHECKS AT THE BEGINNING -- checks whether quotes are closed,
-	redirections are properly used, backslash and pipes */
+/* ERROR CHECKS AT THE BEGINNING */
+
+/* checks whether quotes are closed */
 int	check_quotes(t_cmd *cmd)
 {
 	int	i;
@@ -41,6 +42,7 @@ int	check_quotes(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/* redirections are properly used */
 int	counter_io(t_cmd *cmd)
 {
 	int	i;
@@ -103,6 +105,7 @@ int	check_only_io(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
+/* error check for slash */
 /*	exit status for Slash is 126 ;
 	exit status for Back Slash is 127 */
 int	check_slash(t_cmd *cmd)

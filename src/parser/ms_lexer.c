@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/25 22:09:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:09:26 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,22 @@ int	get_nmb_cmd(t_cmd *cmd)
 
 	i = 0;
 	count = 1;
-	while (cmd->line[i])
+	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == PIPE)
 		{
 			i += 1;
-		 	while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
-				i += 1;
 			if (cmd->line[i] != '\0')
 				count += 1;
+			if (cmd->line[i] == '\0')
+			{
+				printf("pipe needs an argument\n");
+				return (EXIT_FAILURE);
+			}
 		}
 		i += 1;
 	}
+	printf("%d\n", count);
 	return (count);
 }
 
@@ -68,11 +72,12 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	//check_char_errors(shell->cmd);
+ 	if (if_pipes_are_empty(shell->cmd))
+		return (EXIT_FAILURE);
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE && shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
+		if ((shell->cmd->line[i] == PIPE && shell->cmd->line[i + 1] != '\0') || (shell->cmd->line[i] == '\0'))
 		{
 			temp = ft_calloc(count + 2, sizeof(char));
 			check_temp(temp, shell);

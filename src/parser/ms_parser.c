@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/26 15:53:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:11:25 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,31 @@ int	ms_parser(t_shell *shell)
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
+	
 /* 	int a = get_nmb_cmd(shell->cmd);
 	printf("%d\n", a); */
 	
-	print_nb_words(shell);
+	//print_nb_words(shell);
+	
 	/* char **words;
+	char *new;
+	
 	int i=0;
 	int j=0;
 	while (j < shell->cmd->n_cmd)
-	{
-		words = get_each_word(shell->lexer[j]);
-		while (i < count_words(shell->lexer[j]))
+	{ 
+		new = check_quotes_for_lexer(shell->lexer[j]);
+		words = get_each_word(new);
+		while (i < count_words(new))
 		{
-        	printf("%s",words[i]);
+			printf("%s", words[i]);
 			printf("\n");
 			i++;
 		}
+		i = 0;
 		j++;
 	} */
+	
 /* 	char ***a;
 	a = create_seq_from_lexer(shell);
 	int i, j, k;
@@ -76,3 +83,4 @@ int	ms_parser(t_shell *shell)
 	} */
 	return (EXIT_SUCCESS);
 }
+

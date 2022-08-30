@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/27 11:00:12 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:10:02 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,9 @@ char		**get_each_word(char *str);
 void		check_remove_quotes(char *str);
 char		*remove_sq(char *str);
 char		*remove_dq(char *str);
-bool		dq_closed(char *str);
-bool		sq_closed(char *str);
-void		check_quotes_for_lexer(char *str);
-
+int			dq_closed(char *str);
+int			sq_closed(char *str);
+char		*check_quotes_for_lexer(char *str);
 
 // Error checks for the variable line
 int			check_quotes(t_cmd *cmd);
@@ -126,6 +125,7 @@ int			check_slash(t_cmd *cmd);
 int			check_char_errors(t_cmd *cmd);
 int			check_if_only_pipe(t_cmd *cmd);
 int			count_pipes(t_cmd *cmd);
+int			if_pipes_are_empty(t_cmd *cmd);
 
 // for printing
 void		print_nb_words(t_shell *shell);
