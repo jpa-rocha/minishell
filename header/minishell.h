@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/30 18:10:02 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:57:02 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ char		*remove_sq(char *str);
 char		*remove_dq(char *str);
 int			dq_closed(char *str);
 int			sq_closed(char *str);
-char		*check_quotes_for_lexer(char *str);
+char		*check_quotes_pre_lexer(char *str);
 
 // Error checks for the variable line
-int			check_quotes(t_cmd *cmd);
+int			check_quotes(char *str);
 int			counter_io(t_cmd *cmd);
 int			check_only_io(t_cmd *cmd);
 int			check_slash(t_cmd *cmd);
