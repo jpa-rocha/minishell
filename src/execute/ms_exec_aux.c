@@ -6,29 +6,30 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/30 14:33:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/31 13:27:17 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+static int	ms_cmd_replace(t_shell *shell, char **cmd);
 static int	ms_exec_here_doc_setup(t_shell *shell);
-static int	ms_exec_set_input(t_shell *shell, char ***seq);
-static int	ms_exec_set_output(t_shell *shell, char ***seq);
+static int	ms_exec_set_input(t_shell *shell, char **cmd);
+static int	ms_exec_set_output(t_shell *shell, char **cmd);
 
-int	ms_exec_set_in_out(t_shell *shell, char ***seq)
+int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 {
-	int	seq_len2;
+	int	cmd_len;
 
-	seq_len2 = ms_args_len(seq[shell->cmd->n_cmd - 1]);
-	if ((seq[0][0][0] == '<' && ft_strlen(seq[0][0]) == 1)
-		|| ft_strncmp(seq[0][0], "<<", 2) == 0)
-		shell->exitcode = ms_exec_set_input(shell, seq);
-	if (ms_args_len(seq[shell->cmd->n_cmd - 1]) == 3
-		&& ((seq[shell->cmd->n_cmd - 1][seq_len2 - 2][0] == '>'
-		&& ft_strlen(seq[shell->cmd->n_cmd - 1][seq_len2 - 2]) == 1)
-		|| ft_strncmp(seq[shell->cmd->n_cmd - 1][seq_len2], ">>", 2) == 0))
-		shell->exitcode = ms_exec_set_output(shell, seq);
+	cmd_len = ms_args_len(cmd);
+	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1)
+		|| ft_strncmp(cmd[0], "<<", 2) == 0)
+		shell->exitcode = ms_exec_set_input(shell, cmd);
+	cmd_len = ms_args_len(shell->cmd->curr_cmd);
+	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
+		&& (ft_strlen(cmd[cmd_len - 2]) == 1
+		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
+		shell->exitcode = ms_exec_set_output(shell, cmd);
 	return (shell->exitcode);
 }
 
@@ -61,35 +62,76 @@ int	ms_exec_here_doc(t_shell *shell)
 	return (EXIT_SUCCESS);
 }
 
-static int	ms_exec_set_input(t_shell *shell, char ***seq)
+// TODO -> REMOVE INPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
+static int	ms_exec_set_input(t_shell *shell, char **cmd)
 {
-	shell->cmd->input = open(seq[0][1], O_RDONLY);
-	if (shell->cmd->input < 0)
-		return (EXIT_FAILURE);
-	if (ft_strncmp(seq[0][1], "<<", 2) == 0)
+	if (ft_strncmp(cmd[0], "<<", 2) == 0)
 	{
 		if (ms_exec_here_doc(shell) != 0)
 			return (EXIT_FAILURE);
 	}
+	else
+		shell->cmd->input = open(cmd[1], O_RDONLY);
+	if (shell->cmd->input < 0)
+		return (EXIT_FAILURE);
 	if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
 		return (EXIT_FAILURE);
-	shell->cmd->rdir_idx = 2;
+	shell->exitcode = ms_cmd_replace(shell, cmd);
 	return (EXIT_SUCCESS);
 }
 
-static int	ms_exec_set_output(t_shell *shell, char ***seq)
+static int	ms_cmd_replace(t_shell *shell, char **cmd)
 {
-	int	seq_len2;
+	char	**new_cmd;
+	int		i;
+	int		j;
+	int		len;
 
-	seq_len2 = ms_args_len(seq[shell->cmd->n_cmd - 1]);
-	if (seq[shell->cmd->n_cmd - 1][seq_len2 - 2][0] == '>')
-		shell->cmd->output = open(seq[shell->cmd->n_cmd - 1][seq_len2 - 1]
+	i = 0;
+	j = 2;
+	len = ms_args_len(cmd);
+	new_cmd = ft_calloc(len - 1, sizeof(char *));
+	if (new_cmd == NULL)
+		return (ALLOCATION_PROBLEM_EXIT);
+	if (cmd[0][0] == '<')
+	{
+		while (j < len)
+		{
+			new_cmd[i] = ft_strdup(cmd[j]);
+			i += 1;
+			j += 1;
+		}
+		new_cmd[i] = NULL;
+	}
+	else
+	{
+		while (i < len - 2)
+		{
+			new_cmd[i] = ft_strdup(cmd[i]);
+			i += 1;
+		}
+		new_cmd[i] = NULL;
+	}
+	ms_free_args(shell->cmd->curr_cmd);
+	shell->cmd->curr_cmd = new_cmd;
+	return (EXIT_SUCCESS);
+}
+
+// TODO -> REMOVE OUTPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
+static int	ms_exec_set_output(t_shell *shell, char **cmd)
+{
+	int	cmd_len;
+
+	cmd_len = ms_args_len(cmd);
+	if (cmd[cmd_len - 2][0] == '>')
+		shell->cmd->output = open(cmd[cmd_len - 1]
 				, O_CREAT | O_RDWR | O_TRUNC, 00777);
 	else
-		shell->cmd->output = open(seq[shell->cmd->n_cmd - 1][seq_len2 - 1]
+		shell->cmd->output = open(cmd[cmd_len - 1]
 				, O_WRONLY | O_APPEND | O_CREAT, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
+	shell->exitcode = ms_cmd_replace(shell, cmd);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/30 14:31:21 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/31 13:09:20 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ms_cmd_separator(t_shell *shell)
 
 	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
-		cmdctrl = ft_strrchr(shell->cmd->curr_cmd[shell->cmd->rdir_idx], '/');
+		cmdctrl = ft_strrchr(shell->cmd->curr_cmd[0], '/');
 		if (cmdctrl != NULL)
 		{
 			cmdctrl++;
@@ -74,7 +74,7 @@ int	ms_cmd_separator(t_shell *shell)
 		}
 		if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
 		{
-			printf("%s%s", shell->cmd->curr_cmd[shell->cmd->rdir_idx], ERR_INV);
+			printf("%s%s", shell->cmd->curr_cmd[0], ERR_INV);
 			return (COMMAND_NOT_FOUND);
 		}
 	}
@@ -92,7 +92,7 @@ static int	ms_find_cmd_loop(t_shell *shell)
 	while (shell->cmd->path[i] != NULL)
 	{
 		tmp = ft_strjoin(shell->cmd->path[i], "/");
-		cmd = ft_strjoin(tmp, shell->cmd->curr_cmd[shell->cmd->rdir_idx]);
+		cmd = ft_strjoin(tmp, shell->cmd->curr_cmd[0]);
 		if (access(cmd, F_OK) == 0)
 		{
 			shell->cmd->cmd_name = ft_strdup(cmd);
@@ -114,6 +114,8 @@ static int	ms_next_cmd(t_shell *shell)
 	if (shell->cmd->cmd_name != NULL)
 		free(shell->cmd->cmd_name);
 	shell->cmd->cmd_idx += 1;
-	shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
+	if (shell->cmd->curr_cmd != NULL)
+		ms_free_args(shell->cmd->curr_cmd);
+	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	return (ms_cmd_separator(shell));
 }

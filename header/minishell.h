@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/30 10:04:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/31 11:49:06 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_cmd {
 	int			input;
 	int			output;
 	int			heredoc;
-	int			rdir_idx;
 	int			cmd_idx;
 	char		*limiter;
 	char		*cmd_name;
@@ -95,6 +94,7 @@ void		ms_free_args(char **args);
 void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
+char		**ms_copy_cmd(char **cmd);
 
 // Signal Functions
 
@@ -128,7 +128,7 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
-int			ms_exec_set_in_out(t_shell *shell, char ***seq);
+int			ms_exec_set_in_out(t_shell *shell, char **cmd);
 int			ms_exec_here_doc(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);

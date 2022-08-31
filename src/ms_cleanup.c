@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/29 16:06:01 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/31 11:31:48 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 		ms_free_seq(cmd);
 	if (cmd->path != NULL)
 		ms_free_args(cmd->path);
+	if (cmd->curr_cmd != NULL)
+		ms_free_args(cmd->curr_cmd);
 	free(cmd);
 	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:10:37 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/08/31 11:30:09 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,26 @@ int	ms_args_len(char **args)
 	while (args[i] != NULL)
 		i += 1;
 	return (i);
+}
+
+char	**ms_copy_cmd(char **cmd)
+{
+	char	**copy;
+	int		i;
+	int		len;
+
+	if (cmd == NULL)
+		return (NULL);
+	i = 0;
+	len = ms_args_len(cmd);
+	copy = ft_calloc(len + 1, sizeof(char *));
+	if (copy == NULL)
+		return (NULL);
+	while (i < len)
+	{
+		copy[i] = ft_strdup(cmd[i]);
+		i += 1;
+	}
+	copy[i] = NULL;
+	return (copy);
 }
