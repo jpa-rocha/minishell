@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 13:27:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/01 09:41:41 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	ms_cmd_replace(t_shell *shell, char **cmd);
 static int	ms_exec_here_doc_setup(t_shell *shell);
 static int	ms_exec_set_input(t_shell *shell, char **cmd);
 static int	ms_exec_set_output(t_shell *shell, char **cmd);
+static int	ms_here_doc_end(t_shell *shell, char *line);
 
 int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 {
@@ -56,12 +57,19 @@ int	ms_exec_here_doc(t_shell *shell)
 		write(shell->cmd->input, line, ft_strlen(line));
 		free(line);
 	}
+	return (ms_here_doc_end(shell, line));
+}
+
+static int	ms_here_doc_end(t_shell *shell, char *line)
+{
 	if (line != NULL)
 		free(line);
 	close(shell->cmd->input);
+	shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
+	if (shell->cmd->input < 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
 // TODO -> REMOVE INPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
 static int	ms_exec_set_input(t_shell *shell, char **cmd)
 {
@@ -142,6 +150,6 @@ static int	ms_exec_here_doc_setup(t_shell *shell)
 			, O_CREAT | O_RDWR | O_TRUNC, 00777);
 	if (shell->cmd->input < 0)
 		return (EXIT_FAILURE);
-	shell->cmd->limiter = shell->cmd->seq[0][2];
-	return (0);
+	shell->cmd->limiter = shell->cmd->curr_cmd[1];
+	return (EXIT_SUCCESS);
 }

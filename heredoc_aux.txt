@@ -1,4 +1,0 @@
-/usr/local/binasda
-aaa
-asdadasda
-EOF
