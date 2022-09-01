@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 11:49:06 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/01 12:00:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ typedef struct s_envvar {
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
-	char		**args;
 	int			n_cmd;
 	int			n_words;
 	int			input;
 	int			output;
 	int			heredoc;
+	int			changes_state;
 	int			cmd_idx;
 	char		*limiter;
 	char		*cmd_name;

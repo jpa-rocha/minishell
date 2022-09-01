@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 12:58:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/01 12:23:20 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
+static int	ms_control_state(t_shell *shell, char **curr_cmd);
 
 int	ms_exec(t_shell *shell)
 {
 	int	check;
 	int	tmp_fd[2];
 
-	tmp_fd[0] = dup(0);
-	tmp_fd[1] = dup(1);
+	tmp_fd[0] = dup(STDIN_FILENO);
+	tmp_fd[1] = dup(STDOUT_FILENO);
+	shell->cmd->input = tmp_fd[0];
+	shell->cmd->output = tmp_fd[1];
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
@@ -63,10 +66,7 @@ static int	ms_command_processing(t_shell *shell)
 	{
 		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (shell->cmd->n_cmd == 1 && ms_is_built_in(shell, shell->cmd->curr_cmd) == 0)
-			return (ms_call_built_in(shell));
-		// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
-		// UNLESS ITS A BUILTIN THE REAL PATH NEEDS TO BE CHECKED
+		ms_is_built_in(shell, shell->cmd->curr_cmd);
 		if (shell->cmd->builtin_num == -1)
 		{
 			shell->exitcode = ms_cmd_separator(shell);
@@ -76,12 +76,22 @@ static int	ms_command_processing(t_shell *shell)
 		shell->exitcode = ms_top_pipe(shell);
 		if (shell->exitcode != 0)
 			return (shell->exitcode);
-		pid = fork();
-		if (pid == -1)
-			return (EXIT_FAILURE);
-		if (pid == 0)
-			ms_cmd_executing(shell);
-		waitpid(-1, &shell->exitcode, 0);
+		if (shell->cmd->cmd_idx == 0 && shell->cmd->changes_state == 1)
+			ms_call_built_in(shell);
+		else
+		{
+			pid = fork();
+			if (pid == -1)
+				return (EXIT_FAILURE);
+			if (pid == 0)
+			{
+				if (shell->cmd->builtin_num >= 0)
+					ms_call_built_in(shell);
+				else	
+					ms_cmd_executing(shell);
+			}
+			waitpid(-1, &shell->exitcode, 0);
+		}
 		shell->exitcode = ms_bot_pipe(shell);
 		if (shell->exitcode != 0)
 			return (shell->exitcode);
@@ -89,16 +99,16 @@ static int	ms_command_processing(t_shell *shell)
 	return (shell->exitcode);
 }
 
-static int ms_is_built_in(t_shell *shell, char **curr_cmd)
+static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
 	char	*builtins[BI_NUM];
 	int		i;
 
 	i = 0;
 	builtins[0] = "cd";
-	builtins[1] = "export";
-	builtins[2] = "unset";
-	builtins[3] = "exit";
+	builtins[1] = "exit";
+	builtins[2] = "export";
+	builtins[3] = "unset";
 	builtins[4] = "env";
 	builtins[5] = "echo";
 	builtins[6] = "pwd";
@@ -109,12 +119,28 @@ static int ms_is_built_in(t_shell *shell, char **curr_cmd)
 				ft_strlen(builtins[i])) == 0)
 		{
 			shell->cmd->builtin_num = i;
+			shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
 			return (EXIT_SUCCESS);
 		}
 		i += 1;
 	}
 	shell->cmd->builtin_num = -1;
+	shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
 	return (EXIT_FAILURE);
+}
+
+static int	ms_control_state(t_shell *shell, char **curr_cmd)
+{
+	if (shell->cmd->builtin_num <= 1 && shell->cmd->builtin_num >= 0)
+		return (1);
+	else if (shell->cmd->builtin_num == 2 || shell->cmd->builtin_num == 3)
+	{
+		if (ms_args_len(curr_cmd) > 1)
+			return (1);
+	}
+	else
+		return (0);
+	return(0);
 }
 
 int	ms_call_built_in(t_shell *shell)
@@ -122,11 +148,11 @@ int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 0)
 		return (ms_cd(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 1)
-		return (ms_export(shell, shell->cmd->curr_cmd));
-	if (shell->cmd->builtin_num == 2)
-		return (ms_unset(shell, shell->cmd->curr_cmd));
-	if (shell->cmd->builtin_num == 3)
 		return (ms_exit(shell));
+	if (shell->cmd->builtin_num == 2)
+		return (ms_export(shell, shell->cmd->curr_cmd));
+	if (shell->cmd->builtin_num == 3)
+		return (ms_unset(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 4)
 		return (ms_env(shell));
 	if (shell->cmd->builtin_num == 5)

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 11:50:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/01 12:00:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	}
 	cmd->path = ms_cmd_path_creator(shell);
 	cmd->cmd_idx = 0;
-	cmd->input = STDIN_FILENO;
-	cmd->output = STDOUT_FILENO;
+	cmd->changes_state = 1;
 	prompt = ms_prompt(shell);
 	if (prompt == NULL)
 		return (NULL);
