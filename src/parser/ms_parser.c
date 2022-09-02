@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 18:11:25 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:45:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,18 @@ void	print_lexer(t_shell *shell)
 	while (shell->lexer[i])
 	{
 		printf("[%d] %s\n", i, shell->lexer[i]);
+		free(shell->lexer[i]);
 		i++;
 	}
 }
 
 int	ms_parser(t_shell *shell)
 {
+	//shell->cmd->line = check_quotes_pre_lexer(shell->cmd->line);
+/* 	if(check_pipe_in_quotes(shell->cmd->line))
+		printf("yes\n");
+	else
+		printf("no\n"); */
 	if (shell->cmd->line != NULL)
 		shell->exitcode = ms_lexer(shell);
 	shell->cmd->curr_cmd = shell->lexer;

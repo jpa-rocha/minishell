@@ -6,12 +6,65 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 16:33:49 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:28:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+/* checks whether pipe is in quotes */
+int	check_char_in_quotes(char *str)
+{
+	size_t	i;
+	int	quotes_flag;
+	int index;
+
+	quotes_flag = 0;
+	index = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i++;
+	}
+	i++;
+	while (i < ft_strlen(str))
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1)
+		{
+			index += i;
+			quotes_flag = 0;
+			break ;
+		}
+		i++;
+	}
+	i = index - 1;
+	while (str[i])
+	{
+		if (str[i] == '|' && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i--;
+	}
+	return (quotes_flag);
+}
+
+int	check_pipe_in_quotes(char *str)
+{
+	if (check_char_in_quotes(str) == 1)
+	{
+		//printf("in quotes\n");
+		return (1);
+	}
+	//printf("not in quotes\n");
+	return (0);
+}
 
 /* if there is nothing in btw two pipes, bash prints an error message, 
 	this one is used in lexer function */
@@ -37,6 +90,7 @@ int	if_pipes_are_empty(t_cmd *cmd)
 	}
 	return (EXIT_SUCCESS);
 }
+
 
 int	count_pipes(t_cmd *cmd)
 {

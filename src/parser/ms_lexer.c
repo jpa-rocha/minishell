@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 19:59:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 10:28:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	get_nmb_cmd(t_cmd *cmd)
 
 	i = 0;
 	count = 1;
-	while (cmd->line[i] != '\0')
+	while (cmd->line[i])
 	{
-		if (cmd->line[i] == PIPE)
+		if (cmd->line[i] == PIPE && check_pipe_in_quotes(cmd->line) == 0) 
 		{
 			i += 1;
 			if (cmd->line[i] != '\0')
@@ -35,7 +35,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 		}
 		i += 1;
 	}
-	printf("%d\n", count);
+	//printf("%d\n", count);
 	return (count);
 }
 
@@ -75,10 +75,10 @@ int	ms_lexer(t_shell *shell)
  	if (if_pipes_are_empty(shell->cmd))
 		return (EXIT_FAILURE);
 	alloc_lexer(shell);
-	shell->cmd->line = check_quotes_pre_lexer(shell->cmd->line);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE && shell->cmd->line[i + 1] != '\0') || (shell->cmd->line[i] == '\0'))
+		if ((shell->cmd->line[i] == PIPE  && check_pipe_in_quotes(shell->cmd->line) == 0
+			&& shell->cmd->line[i + 1] != '\0') || (shell->cmd->line[i] == '\0'))
 		{
 			temp = ft_calloc(count + 2, sizeof(char));
 			check_temp(temp, shell);

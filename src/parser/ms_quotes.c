@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 19:56:56 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 08:54:09 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*remove_sq(char *str)
 	
 	i = 0;
 	k = 0;
-	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	temp = ft_calloc(ft_strlen(str) - 2, sizeof(char));
 	if (!temp)
 		return (NULL);
 	while (str[i] != '\0')
@@ -42,7 +42,7 @@ char	*remove_sq(char *str)
 				i++;
 			}
 		}
-		else if (str[i] != SQ)
+ 		else if (str[i] != SQ)
 		{
 			temp[k] = str[i];
 			k++;
@@ -62,7 +62,7 @@ char	*remove_dq(char *str)
 	
 	i = 0;
 	k = 0;
-	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	temp = ft_calloc(ft_strlen(str) - 2, sizeof(char));
 	if (!temp)
 		return (NULL);
 	while (str[i])
@@ -77,7 +77,7 @@ char	*remove_dq(char *str)
 				i++;
 			}
 		}
-		else if (str[i] != DQ)
+ 		else if (str[i] != DQ)
 		{
 			temp[k] = str[i];
 			k++;
@@ -103,7 +103,7 @@ char	*check_quotes_pre_lexer(char *str)
 			if (str[i] == SQ)
 				str = remove_sq(str);
 			if (str[i] == DQ)
-				str = remove_dq(str);
+				str = remove_dq(str);				
 			i++;
 		}
 	}
