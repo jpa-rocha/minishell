@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/01 09:49:59 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/02 14:10:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 {
 	if (cmd->line != NULL)
 		free(cmd->line);
+	if (cmd->cmd_name != NULL)
+		free(cmd->cmd_name);
 	if (cmd->seq != NULL)
 		ms_free_seq(cmd);
 	if (cmd->path != NULL)
@@ -59,6 +61,8 @@ int	ms_shell_cleanup(t_shell *shell)
 {
 	if (shell->cmd != NULL)
 		ms_cmd_cleanup(shell->cmd);
+	if (shell->lexer != NULL)
+		ms_free_args(shell->lexer);
 	if (shell->env != NULL)
 		ms_free_args(shell->env);
 	if (shell->workenv != NULL)

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/01 12:00:33 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/02 14:17:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_shell {
 	char		*name;
 	t_cmd		*cmd;
 	t_list		*workenv;
+	char		*builtins[BI_NUM];
 	char		**env;
 	char		**argv;
 	char		**lexer;
@@ -98,7 +99,8 @@ char		**ms_copy_cmd(char **cmd);
 
 // Signal Functions
 
-void		ms_signals(void);
+void		ms_signals_parent(void);
+void		ms_signal_child(void);
 
 // Parsing Functions
 

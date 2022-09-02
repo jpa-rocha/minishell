@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/01 10:22:00 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/02 14:16:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	ms_find_cmd_loop(t_shell *shell);
 static int	ms_next_cmd(t_shell *shell);
+static void	ms_pipe_builtins(t_shell *shell);
 
 int	ms_top_pipe(t_shell *shell)
 {
@@ -55,8 +56,18 @@ int	ms_cmd_executing(t_shell *shell)
 		perror("Problem ocurred");
 	}
 	else
-		return (ms_call_built_in(shell));
+	{
+		ms_pipe_builtins(shell);
+	}
 	return (EXIT_FAILURE);
+}
+
+// maybe the names have to have .c in the end
+static void	ms_pipe_builtins(t_shell *shell)
+{
+	ms_call_built_in(shell);
+	ms_shell_cleanup(shell);
+	exit(0);
 }
 
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET
@@ -111,8 +122,8 @@ static int	ms_find_cmd_loop(t_shell *shell)
 
 static int	ms_next_cmd(t_shell *shell)
 {
-	if (shell->cmd->cmd_name != NULL)
-		free(shell->cmd->cmd_name);
+	//if (shell->cmd->cmd_name != NULL)
+	//	free(shell->cmd->cmd_name);
 	shell->cmd->cmd_idx += 1;
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);

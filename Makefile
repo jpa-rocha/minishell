@@ -109,6 +109,8 @@ $(LIBFT):
 
 all: $(EXEC) 
 
+built_ins: $(LIBFT)
+	$(CC) $(CFLAGS) ./src/built_ins/env.c $(LIBRARIES) -I $(HEADER) -o $(EXEC)
 bonus: all
 
 clean:
