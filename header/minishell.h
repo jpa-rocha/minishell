@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 11:31:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:24:02 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_shell {
 int			ms_shell(char **env, char **argv);
 t_shell		*ms_shell_init(char **env, char **argv);
 t_cmd		*ms_cmd_init(t_shell *shell);
-int			ms_cmd_cleanup(t_shell *shell, t_cmd *cmd);
+int			ms_cmd_cleanup(t_cmd *cmd);
 int			ms_shell_cleanup(t_shell *shell);
 void		ms_list_data_cleaner(t_list *list);
 int			ms_error_management(t_shell *shell);

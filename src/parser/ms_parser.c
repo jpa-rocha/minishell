@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/26 10:19:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:22:35 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int	ms_parser(t_shell *shell)
 		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
 		return (shell->exitcode);
 	}
+	ms_free_args(shell->lexer);
+	shell->lexer = NULL;
 	return (EXIT_SUCCESS);
 }

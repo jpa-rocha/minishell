@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 11:32:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:24:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ms_free_args(char **args)
 {
 	int	i;
 
-	i = ms_args_len(args) -1;
+	i = ms_args_len(args) - 1;
 	while (i >= 0)
 	{
 		if (args[i] != NULL)
@@ -39,10 +39,8 @@ void	ms_free_args(char **args)
 	free(args);
 }
 
-int	ms_cmd_cleanup(t_shell *shell, t_cmd *cmd)
+int	ms_cmd_cleanup(t_cmd *cmd)
 {
-	if (shell->lexer != NULL)
-		ms_free_args(shell->lexer);
 	if (cmd->line != NULL)
 		free(cmd->line);
 	if (cmd->cmd_name != NULL)
@@ -62,7 +60,7 @@ int	ms_cmd_cleanup(t_shell *shell, t_cmd *cmd)
 int	ms_shell_cleanup(t_shell *shell)
 {
 	if (shell->cmd != NULL)
-		ms_cmd_cleanup(shell, shell->cmd);
+		ms_cmd_cleanup(shell->cmd);
 	if (shell->env != NULL)
 		ms_free_args(shell->env);
 	if (shell->workenv != NULL)
