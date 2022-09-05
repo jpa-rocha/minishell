@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 15:59:05 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 16:09:43 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	shell->argv = argv;
 	shell->shlvl = shlvl;
 	ms_change_lvl(shell);
+	shell->builtins[0] = "cd";
+	shell->builtins[1] = "exit";
+	shell->builtins[2] = "minishell";
+	shell->builtins[3] = "export";
+	shell->builtins[4] = "unset";
+	shell->builtins[5] = "echo";
+	shell->builtins[6] = "pwd";
+	shell->builtins[7] = "env";
 	shell->exitcode = 0;
 	return (shell);
 }

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 15:41:53 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 16:16:10 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,10 @@ static int	ms_command_processing(t_shell *shell)
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
 	int		i;
+	char	*mini;
 
 	i = 0;
-	shell->builtins[0] = "cd";
-	shell->builtins[1] = "exit";
-	shell->builtins[2] = "minishell";
-	shell->builtins[3] = "export";
-	shell->builtins[4] = "unset";
-	shell->builtins[5] = "echo";
-	shell->builtins[6] = "pwd";
-	shell->builtins[7] = "env";
+	mini = "./minishell";
 	while (i < BI_NUM)
 	{
 		if (ft_strncmp(shell->builtins[i], curr_cmd[0],
@@ -116,6 +110,12 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 			return (EXIT_SUCCESS);
 		}
 		i += 1;
+	}
+	if (ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
+	{
+		shell->cmd->builtin_num = 2;
+		shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
+		return (EXIT_SUCCESS);
 	}
 	shell->cmd->builtin_num = -1;
 	shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
