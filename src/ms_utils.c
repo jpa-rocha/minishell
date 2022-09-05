@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 11:30:09 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:24:49 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ms_error_management(t_shell *shell)
 	return (shell->exitcode);
 }
 
-void	ms_list_data_cleaner(t_list *list)//, void *del)
+void	ms_list_data_cleaner(t_list *list)
 {
 	t_node		*last;
 	t_envvar	*env_line;

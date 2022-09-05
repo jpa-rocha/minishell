@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 08:42:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:06:04 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ms_lexer(t_shell *shell)
 	{
 		if ((shell->cmd->line[i] == PIPE && shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
 		{
-			temp = ft_calloc(count + 2, sizeof(char));
+			temp = ft_calloc(count + 1, sizeof(char));
 			check_temp(temp, shell);
 			ft_strlcpy(temp, &shell->cmd->line[i] - count, count + 1);
 			shell->lexer[j] = ft_strtrim(temp, " ");
