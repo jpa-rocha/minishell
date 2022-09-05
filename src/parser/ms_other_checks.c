@@ -6,10 +6,9 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/02 14:49:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:30:20 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 
 /* finds  dollar sign in the string

@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/02 16:31:33 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/05 11:52:23 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	get_nmb_cmd(t_cmd *cmd)
 		if (cmd->line[i] == PIPE && check_pipe_in_quotes(cmd->line) == 0) 
 		{
 			i += 1;
+			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
+				i += 1;
 			if (cmd->line[i] != '\0')
 				count += 1;
 			if (cmd->line[i] == '\0')
@@ -74,10 +76,10 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	if (if_pipes_are_empty(shell->cmd))
+/* 	if (if_pipes_are_empty(shell->cmd))
 		return (EXIT_FAILURE);
 	if (check_char_errors(shell->cmd))
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE); */
 	alloc_lexer(shell);
 	while (1)
 	{
@@ -100,6 +102,7 @@ int	ms_lexer(t_shell *shell)
 		count += 1;
 		i += 1;
 	}
-	print_lexer(shell);
+	shell->lexer[j] = NULL;
+	//print_lexer(shell);
 	return (EXIT_SUCCESS);
 }
