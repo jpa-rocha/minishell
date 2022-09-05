@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/25 22:11:32 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 13:38:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	ms_shell(char **env, char **argv)
 	if (shell == NULL)
 		return (ms_error_management(shell));
 	ms_logo();
-	ms_signals();
+	ms_signals_parent();
 	while (1)
 	{
 		shell->cmd = ms_cmd_init(shell);
-		 if (shell->cmd == NULL)
+		if (shell->cmd == NULL)
 			ms_error_management(shell);
 		if (shell->exitcode == EXIT_SUCCESS)
 		{

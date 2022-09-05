@@ -8,7 +8,7 @@ CFLAGS =	-Wall -Wextra -Werror
 
 DEBUG =		-Wall -Wextra -Werror -ggdb3
 
-VAL =		valgrind -s --leak-check=full --show-leak-kinds=all
+VAL =		valgrind -s --track-fds=yes --track-origins=yes --leak-check=full --show-leak-kinds=all
 
 ################################################################################
 ################################## DIRECTORIES #################################
@@ -67,17 +67,10 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)pwd.c			\
 			$(BUILTINS)exit.c			\
 			$(BUILTINS)echo.c			\
-<<<<<<< HEAD
 			$(PARSER)ms_lexer.c			\
 			$(PARSER)ms_lexer_utils.c	\
 			$(PARSER)ms_token.c			\
-=======
-			$(PARSER)ms_lexer.c		\
-			$(PARSER)ms_lexer_utils.c		\
-			$(PARSER)ms_lexer_utils2.c		\
-			$(PARSER)ms_token.c        \
->>>>>>> mgulenay
-
+			
 ################################################################################
 #################################### PROGRAM ###################################
 ################################################################################
@@ -116,6 +109,8 @@ $(LIBFT):
 
 all: $(EXEC) 
 
+built_ins: $(LIBFT)
+	$(CC) $(CFLAGS) ./src/built_ins/env.c $(LIBRARIES) -I $(HEADER) -o $(EXEC)
 bonus: all
 
 clean:
