@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/26 10:00:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 12:38:03 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ms_echo(t_cmd *cmd)
 		if (cmd->curr_cmd[i])
 			write (1, " ", 1);
 	}
-	if (flag_n == 1)
+	if (flag_n == 0)
 		write(1, "\n", 1);
 	return (0);
 }

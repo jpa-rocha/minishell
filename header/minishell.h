@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 12:24:02 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 15:44:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_cmd {
 }	t_cmd;
 
 typedef struct s_shell {
+	int			shlvl;
 	char		*name;
 	t_cmd		*cmd;
 	t_list		*workenv;
@@ -80,8 +81,8 @@ typedef struct s_shell {
 
 // General Functions
 
-int			ms_shell(char **env, char **argv);
-t_shell		*ms_shell_init(char **env, char **argv);
+int			ms_shell(char **env, char **argv, int shlvl);
+t_shell		*ms_shell_init(char **env, char **argv, int shlvl);
 t_cmd		*ms_cmd_init(t_shell *shell);
 int			ms_cmd_cleanup(t_cmd *cmd);
 int			ms_shell_cleanup(t_shell *shell);
@@ -97,11 +98,11 @@ void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 char		**ms_copy_cmd(char **cmd);
+void		ms_change_lvl(t_shell *shell);
 
 // Signal Functions
 
-void		ms_signals_parent(void);
-void		ms_signal_child(void);
+void		ms_signals(void);
 
 // Parsing Functions
 
@@ -110,6 +111,7 @@ int			get_nmb_cmd(t_cmd *cmd);
 int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
 int			count_words(char *str);
+int			check_pipe_in_quotes(char *str);
 char		***create_seq_from_lexer(t_shell *shell);
 int			get_nb_words_store(t_shell *shell);
 char		**get_each_word(char *str);

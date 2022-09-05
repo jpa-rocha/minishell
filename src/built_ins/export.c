@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/26 09:58:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 16:03:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 	ft_strlcpy(line->name, newvar, i);
 	shell->exitcode = ms_export_value_check(shell, line, newvar);
 	shell->env = ms_env_init_env(shell);
-	shell->cmd->path = ms_cmd_path_creator(shell);
+	if (shell->cmd != NULL)
+		shell->cmd->path = ms_cmd_path_creator(shell);
 	return (shell->exitcode);
 }
 

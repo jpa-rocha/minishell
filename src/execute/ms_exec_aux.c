@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 09:35:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 14:34:36 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	ms_exec_set_input(t_shell *shell, char **cmd);
 static int	ms_exec_set_output(t_shell *shell, char **cmd);
 static int	ms_here_doc_end(t_shell *shell, char *line);
 
+// WHAT IF COMMANDS ARE IN WRONG ORDER? WRONG NUMBER
 int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 {
 	int	cmd_len;
@@ -46,7 +47,7 @@ int	ms_exec_here_doc(t_shell *shell)
 
 	if (ms_exec_here_doc_setup(shell) != 0)
 		return (EXIT_FAILURE);
-	while (1)
+	while (line != NULL)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(STDIN_FILENO, 0);
@@ -75,7 +76,7 @@ static int	ms_here_doc_end(t_shell *shell, char *line)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-// TODO -> REMOVE INPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
+
 static int	ms_exec_set_input(t_shell *shell, char **cmd)
 {
 	if (ft_strncmp(cmd[0], "<<", 2) == 0)
@@ -131,17 +132,18 @@ static int	ms_cmd_replace(t_shell *shell, char **cmd)
 }
 
 // TODO -> REMOVE OUTPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
+// change order of conditions
 static int	ms_exec_set_output(t_shell *shell, char **cmd)
 {
 	int	cmd_len;
 
 	cmd_len = ms_args_len(cmd);
-	if (cmd[cmd_len - 2][0] == '>')
+	if (ft_strncmp(cmd[cmd_len - 2], ">>", 2) == 0)
 		shell->cmd->output = open(cmd[cmd_len - 1]
-				, O_CREAT | O_RDWR | O_TRUNC, 00777);
+				, O_CREAT | O_APPEND | O_TRUNC, 00777);
 	else
 		shell->cmd->output = open(cmd[cmd_len - 1]
-				, O_WRONLY | O_APPEND | O_CREAT, 00777);
+				, O_WRONLY | O_RDWR | O_CREAT, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
 	shell->exitcode = ms_cmd_replace(shell, cmd);

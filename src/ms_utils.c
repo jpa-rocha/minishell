@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 12:24:49 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 15:44:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,14 @@ char	**ms_copy_cmd(char **cmd)
 	}
 	copy[i] = NULL;
 	return (copy);
+}
+
+void	ms_change_lvl(t_shell *shell)
+{
+	char		*newvar[2];
+
+	newvar[0] = "export";
+	newvar[1] = ft_strjoin("SHLVL=", ft_itoa(shell->shlvl));
+	ms_export(shell, newvar);
+	free(newvar[1]);
 }

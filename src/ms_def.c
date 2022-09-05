@@ -6,13 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 10:31:28 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 15:59:05 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-t_shell	*ms_shell_init(char **env, char **argv)
+t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 {
 	t_shell	*shell;
 
@@ -27,6 +27,8 @@ t_shell	*ms_shell_init(char **env, char **argv)
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
 	shell->argv = argv;
+	shell->shlvl = shlvl;
+	ms_change_lvl(shell);
 	shell->exitcode = 0;
 	return (shell);
 }
@@ -37,6 +39,7 @@ char	**ms_cmd_path_creator(t_shell *shell)
 	t_envvar	*line;
 	t_node		*node;
 	char		**path;
+
 
 	path = NULL;
 	node = ms_env_find_entry(shell->workenv, "PATH=");
