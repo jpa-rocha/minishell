@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   messages.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:33:14 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 09:14:30 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/24 12:17:42 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define ALLOCATION_PROBLEM_EXIT 12
 # define ERR_NULL "Cannot allocate memory\n"
 
-# define COMMAND_NOT_FOUND 127
+#define COMMAND_NOT_FOUND 127
 
 # define ERR_INV ": command not found\n"
 # define ERR_INV_ID "minishell: %s: `%s\': not a valid identifier\n"

@@ -3,155 +3,138 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 11:14:47 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 22:12:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd);
+static int	ms_call_built_in(t_shell *shell);
 static int	ms_exec_first_check(t_shell *shell);
 static int	ms_command_processing(t_shell *shell);
-static int	ms_control_state(t_shell *shell, char **curr_cmd);
 
 int	ms_exec(t_shell *shell)
 {
 	int	check;
 
-	shell->cmd->temp_fd[0] = dup(STDIN_FILENO);
-	shell->cmd->temp_fd[1] = dup(STDOUT_FILENO);
-	shell->cmd->input = shell->cmd->temp_fd[0];
-	shell->cmd->output = shell->cmd->temp_fd[1];
-	if (shell->cmd->curr_cmd != NULL)
-		ms_free_args(shell->cmd->curr_cmd);
-	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
-	if (shell->cmd->curr_cmd == NULL)
-		return (EXIT_FAILURE);
-	check = ms_exec_first_check(shell);
-	if (check != 0)
-		return (shell->exitcode);
-	shell->exitcode = ms_command_processing(shell);
-	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
-	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
-	close(shell->cmd->temp_fd[0]);
-	close(shell->cmd->temp_fd[1]);
-	return (shell->exitcode);
+	if (ms_args_len(shell->cmd->curr_cmd) >= 1)
+	{
+		check = ms_exec_first_check(shell);
+		if (check != 0)
+			return (shell->exitcode);
+	}
+	return (ms_command_processing(shell));
 }
 
 // Check if there are arguments, and if so if they are printable characters
 // MIGHT BE MADE UNUSABLE BY LEXER
 static int	ms_exec_first_check(t_shell *shell)
 {
-	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
-		|| (shell->cmd->curr_cmd[0][0] <= 32 ||
-		shell->cmd->curr_cmd[0][0] == 58))
-		return (EXIT_FAILURE);
+	if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
+		&& (shell->cmd->curr_cmd[0][0] <= 32 || shell->cmd->curr_cmd[0][0] == 58))
+		shell->exitcode = EXIT_FAILURE;
 	else if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
 		&& shell->cmd->curr_cmd[0][0] == 33)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		shell->exitcode = EXIT_FAILURE;
+	else
+		shell->exitcode = EXIT_SUCCESS;
+	return (shell->exitcode);
 }
 
 // Check if arguments are valid commands, if not print error
 // message and return
 static int	ms_command_processing(t_shell *shell)
 {
-	int	pid;
-
-	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
+	int pid;
+	
+	// TEST AREA
+	/* char *test[2];
+	test[0] = "pwd.c";
+	test[1] = NULL;
+	execve("./src/buil_ins/pwd.c", test, shell->env);
+	 */
+	// END OF TEST AREA
+	if (shell->cmd->seq != NULL)
+		shell->cmd->curr_cmd = shell->cmd->seq[shell->cmd->cmd_idx];
+	else
+		return (EXIT_FAILURE);
+	if (ms_exec_set_in_out(shell, shell->cmd->seq) == EXIT_FAILURE)
+		return(EXIT_FAILURE);
+	// <= or just <
+	while (shell->cmd->cmd_idx <= shell->cmd->n_cmd)
 	{
-		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-		ms_is_built_in(shell, shell->cmd->curr_cmd);
-		if (shell->cmd->builtin_num == -1)
-		{
-			shell->exitcode = ms_cmd_separator(shell);
-			if (shell->exitcode != EXIT_SUCCESS)
-				return (shell->exitcode);
-		}
+		// what does this mean??
+		if (shell->cmd->cmd_idx > 0)
+			shell->cmd->rdir_idx = 2;
+		if (shell->cmd->n_cmd == 1 && ms_is_built_in(shell, shell->cmd->curr_cmd) == 0)
+			return (ms_call_built_in(shell));
+		// FORK WILL BE HERE - BUT WHICH COMMANDS NEED TO BE FORKED?
+		// UNLESS ITS A BUILTIN THE REAL PATH NEEDS TO BE CHECKED
 		shell->exitcode = ms_top_pipe(shell);
 		if (shell->exitcode != 0)
 			return (shell->exitcode);
-		if (shell->cmd->cmd_idx == 0 && shell->cmd->changes_state == 1)
-			ms_call_built_in(shell);
-		else
-		{
-			pid = fork();
-			if (pid == -1)
-				return (EXIT_FAILURE);
-			if (pid == 0)
-					ms_cmd_executing(shell);
-			waitpid(-1, &shell->exitcode, 0);
-		}
+		pid = fork();
+		if (pid == -1)
+			return (EXIT_FAILURE);
+		if (pid == 0)
+			ms_cmd_executing(shell);
+		waitpid(-1, &shell->exitcode, 0);
 		shell->exitcode = ms_bot_pipe(shell);
 		if (shell->exitcode != 0)
-			return (shell->exitcode);
+			return (shell->exitcode);	
 	}
-	return (shell->exitcode);
+	// MIGHT NEED TO CORRECT THE ERROR NUM
+	return (EXIT_FAILURE);
 }
 
-static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
+static int ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
-	int		i;
+	char *builtins[BI_NUM];
+	int i;
 
 	i = 0;
-	shell->builtins[0] = "cd.c";
-	shell->builtins[1] = "exit.c";
-	shell->builtins[2] = "export.c";
-	shell->builtins[3] = "unset.c";
-	shell->builtins[4] = "env.c";
-	shell->builtins[5] = "echo.c";
-	shell->builtins[6] = "pwd.c";
-	shell->builtins[7] = "minishell.c";
+	builtins[0] = "exit";
+	builtins[1] = "env";
+	builtins[2] = "echo";
+	builtins[3] = "pwd";
+	builtins[4] = "export";
+	builtins[5] = "unset";
+	builtins[6] = "cd";
+	builtins[7] = "minishell";
 	while (i < BI_NUM)
 	{
-		if (ft_strncmp(shell->builtins[i], curr_cmd[0],
-				ft_strlen(shell->builtins[i]) - 2) == 0)
+		if (ft_strncmp(builtins[i], curr_cmd[shell->cmd->rdir_idx],
+			ft_strlen(curr_cmd[shell->cmd->rdir_idx])) == 0)
 		{
 			shell->cmd->builtin_num = i;
-			shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
 			return (EXIT_SUCCESS);
 		}
 		i += 1;
 	}
 	shell->cmd->builtin_num = -1;
-	shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
 	return (EXIT_FAILURE);
-}
-
-static int	ms_control_state(t_shell *shell, char **curr_cmd)
-{
-	if (shell->cmd->builtin_num <= 1 && shell->cmd->builtin_num >= 0)
-		return (1);
-	else if (shell->cmd->builtin_num == 2 || shell->cmd->builtin_num == 3)
-	{
-		if (ms_args_len(curr_cmd) > 1)
-			return (1);
-	}
-	else
-		return (0);
-	return (0);
 }
 
 int	ms_call_built_in(t_shell *shell)
 {
 	if (shell->cmd->builtin_num == 0)
-		return (ms_cd(shell, shell->cmd->curr_cmd));
-	if (shell->cmd->builtin_num == 1)
 		return (ms_exit(shell));
-	if (shell->cmd->builtin_num == 2)
-		return (ms_export(shell, shell->cmd->curr_cmd));
-	if (shell->cmd->builtin_num == 3)
-		return (ms_unset(shell, shell->cmd->curr_cmd));
-	if (shell->cmd->builtin_num == 4)
+	if (shell->cmd->builtin_num == 1)
 		return (ms_env(shell));
-	if (shell->cmd->builtin_num == 5)
+	if (shell->cmd->builtin_num == 2)
 		return (ms_echo(shell->cmd));
-	if (shell->cmd->builtin_num == 6)
+	if (shell->cmd->builtin_num == 3)
 		return (ms_pwd());
+	if (shell->cmd->builtin_num == 4)
+		return (ms_export(shell, shell->cmd->curr_cmd));
+	if (shell->cmd->builtin_num == 5)
+		return (ms_unset(shell, shell->cmd->curr_cmd));
+	if (shell->cmd->builtin_num == 6)
+		return (ms_cd(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 7)
 		return (ms_shell(shell->env, shell->argv));
 	return (EXIT_FAILURE);

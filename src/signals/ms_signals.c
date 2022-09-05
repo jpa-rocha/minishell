@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 13:57:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/07/21 16:56:29 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,12 @@ static void	ms_signal_handler(int num);
 static void ms_signal_sigint();
 static void	ms_signal_sigquit();
 
-void	ms_signals_parent(void)
+void	ms_signals(void)
 {
 	struct sigaction	sa;
 
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGQUIT);
-	sigaddset(&sa.sa_mask, SIGTERM);
-	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = ms_signal_handler;
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTERM, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-}
-
-void	ms_signal_child(void)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	/* sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGQUIT); */
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = ms_signal_handler;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTERM, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
@@ -55,8 +35,7 @@ static void	ms_signal_handler(int num)
 
 static void	ms_signal_sigint()
 {
-	printf("\n");
-	return ;
+  //write(1, "\n", 1);
 }
 
 static void	ms_signal_sigquit()

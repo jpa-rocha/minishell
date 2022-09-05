@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 08:51:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 22:16:06 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ typedef struct s_envvar {
 typedef struct s_cmd {
 	int			builtin_num;
 	char		*line;
+	char		**args;
 	int			n_cmd;
 	int			n_words;
 	int			input;
 	int			output;
 	int			heredoc;
-	int			changes_state;
+	int			rdir_idx;
 	int			cmd_idx;
 	char		*limiter;
 	char		*cmd_name;
@@ -64,14 +65,12 @@ typedef struct s_cmd {
 	char		**path;
 	char		***seq;
 	int			pfd[2];
-	int			temp_fd[2];
 }	t_cmd;
 
 typedef struct s_shell {
 	char		*name;
 	t_cmd		*cmd;
 	t_list		*workenv;
-	char		*builtins[BI_NUM];
 	char		**env;
 	char		**argv;
 	char		**lexer;
@@ -96,12 +95,10 @@ void		ms_free_args(char **args);
 void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
-char		**ms_copy_cmd(char **cmd);
 
 // Signal Functions
 
-void		ms_signals_parent(void);
-void		ms_signal_child(void);
+void		ms_signals(void);
 
 // Parsing Functions
 
@@ -131,13 +128,12 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
-int			ms_exec_set_in_out(t_shell *shell, char **cmd);
+int			ms_exec_set_in_out(t_shell *shell, char ***seq);
 int			ms_exec_here_doc(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
 int			ms_call_built_in(t_shell *shell);
-int			ms_cmd_separator(t_shell *shell);
 
 // Built-in Functions
 

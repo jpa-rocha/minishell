@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/29 16:14:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/08/25 21:19:42 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,31 +103,32 @@ int	get_nb_words_store(t_shell *shell)
 
 char	**get_each_word(char *str)
 {
+	// hello world --
 	char **words;
-	size_t	i;
+	int	i;
 
 	int num_words = 0; // 2
-	size_t num_chars = 0; // length of each word --  5 
+	int num_chars = 0; // length of each word --  5 
+
 	i = 0;
-	words = ft_calloc(count_words(str) + 1, sizeof(char *));
-	while (num_words < count_words(str))
-	{
-		words[num_words] = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-		while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0')
+	words = (char **)malloc(sizeof(char *) * count_words(str) + 1);
+		while (num_words < count_words(str))
 		{
-			words[num_words][num_chars] = str[i];
-			num_chars += 1;
+			words[num_words] = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
+			while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0')
+			{
+    			words[num_words][num_chars] = str[i];
+				num_chars += 1;
+				i++;
+			}
+			if(str[i] == ' ' || str[i] == '\t')
+    		{
+    			words[num_words][num_chars] = '\0';
+      			num_chars = 0;
+    		}
 			i++;
+			num_words++;
 		}
-		if(str[i] == ' ' || str[i] == '\t' || num_chars == ft_strlen(&str[i]))
-		{
-			words[num_words][num_chars] = '\0';
-			num_chars = 0;
-		}
-		i++;
-		num_words++;
-	}
-	words[num_words] = NULL;
 	return (words);
 }
 
@@ -149,12 +150,12 @@ char	***create_seq_from_lexer(t_shell *shell)
 	int	j; // number of strings in lexer variable
 	
 	j = 0;
-	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
+	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer), sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
 		shell->cmd->seq[j] = get_each_word(shell->lexer[j]); 
 		j++;
 	}
-	shell->cmd->seq[j] = NULL;
+	//printf("ok\n");
 	return (shell->cmd->seq);
 }
