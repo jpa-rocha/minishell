@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/08/31 11:30:09 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 11:32:28 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	ms_error_management(t_shell *shell)
 	}
 	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
 	{
-		ms_cmd_cleanup(shell->cmd);
+		ms_cmd_cleanup(shell, shell->cmd);
 		printf("%s", ERR_NULL);
 	}
 	return (shell->exitcode);
 }
 
-void	ms_list_data_cleaner(t_list *list)//, void *del)
+void	ms_list_data_cleaner(t_list *list)
 {
 	t_node		*last;
 	t_envvar	*env_line;
