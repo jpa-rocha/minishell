@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 11:52:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:03:41 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,6 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-/* 	if (if_pipes_are_empty(shell->cmd))
-		return (EXIT_FAILURE);
-	if (check_char_errors(shell->cmd))
-		return (EXIT_FAILURE); */
 	alloc_lexer(shell);
 	while (1)
 	{
