@@ -3,49 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/29 16:14:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 15:56:57 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* need to remove quotes for printing if it is already closed: 
- -- first check, if already in double or single quote, then remove it, 
--- if we have a case like : 
-	echo "hello 'world' ", 
-we need to remove just the double quote
-*/
-/* sub_string is needs to be created from lexer , 
-in this case : echo , "hello" */
-/*  void	check_remove_quotes(t_shell **sub_string)
-{
-	char	*new_str;
-	int		i;
-	int		k;
-	char	c;
-	
-	i = 0;
-	k = 0;
-	new_str = ft_strdup(*sub_string);
-	while (sub_string[i])
-	{
-		c = sub_string[i];
-		if (c == SQ || c == DQ )
-		{
-			i++;
-			while (sub_string[i])
-			{
-				new_str[k] = sub_string[i];
-				k++;
-				i++;
-			}
-		}
-	}
-	new_str[k] = '\0';
-} */
 
 /* count number of words in a string */
 int	count_words(char *str)
@@ -81,24 +46,6 @@ void	print_nb_words(t_shell *shell)
 		printf("index [%d] has [%d] words\n", j, c);
 		j++;
 	}
-}
-
-/* get number of words in each lexer[nb_cmd] */
-int	get_nb_words_store(t_shell *shell)
-{
-	int j;
-	//int	total;
-
-	//total = 0;
-	j = 0;
-	while (j < shell->cmd->n_cmd)
-	{
-		shell->cmd->n_words = count_words(shell->lexer[j]);
-		//total += shell->n_words;
-		j++;
-	}
-	//return (total);
-	return (shell->cmd->n_words);
 }
 
 char	**get_each_word(char *str)
@@ -146,7 +93,7 @@ seq[1][2][] => seq[1][0][2] = no, seq[1][1][3] = why
 
 char	***create_seq_from_lexer(t_shell *shell)
 {
-	int	j; // number of strings in lexer variable
+	int	j;
 	
 	j = 0;
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
