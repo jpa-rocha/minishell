@@ -6,11 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/02 10:28:07 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:31:33 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
+static int	check_lexer(t_shell *shell);
+static int	check_temp(char *temp, t_shell *shell);
 
 /* check how many group of commands we have - - the separator is the pipe */
 int	get_nmb_cmd(t_cmd *cmd)
@@ -35,7 +38,6 @@ int	get_nmb_cmd(t_cmd *cmd)
 		}
 		i += 1;
 	}
-	//printf("%d\n", count);
 	return (count);
 }
 
@@ -72,12 +74,14 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
- 	if (if_pipes_are_empty(shell->cmd))
+	if (if_pipes_are_empty(shell->cmd))
+		return (EXIT_FAILURE);
+	if (check_char_errors(shell->cmd))
 		return (EXIT_FAILURE);
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE  && check_pipe_in_quotes(shell->cmd->line) == 0
+		if ((shell->cmd->line[i] == PIPE && check_pipe_in_quotes(shell->cmd->line) == 0
 			&& shell->cmd->line[i + 1] != '\0') || (shell->cmd->line[i] == '\0'))
 		{
 			temp = ft_calloc(count + 2, sizeof(char));

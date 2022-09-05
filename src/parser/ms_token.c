@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 11:52:07 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:59:11 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,24 +69,26 @@ void	print_nb_words(t_shell *shell)
 
 char	**get_each_word(char *str)
 {
-	char **words;
-	int	i;
-
-	int num_words = 0;
-	int num_chars = 0;
-
+	char	**words;
+	int		i;
+	int		num_words;
+	size_t	num_chars;
+	
+	num_words = 0;
+	num_chars = 0;
 	i = 0;
-	words = (char **)malloc(sizeof(char *) * count_words(str) + 1);
+	//words = (char **)malloc(sizeof(char *) * count_words(str) + 1);
+	words = ft_calloc(count_words(str) + 1, sizeof(char *));
 	while (num_words < count_words(str))
 	{
-		words[num_words] = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
+		words[num_words] = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 		while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0')
 		{
     		words[num_words][num_chars] = str[i];
 			num_chars += 1;
 			i++;
 		}
-		if(str[i] == ' ' || str[i] == '\t')
+		if(str[i] == ' ' || str[i] == '\t' || num_chars == ft_strlen(&str[i]))
     	{
     		words[num_words][num_chars] = '\0';
       		num_chars = 0;
@@ -115,12 +117,14 @@ char	***create_seq_from_lexer(t_shell *shell)
 	int	j;
 	
 	j = 0;
-	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer), sizeof(char *));
+	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
+	j = 0;
 	while (j < shell->cmd->n_cmd)
 	{
+		//shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
 		shell->cmd->seq[j] = get_each_word(shell->lexer[j]); 
 		j++;
 	}
-	shell->cmd->seq[j] = '\0';
+	shell->cmd->seq[j] = NULL;
 	return (shell->cmd->seq);
 }

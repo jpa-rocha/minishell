@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/02 08:54:09 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:43:39 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*remove_sq(char *str)
 		}
 		i++;
 	}
+	//temp[k] = '\0';
 	str = ft_strdup(temp);
 	//printf("without quotes: %s\n", str);
 	return(str);

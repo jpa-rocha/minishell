@@ -6,14 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/30 19:49:57 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:27:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 /* ERROR CHECKS AT THE BEGINNING */
-
 /* checks whether quotes are closed */
 int	check_quotes(char *str)
 {
@@ -62,6 +61,10 @@ int	counter_io(t_cmd *cmd)
 }
 
 /* Exit code needs to be 2 , perror returns already errnum ? */
+/* Error check for cases like: 
+	< , > , <<, >>, <> and
+	>>>>>, <<<<<<, > > > >, >> >> >> >> etc.
+*/
 int	check_only_io(t_cmd *cmd)
 {
 	int	i;
@@ -105,7 +108,9 @@ int	check_only_io(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-/* error check for slash */
+/* error check for cases like
+	 /, //, /. etc. 
+*/
 /*	exit status for Slash is 126 ;
 	exit status for Back Slash is 127 */
 int	check_slash(t_cmd *cmd)
@@ -130,15 +135,13 @@ int	check_slash(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-/* int	check_char_errors(t_cmd *cmd)
+int	check_char_errors(t_cmd *cmd)
 {
-	if (check_quotes(cmd) == EXIT_FAILURE)
+	if (check_quotes(cmd->line))
 		return (EXIT_FAILURE);
-	if (check_only_io(cmd) == EXIT_FAILURE)
+	if (check_only_io(cmd))
 		return (EXIT_FAILURE);
-	if (check_slash(cmd) == EXIT_FAILURE)
+	if (check_slash(cmd))
 		return (EXIT_FAILURE);
-	if (check_if_only_pipe(cmd) == EXIT_FAILURE)
-		return (EXIT_FAILURE); 
 	return (EXIT_SUCCESS);
-} */
+}

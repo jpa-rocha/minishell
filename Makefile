@@ -69,9 +69,10 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)echo.c			\
 			$(PARSER)ms_lexer.c		\
 			$(PARSER)ms_error_check.c		\
-			$(PARSER)ms_lexer_utils2.c		\
+			$(PARSER)ms_pipe_utils.c		\
 			$(PARSER)ms_token.c        \
 			$(PARSER)ms_quotes.c        \
+			$(PARSER)ms_other_checks.c		\
 
 ################################################################################
 #################################### PROGRAM ###################################

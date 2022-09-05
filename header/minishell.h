@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 08:58:18 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:11:42 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int			dq_closed(char *str);
 int			sq_closed(char *str);
 char		*check_quotes_pre_lexer(char *str);
 int			check_pipe_in_quotes(char *str);
-int			check_char_in_quotes(char *str);
 
 // Error checks for the variable line
 int			check_quotes(char *str);
