@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 14:19:36 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 11:14:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ static int	ms_control_state(t_shell *shell, char **curr_cmd);
 int	ms_exec(t_shell *shell)
 {
 	int	check;
-	int	tmp_fd[2];
 
-	tmp_fd[0] = dup(STDIN_FILENO);
-	tmp_fd[1] = dup(STDOUT_FILENO);
-	shell->cmd->input = tmp_fd[0];
-	shell->cmd->output = tmp_fd[1];
+	shell->cmd->temp_fd[0] = dup(STDIN_FILENO);
+	shell->cmd->temp_fd[1] = dup(STDOUT_FILENO);
+	shell->cmd->input = shell->cmd->temp_fd[0];
+	shell->cmd->output = shell->cmd->temp_fd[1];
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
@@ -35,10 +34,10 @@ int	ms_exec(t_shell *shell)
 	if (check != 0)
 		return (shell->exitcode);
 	shell->exitcode = ms_command_processing(shell);
-	dup2(tmp_fd[0], STDIN_FILENO);
-	dup2(tmp_fd[1], STDOUT_FILENO);
-	close(tmp_fd[0]);
-	close(tmp_fd[1]);
+	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
+	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
+	close(shell->cmd->temp_fd[0]);
+	close(shell->cmd->temp_fd[1]);
 	return (shell->exitcode);
 }
 

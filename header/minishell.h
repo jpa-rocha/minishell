@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 14:17:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 08:51:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_cmd {
 	char		**path;
 	char		***seq;
 	int			pfd[2];
+	int			temp_fd[2];
 }	t_cmd;
 
 typedef struct s_shell {

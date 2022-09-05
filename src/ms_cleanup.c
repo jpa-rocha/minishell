@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 14:10:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 08:43:17 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 	if (cmd->curr_cmd != NULL)
 		ms_free_args(cmd->curr_cmd);
 	if (cmd->heredoc == 1)
-			unlink("heredoc_aux.txt");
+		unlink("heredoc_aux.txt");
 	free(cmd);
 	return (EXIT_SUCCESS);
 }
@@ -61,8 +61,8 @@ int	ms_shell_cleanup(t_shell *shell)
 {
 	if (shell->cmd != NULL)
 		ms_cmd_cleanup(shell->cmd);
-	if (shell->lexer != NULL)
-		ms_free_args(shell->lexer);
+	/* if (shell->lexer != NULL)
+		ms_free_args(shell->lexer); */
 	if (shell->env != NULL)
 		ms_free_args(shell->env);
 	if (shell->workenv != NULL)

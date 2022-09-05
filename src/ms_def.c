@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/01 12:00:57 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 10:31:28 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,20 @@ char	**ms_cmd_path_creator(t_shell *shell)
 
 	path = NULL;
 	node = ms_env_find_entry(shell->workenv, "PATH=");
-	line = (t_envvar *) node->data;
-	if (line != NULL)
-		path = ft_split(line->value, ':');
+	if (node == NULL)
+	{
+		path = ft_calloc(2, sizeof(char *));
+		if (path == NULL)
+			return (NULL);
+		path[0] = ft_strdup(" ");
+		path[1] = NULL;
+	}
+	else
+	{
+		line = (t_envvar *) node->data;
+		if (line != NULL)
+			path = ft_split(line->value, ':');
+	}
 	return (path);
 }
 

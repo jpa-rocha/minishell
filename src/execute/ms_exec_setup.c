@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 14:16:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 11:20:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ms_bot_pipe(t_shell *shell)
 {
 	if (dup2(shell->cmd->pfd[0], STDIN_FILENO) == -1)
 		return (4);
-	close(STDOUT_FILENO);
+	//close(STDOUT_FILENO);
 	close(shell->cmd->pfd[0]);
 	if (ms_next_cmd(shell) == -1)
 	{
@@ -78,12 +78,14 @@ int	ms_cmd_separator(t_shell *shell)
 	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
 		cmdctrl = ft_strrchr(shell->cmd->curr_cmd[0], '/');
-		if (cmdctrl != NULL)
+		if (access(shell->cmd->curr_cmd[0], F_OK) == 0)
+			return (EXIT_SUCCESS);
+		else if (cmdctrl != NULL)
 		{
 			cmdctrl++;
 			shell->cmd->cmd_name = cmdctrl;
 		}
-		if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
+		else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
 		{
 			printf("%s%s", shell->cmd->curr_cmd[0], ERR_INV);
 			return (COMMAND_NOT_FOUND);

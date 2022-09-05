@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/01 09:41:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 09:35:34 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
 		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
 		shell->exitcode = ms_exec_set_output(shell, cmd);
+	else
+	{
+		shell->cmd->input = shell->cmd->temp_fd[0];
+		shell->cmd->output = shell->cmd->temp_fd[1];
+	}
 	return (shell->exitcode);
 }
 
