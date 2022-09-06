@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:10:45 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:18:52 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,6 @@ int	ms_cmd_executing(t_shell *shell)
 		perror("Problem ocurred");
 	}
 	else
-<<<<<<< HEAD
-		return (ms_call_built_in(shell));
-	return (EXIT_FAILURE);
-=======
 	{
 		ms_pipe_builtins(shell);
 	}
@@ -72,7 +68,6 @@ static void	ms_pipe_builtins(t_shell *shell)
 	ms_call_built_in(shell);
 	ms_shell_cleanup(shell);
 	exit(0);
->>>>>>> main
 }
 
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET

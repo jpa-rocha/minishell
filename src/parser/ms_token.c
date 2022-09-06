@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 16:09:01 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:21:13 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,30 @@ void	print_nb_words(t_shell *shell)
 		printf("index [%d] has [%d] words\n", j, c);
 		j++;
 	}
+}
+
+char	*remove_white_spaces(char *str)
+{
+	int		i;
+	int		j;
+	char	*new_str;
+
+	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if ((str[i] == ' ' && str[i + 1] == ' ') == 0)
+		{
+			new_str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[j] = '\0';
+	str = ft_strdup(new_str);
+	free(new_str);
+	return (str);
 }
 
 char	**get_each_word(char *str)
@@ -99,7 +123,8 @@ char	***create_seq_from_lexer(t_shell *shell)
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
-		//shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
+		shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
+		shell->lexer[j] = remove_white_spaces(shell->lexer[j]);
 		shell->cmd->seq[j] = get_each_word(shell->lexer[j]); 
 		j++;
 	}

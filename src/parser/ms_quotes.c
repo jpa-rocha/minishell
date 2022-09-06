@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 16:08:10 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:40:48 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*remove_sq(char *str)
 	
 	i = 0;
 	k = 0;
-	temp = ft_calloc(ft_strlen(str) - 2, sizeof(char));
+	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!temp)
 		return (NULL);
 	while (str[i] != '\0')
@@ -49,9 +49,8 @@ char	*remove_sq(char *str)
 		}
 		i++;
 	}
-	//temp[k] = '\0';
+	temp[k] = '\0';
 	str = ft_strdup(temp);
-	//printf("without quotes: %s\n", str);
 	return(str);
 }
 
@@ -63,7 +62,7 @@ char	*remove_dq(char *str)
 	
 	i = 0;
 	k = 0;
-	temp = ft_calloc(ft_strlen(str) - 2, sizeof(char));
+	temp = ft_calloc(ft_strlen(str) - 1, sizeof(char));
 	if (!temp)
 		return (NULL);
 	while (str[i])
@@ -85,26 +84,99 @@ char	*remove_dq(char *str)
 		}
 		i++;
 	}
+	temp[k] = '\0';
 	str = ft_strdup(temp);
 	free(temp);
-	//printf("%s\n", str);
 	return (str);
 }
 
+static int	check_sq(char *str)
+{
+	size_t	i;
+	int		quotes_flag;
+	int		index;
+
+	quotes_flag = 0;
+	index = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == SQ) && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i++;
+	}
+	i++;
+	while (i < ft_strlen(str))
+	{
+		if ((str[i] == SQ) && quotes_flag == 1)
+		{
+			index += i;
+			quotes_flag = 0;
+			break ;
+		}
+		i++;
+	}
+	return (quotes_flag);
+}
+
+static int	check_dq(char *str)
+{
+	size_t	i;
+	int		quotes_flag;
+	int		index;
+
+	quotes_flag = 0;
+	index = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == DQ) && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i++;
+	}
+	i++;
+	while (i < ft_strlen(str))
+	{
+		if (str[i] == DQ && quotes_flag == 1)
+		{
+			index += i;
+			quotes_flag = 0;
+			break ;
+		}
+		i++;
+	}
+	return (quotes_flag);
+}
 
 char	*check_quotes_pre_lexer(char *str)
 {
 	int		i;
+	int		s_flag;
+	int		d_flag;
 
 	i = 0;
+	s_flag = check_sq(str);
+	d_flag = check_dq(str);
 	if (check_quotes(str) == EXIT_SUCCESS)
 	{
 		while (str[i] != '\0')
 		{
-			if (str[i] == SQ)
+			if (str[i] == SQ && s_flag == 0)
+			{
+				s_flag = 1;
 				str = remove_sq(str);
-			if (str[i] == DQ)
-				str = remove_dq(str);				
+			}
+			if (str[i] == DQ && d_flag == 0)
+			{
+				d_flag = 1;
+				str = remove_dq(str);
+			}
 			i++;
 		}
 	}

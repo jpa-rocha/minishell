@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/09/02 15:11:42 by mgulenay         ###   ########.fr       */
-=======
-/*   Updated: 2022/09/05 12:24:02 by jrocha           ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2022/09/06 09:40:51 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -124,6 +121,7 @@ int			dq_closed(char *str);
 int			sq_closed(char *str);
 char		*check_quotes_pre_lexer(char *str);
 int			check_pipe_in_quotes(char *str);
+char		*remove_white_spaces(char *str);
 
 // Error checks for the variable line
 int			check_quotes(char *str);
