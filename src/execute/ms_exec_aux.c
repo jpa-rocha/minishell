@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 11:56:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:33:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 	cmd_len = ms_args_len(cmd);
 	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1)
 		|| ft_strncmp(cmd[0], "<<", 2) == 0)
-		g_exit = ms_exec_set_input(shell, cmd);
+		shell->status = ms_exec_set_input(shell, cmd);
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
 		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
-		g_exit = ms_exec_set_output(shell, cmd);
+		shell->status = ms_exec_set_output(shell, cmd);
 	else
 	{
 		shell->cmd->input = shell->cmd->temp_fd[0];
 		shell->cmd->output = shell->cmd->temp_fd[1];
 	}
-	return (g_exit);
+	return (shell->status);
 }
 
 int	ms_exec_here_doc(t_shell *shell)
@@ -90,7 +90,7 @@ static int	ms_exec_set_input(t_shell *shell, char **cmd)
 		return (EXIT_FAILURE);
 	if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
 		return (EXIT_FAILURE);
-	g_exit = ms_cmd_replace(shell, cmd);
+	shell->status = ms_cmd_replace(shell, cmd);
 	return (EXIT_SUCCESS);
 }
 
@@ -146,7 +146,7 @@ static int	ms_exec_set_output(t_shell *shell, char **cmd)
 				, O_WRONLY | O_RDWR | O_CREAT, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
-	g_exit = ms_cmd_replace(shell, cmd);
+	shell->status = ms_cmd_replace(shell, cmd);
 	return (EXIT_SUCCESS);
 }
 

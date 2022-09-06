@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 11:57:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:29:13 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_envvar	*ms_init_vars(t_shell *shell, char *envvar)
 	var = NULL;
 	if (ms_env_find_entry(shell->workenv, envvar) != NULL)
 		var = (t_envvar *)ms_env_find_entry(shell->workenv, envvar)->data;
-	g_exit = EXIT_SUCCESS;
+	//shell->status = EXIT_SUCCESS;
 	return (var);
 }
 

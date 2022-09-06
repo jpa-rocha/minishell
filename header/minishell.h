@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 14:43:33 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:43:21 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 # define PATH_SIZE 1024
 
-extern int	g_exit;
+//extern int	g_exit;
 
 typedef struct s_envvar {
 	char	*name;
@@ -78,6 +78,7 @@ typedef struct s_shell {
 	char		**env;
 	char		**argv;
 	char		**lexer;
+	int			status;
 }	t_shell;
 
 // General Functions
@@ -153,7 +154,7 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 // Entry point into the export function
 int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
-int			ms_var_check(char *called_from, char *newvar);
+int			ms_var_check(t_shell *shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char **args);

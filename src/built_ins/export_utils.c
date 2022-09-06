@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 12:00:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:36:37 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	ms_env_swap_data(t_envvar *line, t_envvar *nline)
 	return (EXIT_SUCCESS);
 }
 
-int	ms_var_check(char *called_from, char *newvar)
+int	ms_var_check(t_shell *shell, char *called_from, char *newvar)
 {
 	int	i;
 	int	first_check;
@@ -96,7 +96,7 @@ int	ms_var_check(char *called_from, char *newvar)
 	i += 2;
 	if (first_check == 1 || check != 1)
 	{
-		g_exit = 1;
+		shell->status = 1;
 		printf(ERR_INV_ID, called_from, newvar);
 		return (-1);
 	}

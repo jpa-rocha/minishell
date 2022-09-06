@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 11:57:27 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:32:49 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	ms_env(t_shell *shell)
 		else
 			node = node->next;
 	}
-	g_exit = EXIT_SUCCESS;
-	return (g_exit);
+	shell->status = EXIT_SUCCESS;
+	return (shell->status);
 }
 
 t_list	*ms_env_create_work_env(t_shell *shell, char **env)

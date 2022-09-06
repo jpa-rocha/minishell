@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 11:54:56 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:34:45 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	shell->builtins[5] = "echo";
 	shell->builtins[6] = "pwd";
 	shell->builtins[7] = "env";
-	g_exit = 0;
+	shell->status = 0;
 	return (shell);
 }
 
@@ -75,7 +75,7 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (cmd == NULL)
 	{
-		g_exit = ALLOCATION_PROBLEM_EXIT;
+		shell->status = ALLOCATION_PROBLEM_EXIT;
 		return (NULL);
 	}
 	cmd->path = ms_cmd_path_creator(shell);
@@ -86,6 +86,5 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 		return (NULL);
 	cmd->line = readline(prompt);
 	free(prompt);
-	g_exit = EXIT_SUCCESS;
 	return (cmd);
 }

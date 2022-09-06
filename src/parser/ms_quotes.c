@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 16:17:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:44:10 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ static char	*ms_replace_err(char *dollar, char *str)
 	beginning = ft_calloc(i + 1, sizeof(char));
 	ft_strlcpy(beginning, str, i + 1);
 	dollar += 2;
-	num = ft_itoa(g_exit);
+	num = ft_itoa(9999999);
 	end = ft_strjoin(num, dollar);
 	free(str);
 	str = ft_strjoin(beginning, end);

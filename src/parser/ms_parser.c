@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 15:16:35 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 17:33:58 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	print_lexer(t_shell *shell)
 int	ms_parser(t_shell *shell)
 {
 	if (shell->cmd->line != NULL)
-		g_exit = ms_lexer(shell);
+		shell->status = ms_lexer(shell);
 	shell->cmd->seq = create_seq_from_lexer(shell);
 	if (shell->cmd->seq == NULL)
 	{
-		g_exit = ALLOCATION_PROBLEM_EXIT;
-		return (g_exit);
+		shell->status = ALLOCATION_PROBLEM_EXIT;
+		return (shell->status);
 	}
 	
 	ms_free_args(shell->lexer);
