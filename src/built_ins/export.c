@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 09:27:35 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 12:03:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 static void	ms_export_empty_call(t_node *node);
 static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node);
 static int	ms_export_create_var(t_shell *shell, char *newvar);
-static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar);
+static int	ms_export_value_check(t_envvar *line, char *newvar);
 
 int	ms_export(t_shell *shell, char **args)
 {
 	t_node		*node;
 
 	node = shell->workenv->first;
-	shell->exitcode = ms_export_order(shell->workenv);
-	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
-		return (shell->exitcode);
+	g_exit = ms_export_order(shell->workenv);
+	if (g_exit == ALLOCATION_PROBLEM_EXIT)
+		return (g_exit);
 	if (ms_args_len(args) == 1)
 		ms_export_empty_call(node);
 	else if (ms_args_len(args) > 1)
@@ -33,12 +33,12 @@ int	ms_export(t_shell *shell, char **args)
 		if (node != NULL)
 			ms_export_var_exists(shell, args[1], node);
 		else
-			shell->exitcode = ms_export_create_var(shell, args[1]);
-		if (shell->exitcode != EXIT_SUCCESS)
-			return (shell->exitcode);
+			g_exit = ms_export_create_var(shell, args[1]);
+		if (g_exit != EXIT_SUCCESS)
+			return (g_exit);
 	}
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	g_exit = EXIT_SUCCESS;
+	return (g_exit);
 }
 
 static void	ms_export_empty_call(t_node *node)
@@ -66,20 +66,20 @@ static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 	line = (t_envvar *) node->data;
 	free(line->name);
 	free(line->value);
-	i = ms_var_check(shell, "export", newvar);
+	i = ms_var_check("export", newvar);
 	if (i < 0)
-		return (shell->exitcode);
+		return (g_exit);
 	line->name = ft_calloc(i, sizeof(char));
 	if (line->name == NULL)
 	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-		return (shell->exitcode);
+		g_exit = ALLOCATION_PROBLEM_EXIT;
+		return (g_exit);
 	}
 	ft_strlcpy(line->name, newvar, i);
-	shell->exitcode = ms_export_value_check(shell, line, newvar);
+	g_exit = ms_export_value_check(line, newvar);
 	shell->env = ms_env_init_env(shell);
 	shell->cmd->path = ms_cmd_path_creator(shell);
-	return (shell->exitcode);
+	return (g_exit);
 }
 
 // CONTROLL FOR NULL
@@ -88,24 +88,24 @@ static int	ms_export_create_var(t_shell *shell, char *newvar)
 	t_envvar	line;
 	int			i;
 
-	i = ms_var_check(shell, "export", newvar);
+	i = ms_var_check("export", newvar);
 	if (i < 0)
-		return (shell->exitcode);
+		return (g_exit);
 	line.name = ft_calloc(i, sizeof(char));
 	if (line.name == NULL)
 	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-		return (shell->exitcode);
+		g_exit = ALLOCATION_PROBLEM_EXIT;
+		return (g_exit);
 	}
 	line.env_order = shell->workenv->total;
 	ft_strlcpy(line.name, newvar, i);
-	shell->exitcode = ms_export_value_check(shell, &line, newvar);
+	g_exit = ms_export_value_check(&line, newvar);
 	list_add_back(&line, shell->workenv);
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	g_exit = EXIT_SUCCESS;
+	return (g_exit);
 }
 
-static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
+static int	ms_export_value_check(t_envvar *line, char *newvar)
 {
 	char		*value;
 
@@ -116,8 +116,8 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 		line->value = ft_calloc(ft_strlen(value) + 1, sizeof(char));
 		if (line->value == NULL)
 		{
-			shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-			return (shell->exitcode);
+			g_exit = ALLOCATION_PROBLEM_EXIT;
+			return (g_exit);
 		}
 		ft_strlcpy(line->value, value, ft_strlen(value) + 1);
 	}
@@ -126,10 +126,10 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar)
 		line->value = ft_calloc(1, sizeof(char));
 		if (line->value == NULL)
 		{
-			shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-			return (shell->exitcode);
+			g_exit = ALLOCATION_PROBLEM_EXIT;
+			return (g_exit);
 		}
 	}
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	g_exit = EXIT_SUCCESS;
+	return (g_exit);
 }

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:11:47 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/22 15:46:57 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 12:08:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	ms_prompt_create(char *prompt, t_envvar *user,
 				t_envvar *path, t_envvar *home);
 static char	*ms_colour(char *colour);
-static char	*ms_prompt_null_handle(t_shell *shell);
+static char	*ms_prompt_null_handle(void);
 
 void	ms_logo(void)
 {
@@ -52,24 +52,24 @@ char	*ms_prompt(t_shell *shell)
 	path = ms_init_vars(shell, "PWD");
 	home = ms_init_vars(shell, "HOME");
 	if (user == NULL || path == NULL)
-		return (ms_prompt_null_handle(shell));
+		return (ms_prompt_null_handle());
 	prompt = ft_calloc(26 + ft_strlen(user->value) + ft_strlen(path->value)
 			+ 7, sizeof(char));
 	if (prompt == NULL)
-		return (ms_prompt_null_handle(shell));
+		return (ms_prompt_null_handle());
 	if (ms_prompt_create(prompt, user, path, home) != EXIT_SUCCESS)
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		g_exit = ALLOCATION_PROBLEM_EXIT;
 	return (prompt);
 }
 
-static char	*ms_prompt_null_handle(t_shell *shell)
+static char	*ms_prompt_null_handle(void)
 {
 	char	*prompt;
 
 	prompt = ft_calloc(ft_strlen("minishell$ ") + 1, sizeof(char));
 	if (prompt == NULL)
 	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		g_exit = ALLOCATION_PROBLEM_EXIT;
 		return (prompt);
 	}
 	ft_strlcpy(prompt, "minishell$ ", ft_strlen("minishell$ ") + 1);

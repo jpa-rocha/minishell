@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 10:21:01 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 14:43:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 
 # define PATH_SIZE 1024
 
+extern int	g_exit;
 
 typedef struct s_envvar {
 	char	*name;
@@ -77,7 +78,6 @@ typedef struct s_shell {
 	char		**env;
 	char		**argv;
 	char		**lexer;
-	int			exitcode;
 }	t_shell;
 
 // General Functions
@@ -99,7 +99,7 @@ void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 char		**ms_copy_cmd(char **cmd);
-
+char		*ms_env_ret_value(t_shell *shell, char *name);
 // Signal Functions
 
 void		ms_signals(void);
@@ -115,6 +115,7 @@ int			check_pipe_in_quotes(char *str);
 char		***create_seq_from_lexer(t_shell *shell);
 int			get_nb_words_store(t_shell *shell);
 char		**get_each_word(char *str);
+void		*ms_dollar_check(t_shell *shell, char **str);
 
 // Error checks for the variable line
 int			check_quotes(char *str);
@@ -152,7 +153,7 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 // Entry point into the export function
 int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
-int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
+int			ms_var_check(char *called_from, char *newvar);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char **args);

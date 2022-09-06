@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 12:31:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 14:47:18 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static int	check_char_in_quotes(char *str)
 	}
 	return (quotes_flag);
 }
+
 
 /* check */
 int	check_pipe_in_quotes(char *str)

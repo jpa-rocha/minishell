@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 09:41:01 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 16:01:53 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int	ms_error_management(t_shell *shell)
 		printf("%s", ERR_NULL);
 		return (ALLOCATION_PROBLEM_EXIT);
 	}
-	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
+	if (g_exit == ALLOCATION_PROBLEM_EXIT)
 	{
 		ms_cmd_cleanup(shell->cmd);
 		printf("%s", ERR_NULL);
 	}
-	return (shell->exitcode);
+	return (g_exit);
 }
 
 void	ms_list_data_cleaner(t_list *list)
@@ -96,4 +96,23 @@ char	**ms_copy_cmd(char **cmd)
 	}
 	copy[i] = NULL;
 	return (copy);
+}
+
+char	*ms_env_ret_value(t_shell *shell, char *name)
+{
+	t_node	*node;
+	t_envvar *var;
+	char 	*search;
+
+	search = ft_strjoin(name, "=");
+	node = ms_env_find_entry(shell->workenv, search);
+	if (node == NULL)
+	{
+		free(search);
+		return (NULL);
+	}
+	var = (t_envvar *)node->data;
+	free(search);
+	search = ft_strdup(var->value);
+	return (search);
 }

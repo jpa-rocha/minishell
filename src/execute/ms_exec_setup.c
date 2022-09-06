@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 10:23:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 11:56:07 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	ms_bot_pipe(t_shell *shell)
 	close(shell->cmd->pfd[0]);
 	if (ms_next_cmd(shell) == -1)
 	{
-		shell->exitcode = EXIT_FAILURE;
-		return (shell->exitcode);
+		g_exit = EXIT_FAILURE;
+		return (g_exit);
 	}
 	return (EXIT_SUCCESS);
 }

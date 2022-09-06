@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:16:10 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 14:20:09 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL)
 		return (EXIT_FAILURE);
+	ms_dollar_check(shell, shell->cmd->curr_cmd);
 	check = ms_exec_first_check(shell);
 	if (check != 0)
-		return (shell->exitcode);
-	shell->exitcode = ms_command_processing(shell);
+		return (g_exit);
+	g_exit = ms_command_processing(shell);
 	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
 	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
 	close(shell->cmd->temp_fd[0]);
 	close(shell->cmd->temp_fd[1]);
-	return (shell->exitcode);
+	return (g_exit);
 }
 
 // Check if there are arguments, and if so if they are printable characters
@@ -68,13 +69,13 @@ static int	ms_command_processing(t_shell *shell)
 		ms_is_built_in(shell, shell->cmd->curr_cmd);
 		if (shell->cmd->builtin_num == -1)
 		{
-			shell->exitcode = ms_cmd_separator(shell);
-			if (shell->exitcode != EXIT_SUCCESS)
-				return (shell->exitcode);
+			g_exit = ms_cmd_separator(shell);
+			if (g_exit != EXIT_SUCCESS)
+				return (g_exit);
 		}
-		shell->exitcode = ms_top_pipe(shell);
-		if (shell->exitcode != 0)
-			return (shell->exitcode);
+		g_exit = ms_top_pipe(shell);
+		if (g_exit != 0)
+			return (g_exit);
 		if (shell->cmd->cmd_idx == 0 && shell->cmd->changes_state == 1)
 			ms_call_built_in(shell);
 		else
@@ -84,13 +85,13 @@ static int	ms_command_processing(t_shell *shell)
 				return (EXIT_FAILURE);
 			if (pid == 0)
 				ms_cmd_executing(shell);
-			waitpid(-1, &shell->exitcode, 0);
+			waitpid(-1, &g_exit, 0);
 		}
-		shell->exitcode = ms_bot_pipe(shell);
-		if (shell->exitcode != 0)
-			return (shell->exitcode);
+		g_exit = ms_bot_pipe(shell);
+		if (g_exit != 0)
+			return (g_exit);
 	}
-	return (shell->exitcode);
+	return (g_exit);
 }
 
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
