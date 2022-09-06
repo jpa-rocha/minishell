@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 16:08:06 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/06 20:55:52 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_char_in_quotes(char *str);
 
-/* checks whether pipe is in quotes */
+/* checks whether pipe is in the quotes */
 static int	check_char_in_quotes(char *str)
 {
 	size_t	i;

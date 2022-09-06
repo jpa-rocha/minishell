@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 12:21:13 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/06 22:09:49 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ char	*remove_white_spaces(char *str)
 
 char	**get_each_word(char *str)
 {
-	char **words;
+	char	**words;
 	size_t	i;
 
-	int num_words = 0; // 2
-	size_t num_chars = 0; // length of each word --  5 
+	int num_words = 0;
+	size_t num_chars = 0;
 	i = 0;
 	words = ft_calloc(count_words(str) + 1, sizeof(char *));
 	while (num_words < count_words(str))
@@ -123,9 +123,9 @@ char	***create_seq_from_lexer(t_shell *shell)
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
-		shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
 		shell->lexer[j] = remove_white_spaces(shell->lexer[j]);
-		shell->cmd->seq[j] = get_each_word(shell->lexer[j]); 
+		shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
+		shell->cmd->seq[j] = get_each_word(shell->lexer[j]);
 		j++;
 	}
 	shell->cmd->seq[j] = NULL;
