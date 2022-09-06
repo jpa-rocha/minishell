@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:43:21 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 18:37:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 # define PATH_SIZE 1024
 
-//extern int	g_exit;
+extern int	g_exit;
 
 typedef struct s_envvar {
 	char	*name;

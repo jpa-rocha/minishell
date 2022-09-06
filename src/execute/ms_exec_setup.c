@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:33:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 20:23:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ int	ms_cmd_executing(t_shell *shell)
 {
 	if (shell->cmd->builtin_num == -1)
 	{
+		g_exit = ms_cmd_separator(shell);
+		if (g_exit != EXIT_SUCCESS)
+		{
+			ms_shell_cleanup(shell);
+			exit(g_exit);
+		}
 		execve(shell->cmd->cmd_name, shell->cmd->curr_cmd, shell->env);
 		perror("Problem ocurred");
 	}
@@ -79,6 +85,7 @@ int	ms_cmd_separator(t_shell *shell)
 			shell->cmd->cmd_name = ft_strdup(shell->cmd->curr_cmd[0]);
 		else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
 		{
+			// PRINT TO STD_ERR
 			printf("%s%s", shell->cmd->curr_cmd[0], ERR_INV);
 			return (COMMAND_NOT_FOUND);
 		}

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:33:39 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 20:20:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ static int	ms_command_processing(t_shell *shell)
 		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		ms_is_built_in(shell, shell->cmd->curr_cmd);
-		if (shell->cmd->builtin_num == -1)
+		/* if (shell->cmd->builtin_num == -1)
 		{
 			shell->status = ms_cmd_separator(shell);
 			if (shell->status != EXIT_SUCCESS)
 				return (shell->status);
-		}
+		} */
 		shell->status = ms_top_pipe(shell);
 		if (shell->status != 0)
 			return (shell->status);
@@ -85,8 +85,9 @@ static int	ms_command_processing(t_shell *shell)
 				return (EXIT_FAILURE);
 			if (pid == 0)
 				ms_cmd_executing(shell);
-			waitpid(-1, &shell->status, 0);
+			waitpid(-1, &g_exit, 0);
 		}
+		g_exit = WEXITSTATUS(g_exit);
 		shell->status = ms_bot_pipe(shell);
 		if (shell->status != 0)
 			return (shell->status);

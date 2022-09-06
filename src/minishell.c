@@ -6,27 +6,27 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:43:06 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 20:07:18 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
+//WHATEVER IS EXECUTED INSIDE PIPE NEEDS G_EXIT ELSE INTERNAL EXITCODE
+
 // Entry point for the minishell logic
-//int g_exit;
+int g_exit;
 
 int	main(int argc, char **argv, char **env)
 {
-	int error;
-	
-	error = 0;
+	g_exit = 0;
 	if (argc > 1 || !argv[0])
 	{
 		printf("%s", ERR_ARG);
 		return (1);
 	}
-	error = ms_shell(env, argv, 1);
-	return (error);
+	g_exit = ms_shell(env, argv, 1);
+	return (g_exit);
 }
 
 // Entry point for the minishell logic
