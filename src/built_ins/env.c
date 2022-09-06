@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 10:47:16 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 09:44:01 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	ft_strlcpy(line.name, env_line, i);
 	if (ft_strncmp(line.name, "SHELL=", 5) == 0)
 		line.value = ft_strdup(shell->name);
+	else if (ft_strncmp(line.name, "SHLVL=", 5) == 0)
+		line.value = ft_itoa(shell->shlvl);
 	else
 	{	
 		value = ft_strchr(env_line, '=');

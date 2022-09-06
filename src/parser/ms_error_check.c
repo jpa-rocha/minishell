@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_lexer_utils.c                                   :+:      :+:    :+:   */
+/*   ms_error_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/08/24 12:43:15 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:08:06 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-int	check_quotes(t_cmd *cmd)
+int	check_quotes(char *str)
 {
 	int	i;
 	int	quote_end;
 
 	i = 0;
-	while (cmd->line[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
+		if (str[i] == SQ || str[i] == DQ)
 		{
 			quote_end = i + 1;
-			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
+			while (str[i] && (str[quote_end] != str[i]))
 			{
-				if (!cmd->line[quote_end])
+				if (!str[quote_end])
 				{
 					perror("not closing quotes\n");
-					return (EXIT_FAILURE);
+					return (1);
 				}
 				quote_end++;
 			}
@@ -36,7 +36,7 @@ int	check_quotes(t_cmd *cmd)
 		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 int	counter_io(t_cmd *cmd)
@@ -124,7 +124,7 @@ int	check_slash(t_cmd *cmd)
 	}
 	return (EXIT_SUCCESS);
 }
-
+/* 
 int	check_char_errors(t_cmd *cmd)
 {
 	if (check_quotes(cmd) == EXIT_FAILURE)
@@ -133,7 +133,8 @@ int	check_char_errors(t_cmd *cmd)
 		return (EXIT_FAILURE);
 	if (check_slash(cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-/* 	if (check_if_only_pipe(cmd) == EXIT_FAILURE)
+	if (check_if_only_pipe(cmd) == EXIT_FAILURE)
 		return (EXIT_FAILURE); */
-	return (EXIT_SUCCESS);
-}
+//	return (EXIT_SUCCESS);
+//}
+ 

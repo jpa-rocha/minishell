@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:35:35 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 09:41:01 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,4 @@ char	**ms_copy_cmd(char **cmd)
 	}
 	copy[i] = NULL;
 	return (copy);
-}
-
-void	ms_change_lvl(t_shell *shell)
-{
-	char		**newvar;
-	char *		lvl;
-
-	lvl = ft_itoa(shell->shlvl);
-	newvar = ft_calloc(3, sizeof(char *));
-	newvar[0] = ft_strdup("export");
-	newvar[1] = ft_strjoin("SHLVL=", lvl);
-	newvar[2] = NULL;
-	ms_export(shell, newvar);
-	ms_free_args(newvar);
-	free(lvl);
 }

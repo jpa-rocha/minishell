@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 12:24:24 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:35:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	ms_free_seq(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = cmd->n_cmd - 1;
 	while (i >= 0)
 	{
 		ms_free_args(cmd->seq[i]);
-		i =- 1;
+		i -= 1;
 	}
 	free(cmd->seq);
 }
@@ -53,6 +53,10 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 		ms_free_args(cmd->curr_cmd);
 	if (cmd->heredoc == 1)
 		unlink("heredoc_aux.txt");
+	close(cmd->pfd[0]);
+	close(cmd->pfd[1]);
+	close(cmd->temp_fd[0]);
+	close(cmd->temp_fd[1]);
 	free(cmd);
 	return (EXIT_SUCCESS);
 }
@@ -68,6 +72,7 @@ int	ms_shell_cleanup(t_shell *shell)
 		ms_list_data_cleaner(shell->workenv);
 		list_destroyer(shell->workenv);
 	}
+	rl_clear_history();
 	if (shell != NULL)
 		free(shell);
 	return (EXIT_SUCCESS);

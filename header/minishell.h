@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 15:44:33 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:21:01 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define BSLASH '\\'
 
 # define PATH_SIZE 1024
+
 
 typedef struct s_envvar {
 	char	*name;
@@ -98,7 +99,6 @@ void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 char		**ms_copy_cmd(char **cmd);
-void		ms_change_lvl(t_shell *shell);
 
 // Signal Functions
 
@@ -117,11 +117,11 @@ int			get_nb_words_store(t_shell *shell);
 char		**get_each_word(char *str);
 
 // Error checks for the variable line
-int			check_quotes(t_cmd *cmd);
+int			check_quotes(char *str);
 int			counter_io(t_cmd *cmd);
 int			check_only_io(t_cmd *cmd);
 int			check_slash(t_cmd *cmd);
-int			check_char_errors(t_cmd *cmd);
+//int			check_char_errors(t_cmd *cmd);
 int			check_if_only_pipe(t_cmd *cmd);
 int			count_pipes(t_cmd *cmd);
 

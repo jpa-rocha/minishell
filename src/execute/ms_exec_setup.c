@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 11:43:05 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:23:29 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	ms_bot_pipe(t_shell *shell)
 {
 	if (dup2(shell->cmd->pfd[0], STDIN_FILENO) == -1)
 		return (4);
-	//close(STDOUT_FILENO);
 	close(shell->cmd->pfd[0]);
 	if (ms_next_cmd(shell) == -1)
 	{
@@ -73,7 +72,6 @@ static void	ms_pipe_builtins(t_shell *shell)
 //NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET
 int	ms_cmd_separator(t_shell *shell)
 {
-	//char	*cmdctrl;
 
 	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
@@ -96,6 +94,11 @@ static int	ms_find_cmd_loop(t_shell *shell)
 	char	*cmd;
 
 	i = 0;
+	if (shell->cmd->cmd_name != NULL)
+	{
+		free(shell->cmd->cmd_name);
+		shell->cmd->cmd_name = NULL;
+	}
 	while (shell->cmd->path[i] != NULL)
 	{
 		tmp = ft_strjoin(shell->cmd->path[i], "/");
@@ -118,8 +121,11 @@ static int	ms_find_cmd_loop(t_shell *shell)
 
 static int	ms_next_cmd(t_shell *shell)
 {
-	//if (shell->cmd->cmd_name != NULL)
-	//	free(shell->cmd->cmd_name);
+	if (shell->cmd->cmd_name != NULL)
+	{
+		free(shell->cmd->cmd_name);
+		shell->cmd->cmd_name = NULL;
+	}
 	shell->cmd->cmd_idx += 1;
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);

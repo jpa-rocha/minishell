@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:09:43 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 09:38:55 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	if (shell == NULL)
 		return (NULL);
 	shell->name = argv[0];
+	shell->argv = argv;
+	shell->shlvl = shlvl;
 	shell->workenv = ms_env_create_work_env(shell, env);
 	if (shell->workenv == NULL)
 		ms_shell_cleanup(shell);
 	shell->env = ms_env_init_env(shell);
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
-	shell->argv = argv;
-	shell->shlvl = shlvl;
-	ms_change_lvl(shell);
 	shell->builtins[0] = "cd";
 	shell->builtins[1] = "exit";
 	shell->builtins[2] = "minishell";

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 13:53:16 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:42:20 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ static void	ms_signal_handler(int num)
 
 static void	ms_signal_sigint()
 {
-	printf("\b");
-	printf("\n");
+	printf("\r");
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

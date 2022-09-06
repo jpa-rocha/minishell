@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 14:34:36 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:44:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ms_exec_here_doc(t_shell *shell)
 
 	if (ms_exec_here_doc_setup(shell) != 0)
 		return (EXIT_FAILURE);
-	while (line != NULL)
+	while (1)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(STDIN_FILENO, 0);
