@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/07 09:35:11 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/07 20:35:26 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 
 	i = 0;
 	count = 1;
-	while (cmd->line[i])
+	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == PIPE && check_pipe_in_quotes(cmd->line) == 0)
 		{
@@ -86,9 +86,9 @@ int	ms_lexer(t_shell *shell)
 			check_temp(temp, shell);
 			ft_strlcpy(temp, &shell->cmd->line[i] - count, count + 1);
 			shell->lexer[j] = ft_strtrim(temp, " ");
+			free(temp);
 			if (!shell->lexer[j])
 				check_lexer(shell);
-			free(temp);
 			j += 1;
 			if (shell->cmd->line[i] == '\0')
 				break ;
