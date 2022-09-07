@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 09:40:51 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:39:57 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int			check_char_errors(t_cmd *cmd);
 int			check_if_only_pipe(t_cmd *cmd);
 int			count_pipes(t_cmd *cmd);
 int			if_pipes_are_empty(t_cmd *cmd);
+int	check_char_in_quotes(char *str, char c);
+
 
 // for printing
 void		print_nb_words(t_shell *shell);

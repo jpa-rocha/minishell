@@ -6,11 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 22:09:49 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:02:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	count_wspaces(char *str);
 
 /* count number of words in a string */
 int	count_words(char *str)
@@ -48,22 +50,35 @@ void	print_nb_words(t_shell *shell)
 	}
 }
 
+static int	count_wspaces(char *str)
+{
+	int	i;
+	int	count;
+	
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			count++;
+		i++;
+	}
+	return (count);
+}	
+
 char	*remove_white_spaces(char *str)
 {
-	int		i;
-	int		j;
+	size_t	i;
+	size_t		j;
 	char	*new_str;
 
-	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	i = 0;
 	j = 0;
+	new_str = ft_calloc(ft_strlen(str) - count_wspaces(str) + 1, sizeof(char));
 	while (str[i])
 	{
 		if ((str[i] == ' ' && str[i + 1] == ' ') == 0)
-		{
-			new_str[j] = str[i];
-			j++;
-		}
+				new_str[j++] = str[i];
 		i++;
 	}
 	new_str[j] = '\0';
@@ -123,7 +138,8 @@ char	***create_seq_from_lexer(t_shell *shell)
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
-		shell->lexer[j] = remove_white_spaces(shell->lexer[j]);
+		if (check_char_in_quotes(shell->lexer[j], ' ') == 0)
+			shell->lexer[j] = remove_white_spaces(shell->lexer[j]);
 		shell->lexer[j] = check_quotes_pre_lexer(shell->lexer[j]);
 		shell->cmd->seq[j] = get_each_word(shell->lexer[j]);
 		j++;
