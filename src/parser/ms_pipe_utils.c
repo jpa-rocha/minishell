@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_lexer_utils2.c                                  :+:      :+:    :+:   */
+/*   ms_pipe_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 15:54:21 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:39:39 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int	check_char_in_quotes(char *str);
 
-/* checks whether pipe is in quotes */
-static int	check_char_in_quotes(char *str)
+/* checks whether pipe is in the quotes */
+int	check_char_in_quotes(char *str, char c)
 {
 	size_t	i;
 	int		quotes_flag;
@@ -47,7 +46,7 @@ static int	check_char_in_quotes(char *str)
 	i = index - 1;
 	while (i < ft_strlen(str))
 	{
-		if (str[i] == '|' && quotes_flag == 0)
+		if (str[i] == c && quotes_flag == 0)
 		{
 			quotes_flag = 1;
 			break ;
@@ -60,7 +59,7 @@ static int	check_char_in_quotes(char *str)
 /* check */
 int	check_pipe_in_quotes(char *str)
 {
-	if (check_char_in_quotes(str) == 1)
+	if (check_char_in_quotes(str, PIPE) == 1)
 		return (1);
 	return (0);
 }

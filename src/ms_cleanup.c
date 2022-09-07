@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 12:24:24 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/06 10:36:42 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ms_free_seq(t_cmd *cmd)
 	while (i >= 0)
 	{
 		ms_free_args(cmd->seq[i]);
-		i =- 1;
+		i -= 1;
 	}
 	free(cmd->seq);
 }

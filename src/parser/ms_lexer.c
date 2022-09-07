@@ -6,11 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 15:57:59 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:35:11 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
+static int	check_lexer(t_shell *shell);
+static int	check_temp(char *temp, t_shell *shell);
 
 /* check how many group of commands we have - - the separator is the pipe */
 int	get_nmb_cmd(t_cmd *cmd)
@@ -25,10 +28,15 @@ int	get_nmb_cmd(t_cmd *cmd)
 		if (cmd->line[i] == PIPE && check_pipe_in_quotes(cmd->line) == 0)
 		{
 			i += 1;
-		 	while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
+			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
 				i += 1;
 			if (cmd->line[i] != '\0')
 				count += 1;
+			if (cmd->line[i] == '\0')
+			{
+				printf("pipe needs an argument\n");
+				return (EXIT_FAILURE);
+			}
 		}
 		i += 1;
 	}
@@ -68,7 +76,6 @@ int	ms_lexer(t_shell *shell)
 	i = 0;
 	j = 0;
 	count = 0;
-	//check_char_errors(shell->cmd);
 	alloc_lexer(shell);
 	while (1)
 	{

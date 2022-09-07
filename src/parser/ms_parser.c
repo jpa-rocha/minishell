@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 12:22:35 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/05 16:06:51 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	print_lexer(t_shell *shell)
 	while (shell->lexer[i])
 	{
 		printf("[%d] %s\n", i, shell->lexer[i]);
+		free(shell->lexer[i]);
 		i++;
 	}
 }
