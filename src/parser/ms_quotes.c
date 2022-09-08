@@ -6,13 +6,18 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 23:00:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 23:07:56 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_sq(char *str)
+static char	*remove_sq(char *str);
+static char	*remove_dq(char *str);
+static int	check_sq(char *str);
+static int	check_dq(char *str);
+
+static char	*remove_sq(char *str)
 {
 	char	*temp;
 	size_t	i;
@@ -48,7 +53,7 @@ char	*remove_sq(char *str)
 	return(str);
 }
 
-char	*remove_dq(char *str)
+static char	*remove_dq(char *str)
 {
 	char	*temp;
 	size_t	i;
@@ -84,7 +89,7 @@ char	*remove_dq(char *str)
 	return (str);
 }
 
-int	check_sq(char *str)
+static int	check_sq(char *str)
 {
 	size_t	i;
 	int		quotes_flag;
@@ -116,7 +121,7 @@ int	check_sq(char *str)
 	return (quotes_flag);
 }
 
-int	check_dq(char *str)
+static int	check_dq(char *str)
 {
 	size_t	i;
 	int		quotes_flag;

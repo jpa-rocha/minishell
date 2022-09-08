@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 22:17:28 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 23:08:22 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,11 @@ int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
 char		***create_seq_from_lexer(t_shell *shell);
 char		**get_each_word(char *str);
-char		*remove_sq(char *str);
-char		*remove_dq(char *str);
 char		*check_quotes_pre_lexer(char *str);
 int			check_pipe_in_quotes(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char **str);
 int			check_char_in_quotes(char *str, char c);
-int	check_dq(char *str);
-int	check_sq(char *str);
 
 // Error checks for the variable line
 int			check_char_errors(t_cmd *cmd);
