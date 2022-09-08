@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 20:20:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 14:37:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,16 @@ static int	ms_exec_first_check(t_shell *shell)
 static int	ms_command_processing(t_shell *shell)
 {
 	int	pid;
+	int	error;
 
 	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
 		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		ms_is_built_in(shell, shell->cmd->curr_cmd);
-		/* if (shell->cmd->builtin_num == -1)
-		{
-			shell->status = ms_cmd_separator(shell);
-			if (shell->status != EXIT_SUCCESS)
-				return (shell->status);
-		} */
-		shell->status = ms_top_pipe(shell);
-		if (shell->status != 0)
-			return (shell->status);
+		error = ms_top_pipe(shell);
+		if (error != EXIT_SUCCESS)
+			return (error);
 		if (shell->cmd->cmd_idx == 0 && shell->cmd->changes_state == 1)
 			ms_call_built_in(shell);
 		else
@@ -85,12 +80,12 @@ static int	ms_command_processing(t_shell *shell)
 				return (EXIT_FAILURE);
 			if (pid == 0)
 				ms_cmd_executing(shell);
-			waitpid(-1, &g_exit, 0);
+			waitpid(-1, &shell->status, 0);
+			shell->status = WEXITSTATUS(shell->status);
 		}
-		g_exit = WEXITSTATUS(g_exit);
-		shell->status = ms_bot_pipe(shell);
-		if (shell->status != 0)
-			return (shell->status);
+		error = ms_bot_pipe(shell);
+		if (error != 0)
+			return (error);
 	}
 	return (shell->status);
 }

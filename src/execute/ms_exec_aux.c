@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:33:24 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:02:48 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,25 @@ static int	ms_here_doc_end(t_shell *shell, char *line);
 int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 {
 	int	cmd_len;
+	int	error;
 
+	error = 0;
 	cmd_len = ms_args_len(cmd);
 	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1)
 		|| ft_strncmp(cmd[0], "<<", 2) == 0)
-		shell->status = ms_exec_set_input(shell, cmd);
+		error = ms_exec_set_input(shell, cmd);
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
 		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
-		shell->status = ms_exec_set_output(shell, cmd);
+		error = ms_exec_set_output(shell, cmd);
 	else
 	{
 		shell->cmd->input = shell->cmd->temp_fd[0];
 		shell->cmd->output = shell->cmd->temp_fd[1];
 	}
+	if (error == EXIT_SUCCESS || error == EXIT_FAILURE)
+		return (error);
 	return (shell->status);
 }
 
@@ -79,18 +83,22 @@ static int	ms_here_doc_end(t_shell *shell, char *line)
 
 static int	ms_exec_set_input(t_shell *shell, char **cmd)
 {
+	int error;
+
 	if (ft_strncmp(cmd[0], "<<", 2) == 0)
 	{
 		if (ms_exec_here_doc(shell) != 0)
-			return (EXIT_FAILURE);
+			return (-1);
 	}
 	else
 		shell->cmd->input = open(cmd[1], O_RDONLY);
 	if (shell->cmd->input < 0)
-		return (EXIT_FAILURE);
+		return (-1);
 	if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
-		return (EXIT_FAILURE);
-	shell->status = ms_cmd_replace(shell, cmd);
+		return (-1);
+	error = ms_cmd_replace(shell, cmd);
+	if (error != EXIT_SUCCESS)
+		return (error);
 	return (EXIT_SUCCESS);
 }
 
@@ -136,6 +144,7 @@ static int	ms_cmd_replace(t_shell *shell, char **cmd)
 static int	ms_exec_set_output(t_shell *shell, char **cmd)
 {
 	int	cmd_len;
+	int	error;
 
 	cmd_len = ms_args_len(cmd);
 	if (ft_strncmp(cmd[cmd_len - 2], ">>", 2) == 0)
@@ -146,7 +155,9 @@ static int	ms_exec_set_output(t_shell *shell, char **cmd)
 				, O_WRONLY | O_RDWR | O_CREAT, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
-	shell->status = ms_cmd_replace(shell, cmd);
+	error = ms_cmd_replace(shell, cmd);
+	if (error != EXIT_SUCCESS)
+		return (error);
 	return (EXIT_SUCCESS);
 }
 

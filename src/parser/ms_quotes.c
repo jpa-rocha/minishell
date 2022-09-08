@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 20:11:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 09:52:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 we need to remove just the double quote
 */
 static int	check_dollar_in_quotes(char *str);
-static char	*ms_replace_err(char *dollar, char *str);
+static char	*ms_replace_err(t_shell *shell, char *dollar, char *str);
 static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
 
 char	*remove_sq(char *str)
@@ -175,7 +175,7 @@ void	*ms_dollar_check(t_shell *shell, char **str)
 				}
 				else
 				{
-					str[i] = ms_replace_err(dollar, str[i]);
+					str[i] = ms_replace_err(shell, dollar, str[i]);
 				}
 			}
 		}
@@ -184,7 +184,7 @@ void	*ms_dollar_check(t_shell *shell, char **str)
 	return (EXIT_SUCCESS);
 }
 
-static char	*ms_replace_err(char *dollar, char *str)
+static char	*ms_replace_err(t_shell* shell, char *dollar, char *str)
 {
 	char	*end;
 	char	*beginning;
@@ -197,7 +197,7 @@ static char	*ms_replace_err(char *dollar, char *str)
 	beginning = ft_calloc(i + 1, sizeof(char));
 	ft_strlcpy(beginning, str, i + 1);
 	dollar += 2;
-	num = ft_itoa(g_exit);
+	num = ft_itoa(shell->status);
 	end = ft_strjoin(num, dollar);
 	free(str);
 	str = ft_strjoin(beginning, end);

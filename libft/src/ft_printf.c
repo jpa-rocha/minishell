@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 00:42:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/03/18 13:00:42 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 10:09:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 #include "../header/libft.h"
 
 static char			*flagger(char *flags);
-static int			sorter(char *flags, va_list args);
-static int			executer(char *s, va_list args);
+static int			sorter(int fd, char *flags, va_list args);
+static int			executer(int fd, char *s, va_list args);
 
 // Replicates printf behaviour
-int	ft_printf(const char *s, ...)
+int	ft_printf(int fd, const char *s, ...)
 {
 	va_list	args;
 	int		count;
@@ -31,7 +31,7 @@ int	ft_printf(const char *s, ...)
 	{
 		while (*s == '%')
 		{
-			varlen = executer((char *)s, args);
+			varlen = executer(fd, (char *)s, args);
 			if (varlen < 0)
 				return (0);
 			s = s + 2;
@@ -39,7 +39,7 @@ int	ft_printf(const char *s, ...)
 		}
 		if (*s != '\0')
 		{
-			ft_putchar_fd(*s, 1);
+			ft_putchar_fd(*s, fd);
 			count++;
 			s++;
 		}
@@ -48,14 +48,14 @@ int	ft_printf(const char *s, ...)
 	return (count);
 }
 
-static int	executer(char *s, va_list args)
+static int	executer(int fd, char *s, va_list args)
 {
 	char	*realflags;
 	int		varlen;
 
 	realflags = NULL;
 	realflags = flagger((char *)s);
-	varlen = sorter(realflags, args);
+	varlen = sorter(fd, realflags, args);
 	free(realflags);
 	return (varlen);
 }
@@ -88,26 +88,26 @@ static char	*flagger(char *flags)
 	return (ret);
 }
 
-static int	sorter(char *flags, va_list args)
+static int	sorter(int fd, char *flags, va_list args)
 {
 	if (flags[ft_strlen(flags) - 1] == 's')
-		return (stringprinter(va_arg(args, char *)));
+		return (stringprinter(fd, va_arg(args, char *)));
 	if (flags[ft_strlen(flags) - 1] == 'c')
 	{
-		ft_putchar_fd(va_arg(args, int), 1);
+		ft_putchar_fd(va_arg(args, int), fd);
 		return (1);
 	}
 	if (flags[ft_strlen(flags) - 1] == '%')
-		return (percentprinter(flags));
+		return (percentprinter(fd, flags));
 	if (flags[ft_strlen(flags) - 1] == 'x'
 		|| flags[ft_strlen(flags) - 1] == 'X')
-		return (hexprinter(flags, va_arg(args, unsigned int)));
+		return (hexprinter(fd, flags, va_arg(args, unsigned int)));
 	if (flags[ft_strlen(flags) - 1] == 'p')
-		return (pointerprinter(va_arg(args, unsigned long)));
+		return (pointerprinter(fd, va_arg(args, unsigned long)));
 	if (flags[ft_strlen(flags) - 1] == 'd'
 		|| flags[ft_strlen(flags) - 1] == 'i')
-		return (numberprinter(va_arg(args, unsigned int)));
+		return (numberprinter(fd, va_arg(args, unsigned int)));
 	if (flags[ft_strlen(flags) - 1] == 'u')
-		return (unsignedprinter(va_arg(args, unsigned long)));
+		return (unsignedprinter(fd, va_arg(args, unsigned long)));
 	return (0);
 }

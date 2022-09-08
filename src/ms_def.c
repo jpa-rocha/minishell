@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:34:45 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 13:12:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	shell->env = ms_env_init_env(shell);
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
+	shell->user = ms_env_ret_value(shell, "USER=");
 	shell->builtins[0] = "cd";
 	shell->builtins[1] = "exit";
 	shell->builtins[2] = "minishell";

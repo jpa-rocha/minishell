@@ -6,13 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 10:50:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/03/18 13:00:30 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 10:05:40 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/libft.h"
 
-int	percentprinter(char *flags)
+int	percentprinter(int fd, char *flags)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ int	percentprinter(char *flags)
 	i = i / 2;
 	while (i != 0)
 	{
-		ft_putchar_fd('%', 1);
+		ft_putchar_fd('%', fd);
 		i--;
 	}
 	return (ft_strlen(flags) / 2);

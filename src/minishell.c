@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 20:07:18 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 11:43:30 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ int g_exit;
 
 int	main(int argc, char **argv, char **env)
 {
-	g_exit = 0;
+	int	error;
+
+	error = 0;
 	if (argc > 1 || !argv[0])
 	{
 		printf("%s", ERR_ARG);
 		return (1);
 	}
-	g_exit = ms_shell(env, argv, 1);
-	return (g_exit);
+	error = ms_shell(env, argv, 1);
+	return (error);
 }
 
 // Entry point for the minishell logic

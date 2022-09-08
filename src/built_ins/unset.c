@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:37:29 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 11:49:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ms_unset(t_shell *shell, char **args)
 			return (shell->status);
 		shell->status = ms_export_order(shell->workenv);
 		shell->env = ms_env_init_env(shell);
+		if (shell->cmd->path != NULL)
+			ms_free_args(shell->cmd->path);
 		shell->cmd->path = ms_cmd_path_creator(shell);
 	}
 	shell->status = EXIT_SUCCESS;

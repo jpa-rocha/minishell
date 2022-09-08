@@ -6,14 +6,14 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 10:47:03 by jrocha            #+#    #+#             */
-/*   Updated: 2022/03/18 12:59:42 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 10:08:42 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../header/libft.h"
 
-int	hexprinter(char *flags, unsigned int num)
+int	hexprinter(int fd, char *flags, unsigned int num)
 {
 	char	*hexnum;
 	int		i;
@@ -28,7 +28,7 @@ int	hexprinter(char *flags, unsigned int num)
 			i++;
 		}
 	}
-	ft_putstr_fd(hexnum, 1);
+	ft_putstr_fd(hexnum, fd);
 	i = ft_strlen(hexnum);
 	free(hexnum);
 	return (i);

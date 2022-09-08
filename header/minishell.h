@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 18:37:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 12:04:19 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_cmd {
 typedef struct s_shell {
 	int			shlvl;
 	char		*name;
+	char		*user;
 	t_cmd		*cmd;
 	t_list		*workenv;
 	char		*builtins[BI_NUM];
@@ -158,11 +159,11 @@ int			ms_var_check(t_shell *shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char **args);
+int			ms_unset_var(t_shell *shell, char *var);
 
 // Entry point into cd
 int			ms_cd(t_shell *shell, char **args);
-int			ms_cd_new_path(t_shell *shell, t_envvar *path);
-int			ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath);
+int			ms_cd_new_path(t_shell *shell, t_envvar *path, char *var);
 int			ms_cd_switch_path(t_envvar *oldpath, char *newpath);
 t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 

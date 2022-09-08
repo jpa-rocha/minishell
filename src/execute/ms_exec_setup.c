@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 20:23:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 11:35:37 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,18 @@ int	ms_bot_pipe(t_shell *shell)
 
 int	ms_cmd_executing(t_shell *shell)
 {
+	int error;
+
 	if (shell->cmd->builtin_num == -1)
 	{
-		g_exit = ms_cmd_separator(shell);
-		if (g_exit != EXIT_SUCCESS)
+		shell->status = ms_cmd_separator(shell);
+		if (shell->status != EXIT_SUCCESS)
 		{
+			error = shell->status;
+			if (error == COMMAND_NOT_FOUND)
+				ft_printf(STDERR_FILENO, "%s%s", shell->cmd->curr_cmd[0], ERR_INV);
 			ms_shell_cleanup(shell);
-			exit(g_exit);
+			exit(error);
 		}
 		execve(shell->cmd->cmd_name, shell->cmd->curr_cmd, shell->env);
 		perror("Problem ocurred");
@@ -67,7 +72,6 @@ int	ms_cmd_executing(t_shell *shell)
 	return (EXIT_FAILURE);
 }
 
-// maybe the names have to have .c in the end
 static void	ms_pipe_builtins(t_shell *shell)
 {
 	ms_call_built_in(shell);
@@ -85,8 +89,6 @@ int	ms_cmd_separator(t_shell *shell)
 			shell->cmd->cmd_name = ft_strdup(shell->cmd->curr_cmd[0]);
 		else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
 		{
-			// PRINT TO STD_ERR
-			printf("%s%s", shell->cmd->curr_cmd[0], ERR_INV);
 			return (COMMAND_NOT_FOUND);
 		}
 	}

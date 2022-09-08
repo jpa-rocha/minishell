@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:32:49 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 12:44:16 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ t_list	*ms_env_create_work_env(t_shell *shell, char **env)
 	return (w_env);
 }
 
-//TAKE CARE OF NULLS
 static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 {
 	t_envvar	line;
@@ -89,7 +88,6 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	return (line);
 }
 
-// TAKE CARE OF NULLS
 char	**ms_env_init_env(t_shell *shell)
 {
 	char		**newenv;

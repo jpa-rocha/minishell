@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 10:02:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 14:04:45 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 10:08:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ char		*ft_revstring(char *str);
 int			digitcount(int n);
 char		*ft_convert2hexa(unsigned long i);
 char		*ft_utoa(unsigned int num);
-int			unsignedprinter(unsigned int num);
-int			numberprinter(unsigned int num);
-int			stringprinter(char *s);
-int			hexprinter(char *flags, unsigned int num);
-int			pointerprinter(unsigned long ptr);
-int			percentprinter(char *flags);
-int			ft_printf(const char *s, ...);
+int			unsignedprinter(int fd, unsigned int num);
+int			numberprinter(int fd, unsigned int num);
+int			stringprinter(int fd, char *s);
+int			hexprinter(int fd, char *flags, unsigned int num);
+int			pointerprinter(int fd, unsigned long ptr);
+int			percentprinter(int fd, char *flags);
+int			ft_printf(int fd, const char *s, ...);
 char		*get_next_line(int fd, int term);
 int			ft_power(int base, int exp);
 int			ft_convertfromhexa(char *hexa);

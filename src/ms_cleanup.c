@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 10:35:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 13:21:49 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	ms_cmd_cleanup(t_cmd *cmd)
 
 int	ms_shell_cleanup(t_shell *shell)
 {
+	if (shell->user != NULL)
+		free(shell->user);
 	if (shell->cmd != NULL)
 		ms_cmd_cleanup(shell->cmd);
 	if (shell->env != NULL)
