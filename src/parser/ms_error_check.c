@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 16:07:01 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 10:55:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	counter_io(t_cmd *cmd)
 
 	i = 0;
 	count = 0;
-	while (cmd->line[i])
+	while (cmd->line[i] != '\0')
 	{
 		if (cmd->line[i] == SM)
 			count++;

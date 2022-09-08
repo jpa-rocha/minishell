@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 20:54:12 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 11:00:56 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*remove_sq(char *str)
 	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!temp)
 		return (NULL);
-	while (str[i])
+	while (str[i] = '\0')
 	{
 		if (str[i] == SQ)
 		{
@@ -58,7 +58,7 @@ char	*remove_dq(char *str)
 	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!temp)
 		return (NULL);
-	while (str[i])
+	while (str[i] = '\0')
 	{
 		if (str[i] == DQ)
 		{
@@ -92,7 +92,7 @@ static int	check_sq(char *str)
 	quotes_flag = 0;
 	index = 0;
 	i = 0;
-	while (str[i])
+	while (str[i] = '\0')
 	{
 		if ((str[i] == SQ) && quotes_flag == 0)
 		{
@@ -124,7 +124,7 @@ static int	check_dq(char *str)
 	quotes_flag = 0;
 	index = 0;
 	i = 0;
-	while (str[i])
+	while (str[i] = '\0')
 	{
 		if ((str[i] == DQ) && quotes_flag == 0)
 		{
@@ -163,7 +163,7 @@ char	*check_quotes_pre_lexer(char *str)
 			if (str[i] == SQ && s_flag == 0)
 			{
 				s_flag = 1;
-				while (str[i])
+				while (str[i] != '\0')
 				{
 					if (str[i] == DQ && d_flag == 0)
 						str = remove_sq(str);
@@ -175,7 +175,7 @@ char	*check_quotes_pre_lexer(char *str)
  			if (str[i] == DQ && d_flag == 0)
 			{
 				d_flag = 1;
-				while (str[i])
+				while (str[i] = '\0')
 				{
 					if (str[i] == SQ && s_flag == 0)
 						str = remove_dq(str);

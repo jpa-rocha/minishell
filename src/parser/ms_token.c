@@ -6,13 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/07 12:02:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 11:01:53 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	count_wspaces(char *str);
 
 /* count number of words in a string */
 int	count_words(char *str)
@@ -25,7 +23,7 @@ int	count_words(char *str)
 		c = str[0];
 	nb_words = 1;
 	i = 0;
-	while (str[i])
+	while (str[i] != '\0')
 	{
 		if ((str[i] == ' ' || str[i] == '\t') && c != ' ')
 			nb_words += 1;
@@ -50,22 +48,6 @@ void	print_nb_words(t_shell *shell)
 	}
 }
 
-static int	count_wspaces(char *str)
-{
-	int	i;
-	int	count;
-	
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == ' ')
-			count++;
-		i++;
-	}
-	return (count);
-}	
-
 char	*remove_white_spaces(char *str)
 {
 	size_t	i;
@@ -74,8 +56,8 @@ char	*remove_white_spaces(char *str)
 
 	i = 0;
 	j = 0;
-	new_str = ft_calloc(ft_strlen(str) - count_wspaces(str) + 1, sizeof(char));
-	while (str[i])
+	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	while (str[i] != '\0')
 	{
 		if ((str[i] == ' ' && str[i + 1] == ' ') == 0)
 				new_str[j++] = str[i];
