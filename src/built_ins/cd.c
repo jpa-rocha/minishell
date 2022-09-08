@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 14:35:21 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:30:55 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
 	temp = NULL;
 	update = NULL;
 	update = getcwd(update, 1024);
+	if (update == NULL)
+	{
+		shell->status = ERR_CWD;
+		ft_printf(STD_ERR, ERR_CWD_MSG);
+		return (shell->status);
+	}
 	if (path != NULL)
 	{
 		temp = ft_strdup(path->value);
