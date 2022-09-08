@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 10:58:04 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 11:04:20 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_char_in_quotes(char *str, char c)
 	quotes_flag = 0;
 	index = 0;
 	i = 0;
-	while (str[i] = '\0')
+	while (str[i] != '\0')
 	{
 		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
 		{
