@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/07 09:39:57 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 22:17:28 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,30 +110,22 @@ int			ms_parser(t_shell *shell);
 int			get_nmb_cmd(t_cmd *cmd);
 int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
-int			count_words(char *str);
 char		***create_seq_from_lexer(t_shell *shell);
-int			get_nb_words_store(t_shell *shell);
 char		**get_each_word(char *str);
-void		check_remove_quotes(char *str);
 char		*remove_sq(char *str);
 char		*remove_dq(char *str);
-int			dq_closed(char *str);
-int			sq_closed(char *str);
 char		*check_quotes_pre_lexer(char *str);
 int			check_pipe_in_quotes(char *str);
 char		*remove_white_spaces(char *str);
+void		*ms_dollar_check(t_shell *shell, char **str);
+int			check_char_in_quotes(char *str, char c);
+int	check_dq(char *str);
+int	check_sq(char *str);
 
 // Error checks for the variable line
-int			check_quotes(char *str);
-int			counter_io(t_cmd *cmd);
-int			check_only_io(t_cmd *cmd);
-int			check_slash(t_cmd *cmd);
 int			check_char_errors(t_cmd *cmd);
-int			check_if_only_pipe(t_cmd *cmd);
-int			count_pipes(t_cmd *cmd);
-int			if_pipes_are_empty(t_cmd *cmd);
-int	check_char_in_quotes(char *str, char c);
-
+int			check_empty_pipes(t_cmd *cmd);
+int			check_pipes(t_cmd *cmd);
 
 // for printing
 void		print_nb_words(t_shell *shell);

@@ -6,10 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 12:30:20 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:20:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
 /* finds  dollar sign in the string
  + if env comes after we need to get env variable
@@ -17,16 +18,3 @@
  + if '$ENV' prints $ENV but if "$ENV" , print env variable
  + same also for $?
  */
-/* char	*check_d_sign(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == DOLLAR)
-			return (&str[i]);
-		i++;	
-	}
-	return (0);
-} */

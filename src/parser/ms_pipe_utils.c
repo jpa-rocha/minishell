@@ -6,14 +6,15 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/07 18:54:12 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 23:02:24 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+static int	count_pipes(t_cmd *cmd);
 
-/* checks whether pipe is in the quotes */
+/* checks whether pipe is inside the quotes */
 int	check_char_in_quotes(char *str, char c)
 {
 	size_t	i;
@@ -64,16 +65,15 @@ int	check_pipe_in_quotes(char *str)
 	return (0);
 }
 
-/* if there is nothing in btw two pipes, bash prints an error message, 
-	this one is used in lexer function */
-int	if_pipes_are_empty(t_cmd *cmd)
+/* if there is nothing btw two pipes, bash prints an error message */
+int	check_empty_pipes(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE)
+		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, PIPE) == 0)
 		{
 			i++;
 			while (cmd->line[i] == ' ')
@@ -89,7 +89,7 @@ int	if_pipes_are_empty(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int	count_pipes(t_cmd *cmd)
+static int	count_pipes(t_cmd *cmd)
 {
 	int	i;
 	int	count;
@@ -105,8 +105,8 @@ int	count_pipes(t_cmd *cmd)
 	return (count);
 }
 
-/* if we pass just pipes, nothing else as arguments, bash prints error messages */
-int	check_if_only_pipe(t_cmd *cmd)
+/* if we just write pipes, bash prints error messages (it should give the same error msg with echo cmd) */
+int	check_pipes(t_cmd *cmd)
 {
 	int	i;
 	int	c;
@@ -115,19 +115,22 @@ int	check_if_only_pipe(t_cmd *cmd)
 	i = 0;
 	while (cmd->line[i] == ' ')
 		i++;
-	while (cmd->line[i] != '\0')
+	while (cmd->line[i] != '\0' && cmd->line[i] == PIPE)
 	{
-		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0')
+		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0' 
+			&& check_char_in_quotes(cmd->line, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
-		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ')
+		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' 
+			&& check_char_in_quotes(cmd->line, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
-		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ')
+		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ' 
+			&& check_char_in_quotes(cmd->line, PIPE) == 0)
 		{
 			printf(ERR_MU, "||");
 			return (EXIT_FAILURE);
