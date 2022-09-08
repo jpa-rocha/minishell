@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 11:05:13 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:30:09 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,36 +156,33 @@ char	*check_quotes_pre_lexer(char *str)
 	i = 0;
 	s_flag = check_sq(str);
 	d_flag = check_dq(str);
-	if (check_quotes(str) == EXIT_SUCCESS)
+	while (i < ft_strlen(str))
 	{
-		while (i < ft_strlen(str))
+		if (str[i] == SQ && s_flag == 0)
 		{
-			if (str[i] == SQ && s_flag == 0)
+			s_flag = 1;
+			while (str[i] != '\0')
 			{
-				s_flag = 1;
-				while (str[i] != '\0')
-				{
-					if (str[i] == DQ && d_flag == 0)
-						str = remove_sq(str);
-					i++;
-				}
-				if (s_flag == 1)
+				if (str[i] == DQ && d_flag == 0)
 					str = remove_sq(str);
+				i++;
 			}
- 			if (str[i] == DQ && d_flag == 0)
-			{
-				d_flag = 1;
-				while (str[i] != '\0')
-				{
-					if (str[i] == SQ && s_flag == 0)
-						str = remove_dq(str);
-					i++; 
-				}
-				if (d_flag == 1)
-					str = remove_dq(str);
-			}
-			i++;
+			if (s_flag == 1)
+				str = remove_sq(str);
 		}
+ 		if (str[i] == DQ && d_flag == 0)
+		{
+			d_flag = 1;
+			while (str[i] != '\0')
+			{
+				if (str[i] == SQ && s_flag == 0)
+					str = remove_dq(str);
+				i++; 
+			}
+			if (d_flag == 1)
+				str = remove_dq(str);
+		}
+		i++;
 	}
 	return (str);
 }

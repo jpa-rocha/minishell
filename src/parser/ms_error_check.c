@@ -6,31 +6,36 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 10:55:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:06:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+static int	check_quotes(t_cmd *cmd);
+static int	counter_io(t_cmd *cmd);
+static int	check_redirections(t_cmd *cmd);
+static int	check_slash(t_cmd *cmd);
+
 /* ERROR CHECKS AT THE BEGINNING */
 /* checks whether quotes are closed */
-int	check_quotes(char *str)
+static int	check_quotes(t_cmd *cmd)
 {
 	int	i;
 	int	quote_end;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (cmd->line[i] != '\0')
 	{
-		if (str[i] == SQ || str[i] == DQ)
+		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
 		{
 			quote_end = i + 1;
-			while (str[i] && (str[quote_end] != str[i]))
+			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
 			{
-				if (!str[quote_end])
+				if (!cmd->line[quote_end])
 				{
-					perror("not closing quotes\n");
-					return (1);
+					printf("quotes are not closed\n");
+					return (EXIT_FAILURE);
 				}
 				quote_end++;
 			}
@@ -38,11 +43,11 @@ int	check_quotes(char *str)
 		}
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* redirections are properly used */
-int	counter_io(t_cmd *cmd)
+static int	counter_io(t_cmd *cmd)
 {
 	int	i;
 	int	count;
@@ -60,12 +65,10 @@ int	counter_io(t_cmd *cmd)
 	return (count);
 }
 
-/* Exit code needs to be 2 , perror returns already errnum ? */
-/* Error check for cases like: 
-	< , > , <<, >>, <> and
+/* Error check for cases like: < , > , <<, >>, <> and
 	>>>>>, <<<<<<, > > > >, >> >> >> >> etc.
 */
-int	check_only_io(t_cmd *cmd)
+static int	check_redirections(t_cmd *cmd)
 {
 	int	i;
 	int	c;
@@ -74,7 +77,7 @@ int	check_only_io(t_cmd *cmd)
 	c = counter_io(cmd);
 	while (cmd->line[i] == ' ')
 		i++;
-	while (cmd->line[i] != '\0')
+	while (cmd->line[i] != '\0' && (cmd->line[i] == SM || cmd->line[i] == GR))
 	{
 		if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
 			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
@@ -111,14 +114,13 @@ int	check_only_io(t_cmd *cmd)
 /* error check for cases like
 	 /, //, /. etc. 
 */
-/*	exit status for Slash is 126 ;
-	exit status for Back Slash is 127 */
-int	check_slash(t_cmd *cmd)
+static int	check_slash(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
-	while (cmd->line[i] != '\0')
+	while (cmd->line[i] != '\0' && (cmd->line[i] == SLASH || cmd->line[i] == BSLASH || 
+		cmd->line[i] == '-'))
 	{
 		if (cmd->line[i] == SLASH)
 		{
@@ -137,11 +139,15 @@ int	check_slash(t_cmd *cmd)
 
 int	check_char_errors(t_cmd *cmd)
 {
-	if (check_quotes(cmd->line))
+	if (check_quotes(cmd))
 		return (EXIT_FAILURE);
-	if (check_only_io(cmd))
+	if (check_redirections(cmd))
 		return (EXIT_FAILURE);
 	if (check_slash(cmd))
+		return (EXIT_FAILURE);
+	if (check_empty_pipes(cmd))
+		return (EXIT_FAILURE);
+	if (check_pipes(cmd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
