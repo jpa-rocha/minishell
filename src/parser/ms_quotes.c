@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 16:30:09 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:52:31 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*remove_sq(char *str)
 	}
 	temp[k] = '\0';
 	str = ft_strdup(temp);
+	free (temp);
 	return(str);
 }
 
@@ -83,7 +84,7 @@ char	*remove_dq(char *str)
 	return (str);
 }
 
-static int	check_sq(char *str)
+int	check_sq(char *str)
 {
 	size_t	i;
 	int		quotes_flag;
@@ -115,7 +116,7 @@ static int	check_sq(char *str)
 	return (quotes_flag);
 }
 
-static int	check_dq(char *str)
+int	check_dq(char *str)
 {
 	size_t	i;
 	int		quotes_flag;
