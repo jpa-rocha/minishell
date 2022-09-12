@@ -6,14 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 16:42:29 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:20:10 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 /* prints substrings within the lexer */
-void	print_lexer(t_shell *shell)
+/* void	print_lexer(t_shell *shell)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ void	print_lexer(t_shell *shell)
 		free(shell->lexer[i]);
 		i++;
 	}
-}
+} */
 
 int	ms_parser(t_shell *shell)
 {
