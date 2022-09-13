@@ -6,34 +6,34 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 15:02:48 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/13 10:25:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_cmd_replace(t_shell *shell, char **cmd);
-static int	ms_exec_here_doc_setup(t_shell *shell);
-static int	ms_exec_set_input(t_shell *shell, char **cmd);
-static int	ms_exec_set_output(t_shell *shell, char **cmd);
-static int	ms_here_doc_end(t_shell *shell, char *line);
+//static int	ms_exec_cmd_check(t_shell *shell);
+static int	ms_exec_set_input(t_shell *shell);
+static int	ms_exec_set_output(t_shell *shell);
 
-// WHAT IF COMMANDS ARE IN WRONG ORDER? WRONG NUMBER
-int	ms_exec_set_in_out(t_shell *shell, char **cmd)
+int	ms_exec_set_in_out(t_shell *shell)
 {
-	int	cmd_len;
-	int	error;
+	int		cmd_len;
+	int		error;
+	char	**cmd;
 
 	error = 0;
-	cmd_len = ms_args_len(cmd);
+	cmd = shell->cmd->curr_cmd;
+	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1)
 		|| ft_strncmp(cmd[0], "<<", 2) == 0)
-		error = ms_exec_set_input(shell, cmd);
+		error = ms_exec_set_input(shell);
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
 		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
-		error = ms_exec_set_output(shell, cmd);
+		error = ms_exec_set_output(shell);
 	else
 	{
 		shell->cmd->input = shell->cmd->temp_fd[0];
@@ -44,59 +44,49 @@ int	ms_exec_set_in_out(t_shell *shell, char **cmd)
 	return (shell->status);
 }
 
-int	ms_exec_here_doc(t_shell *shell)
+static int	ms_exec_set_input(t_shell *shell)
 {
-	char	*line;
-	int		len;
+	int		error;
 
-	if (ms_exec_here_doc_setup(shell) != 0)
-		return (EXIT_FAILURE);
-	while (1)
+	while (ft_strchr(shell->cmd->curr_cmd[0], '<') != NULL)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(STDIN_FILENO, 0);
-		len = ft_strlen(line);
-		if (len == 1 && ft_strncmp(line, "\n", 1) != 0)
-			len = 2;
-		if (ft_strncmp(line, shell->cmd->limiter, len - 1) == 0)
+		if (ft_strncmp(shell->cmd->curr_cmd[0], "<<", 2) == 0)
 		{
-			free(line);
-			line = get_next_line(STDIN_FILENO, 1);
-			break ;
+			if (ms_exec_here_doc(shell) != 0)
+				return (-1);
 		}
-		write(shell->cmd->input, line, ft_strlen(line));
-		free(line);
+		else
+			shell->cmd->input = open(shell->cmd->curr_cmd[1], O_RDONLY);
+		if (shell->cmd->input < 0)
+			return (-1);
+		if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
+			return (-1);
+		error = ms_cmd_replace(shell, shell->cmd->curr_cmd);
 	}
-	return (ms_here_doc_end(shell, line));
-}
-
-static int	ms_here_doc_end(t_shell *shell, char *line)
-{
-	if (line != NULL)
-		free(line);
 	close(shell->cmd->input);
-	shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
-	if (shell->cmd->input < 0)
-		return (EXIT_FAILURE);
+	if (error != EXIT_SUCCESS)
+		return (error);
 	return (EXIT_SUCCESS);
 }
 
-static int	ms_exec_set_input(t_shell *shell, char **cmd)
+static int	ms_exec_set_output(t_shell *shell)
 {
-	int error;
+	int	cmd_len;
+	int	error;
 
-	if (ft_strncmp(cmd[0], "<<", 2) == 0)
+	while (ft_strchr(shell->cmd->curr_cmd[0], '>') != NULL)
 	{
-		if (ms_exec_here_doc(shell) != 0)
-			return (-1);
+		cmd_len = ms_args_len(shell->cmd->curr_cmd);
+		if (ft_strncmp(shell->cmd->curr_cmd[cmd_len - 2], ">>", 2) == 0)
+			shell->cmd->output = open(shell->cmd->curr_cmd[cmd_len - 1],
+					O_CREAT | O_APPEND | O_TRUNC, 00777);
+		else
+			shell->cmd->output = open(shell->cmd->curr_cmd[cmd_len - 1],
+					O_WRONLY | O_RDWR | O_CREAT, 00777);
+		if (shell->cmd->output < 0)
+			return (EXIT_FAILURE);
+		error = ms_cmd_replace(shell, shell->cmd->curr_cmd);
 	}
-	else
-		shell->cmd->input = open(cmd[1], O_RDONLY);
-	if (shell->cmd->input < 0)
-		return (-1);
-	if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
-		return (-1);
-	error = ms_cmd_replace(shell, cmd);
 	if (error != EXIT_SUCCESS)
 		return (error);
 	return (EXIT_SUCCESS);
@@ -136,38 +126,5 @@ static int	ms_cmd_replace(t_shell *shell, char **cmd)
 	}
 	ms_free_args(shell->cmd->curr_cmd);
 	shell->cmd->curr_cmd = new_cmd;
-	return (EXIT_SUCCESS);
-}
-
-// TODO -> REMOVE OUTPUT SYMBOLS AND FILE NAME - CREATE NEW CMD
-// change order of conditions
-static int	ms_exec_set_output(t_shell *shell, char **cmd)
-{
-	int	cmd_len;
-	int	error;
-
-	cmd_len = ms_args_len(cmd);
-	if (ft_strncmp(cmd[cmd_len - 2], ">>", 2) == 0)
-		shell->cmd->output = open(cmd[cmd_len - 1]
-				, O_CREAT | O_APPEND | O_TRUNC, 00777);
-	else
-		shell->cmd->output = open(cmd[cmd_len - 1]
-				, O_WRONLY | O_RDWR | O_CREAT, 00777);
-	if (shell->cmd->output < 0)
-		return (EXIT_FAILURE);
-	error = ms_cmd_replace(shell, cmd);
-	if (error != EXIT_SUCCESS)
-		return (error);
-	return (EXIT_SUCCESS);
-}
-
-static int	ms_exec_here_doc_setup(t_shell *shell)
-{
-	shell->cmd->heredoc = 1;
-	shell->cmd->input = open("heredoc_aux.txt"
-			, O_CREAT | O_RDWR | O_TRUNC, 00777);
-	if (shell->cmd->input < 0)
-		return (EXIT_FAILURE);
-	shell->cmd->limiter = shell->cmd->curr_cmd[1];
 	return (EXIT_SUCCESS);
 }

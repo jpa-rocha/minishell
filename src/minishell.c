@@ -6,13 +6,11 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 11:43:30 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 16:47:37 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-//WHATEVER IS EXECUTED INSIDE PIPE NEEDS G_EXIT ELSE INTERNAL EXITCODE
 
 // Entry point for the minishell logic
 int g_exit;

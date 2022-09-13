@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 12:04:19 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 16:20:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
-int			ms_exec_set_in_out(t_shell *shell, char **cmd);
+int			ms_exec_set_in_out(t_shell *shell);
 int			ms_exec_here_doc(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);

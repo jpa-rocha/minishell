@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/06 12:26:15 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:39:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	n_check(char *s)
 	if (s[i] == '-')
 		i++;
 	else
-	 	return (0);
+		return (0);
 	while (s[i] == 'n')
 		i++;
 	if (s[i] != '\0')

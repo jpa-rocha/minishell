@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 15:30:55 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:38:53 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
 				t_envvar *oldpath);
-/* static int	ms_cd_paths_null(t_shell *shell, t_envvar *path,
-				t_envvar *oldpath); */
 static int	ms_cd_edge(t_shell *shell, t_envvar *path,
 				t_envvar *oldpath, char *newpath);
 static int	ms_cd_minus(t_shell *shell, t_envvar *path,
@@ -131,22 +129,3 @@ static int	ms_cd_minus(t_shell *shell, t_envvar *path, t_envvar *oldpath)
 	ms_pwd();
 	return (shell->status);
 }
-
-
-/* 
-static int	ms_cd_paths_null(t_shell *shell, t_envvar *path, t_envvar *oldpath)
-{
-	if (path == NULL && oldpath == NULL)
-	{
-		return (EXIT_FAILURE);
-	}
-	if (path == NULL)
-	{
-		shell->status = ms_cd_new_path(shell, path, "PWD=");
-	}
-	if (oldpath == NULL)
-	{
-		shell->status = ms_cd_new_path(shell, oldpath, "OLDPWD=");
-	}
-	return (shell->status);
-} */

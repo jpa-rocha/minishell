@@ -8,7 +8,7 @@ CFLAGS =	-Wall -Wextra -Werror
 
 DEBUG =		-Wall -Wextra -Werror -ggdb3
 
-VAL =		valgrind -s --track-fds=yes --track-origins=yes --leak-check=full --leak-check=full --show-reachable=no#--show-leak-kinds=all #
+VAL =		valgrind -s --track-fds=yes --track-origins=yes --leak-check=full --leak-check=full --show-leak-kinds=all --show-reachable=no# #
 
 ################################################################################
 ################################## DIRECTORIES #################################
@@ -64,6 +64,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(EXECUTER)ms_exec.c		\
 			$(EXECUTER)ms_exec_aux.c	\
 			$(EXECUTER)ms_exec_setup.c	\
+			$(EXECUTER)ms_heredoc.c		\
 			$(BUILTINS)env.c			\
 			$(BUILTINS)export.c			\
 			$(BUILTINS)export_utils.c	\

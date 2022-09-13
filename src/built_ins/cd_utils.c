@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 12:04:00 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:39:07 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	ms_cd_new_path(t_shell *shell, t_envvar *path, char *var)
 		if (setter == NULL)
 			return (ALLOCATION_PROBLEM_EXIT);
 		ft_strlcpy(setter[1], var, ft_strlen(var) + 1);
-		ft_strlcpy(&setter[1][ft_strlen(setter[1])], update, ft_strlen(update) + 1);
+		ft_strlcpy(&setter[1][ft_strlen(setter[1])],
+			update, ft_strlen(update) + 1);
 		ms_export(shell, setter);
 		ms_free_args(setter);
 	}

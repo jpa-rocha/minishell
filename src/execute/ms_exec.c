@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/08 15:20:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/09 11:41:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	ms_exec(t_shell *shell)
 	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
 	close(shell->cmd->temp_fd[0]);
 	close(shell->cmd->temp_fd[1]);
+	close(shell->cmd->input);
+	close(shell->cmd->output);
 	return (shell->status);
 }
 
@@ -65,7 +67,7 @@ static int	ms_command_processing(t_shell *shell)
 
 	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
-		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
+		if (ms_exec_set_in_out(shell) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		ms_is_built_in(shell, shell->cmd->curr_cmd);
 		error = ms_top_pipe(shell);
@@ -99,7 +101,7 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 	mini = "./minishell";
 	while (i < BI_NUM)
 	{
-		if (ft_strncmp(shell->builtins[i], curr_cmd[0],
+		if (curr_cmd[0] != NULL && ft_strncmp(shell->builtins[i], curr_cmd[0],
 				ft_strlen(shell->builtins[i])) == 0)
 		{
 			shell->cmd->builtin_num = i;
@@ -108,7 +110,7 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 		}
 		i += 1;
 	}
-	if (ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
+	if (curr_cmd[0] != NULL && ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
 	{
 		shell->cmd->builtin_num = 2;
 		shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
