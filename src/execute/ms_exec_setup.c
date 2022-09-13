@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:43:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:42:16 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int	ms_cmd_separator(t_shell *shell)
 	{
 		if (shell->cmd->curr_cmd[0] != NULL)
 		{
-			if (access(shell->cmd->curr_cmd[0], F_OK) == 0)
+			ft_printf(STDERR_FILENO, "%sX\n", ft_strtrim(shell->cmd->curr_cmd[0], " " ));
+			if (access(ft_strtrim(shell->cmd->curr_cmd[0], " " ), F_OK) == 0)
 				shell->cmd->cmd_name = ft_strdup(shell->cmd->curr_cmd[0]);
 			else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
 			{
