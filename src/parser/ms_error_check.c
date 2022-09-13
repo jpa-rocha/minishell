@@ -6,16 +6,16 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:27:56 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:20:51 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	check_quotes(t_cmd *cmd);
-static int	counter_io(t_cmd *cmd);
-static int	check_redirections(t_cmd *cmd);
-static int	check_slash(t_cmd *cmd);
+//static int	counter_io(t_cmd *cmd);
+//static int	check_redirections(t_cmd *cmd);
+//static int	check_slash(t_cmd *cmd);
 
 /* ERROR CHECKS AT THE BEGINNING */
 /* checks whether quotes are closed */
@@ -47,7 +47,7 @@ static int	check_quotes(t_cmd *cmd)
 }
 
 /* redirections are properly used */
-static int	counter_io(t_cmd *cmd)
+/* static int	counter_io(t_cmd *cmd)
 {
 	int	i;
 	int	count;
@@ -64,11 +64,11 @@ static int	counter_io(t_cmd *cmd)
 	}
 	return (count);
 }
-
+ */
 /* Error check for cases like: < , > , <<, >>, <> and
 	>>>>>, <<<<<<, > > > >, >> >> >> >> etc.
 */
-static int	check_redirections(t_cmd *cmd)
+/* static int	check_redirections(t_cmd *cmd)
 {
 	int	i;
 	int	c;
@@ -110,11 +110,11 @@ static int	check_redirections(t_cmd *cmd)
 	}
 	return (EXIT_SUCCESS);
 }
-
+ */
 /* error check for cases like
 	 /, //, /. etc. 
 */
-static int	check_slash(t_cmd *cmd)
+/* static int	check_slash(t_cmd *cmd)
 {
 	int	i;
 
@@ -135,17 +135,17 @@ static int	check_slash(t_cmd *cmd)
 		i++;
 	}
 	return (EXIT_SUCCESS);
-}
+} */
 
 int	check_char_errors(t_shell *shell, t_cmd *cmd)
 {
 	shell->status = EXIT_SUCCESS;
 	if (check_quotes(cmd))
 		shell->status = EXIT_FAILURE;
-	if (check_redirections(cmd))
-		shell->status = EXIT_FAILURE;
-	if (check_slash(cmd))
-		shell->status = EXIT_FAILURE;
+	/* if (check_redirections(cmd))
+		shell->status = EXIT_FAILURE; */
+	/* if (check_slash(cmd))
+		shell->status = EXIT_FAILURE; */
 	if (check_empty_pipes(cmd))
 		shell->status = EXIT_FAILURE;
 	if (check_pipes(cmd))

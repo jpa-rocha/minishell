@@ -6,12 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:44:22 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 16:59:59 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-static int	ms_cmd_replace(t_shell *shell, char **cmd);
+static int	ms_cmd_replace_in(t_shell *shell, char **cmd);
+static int	ms_cmd_replace_out(t_shell *shell, char **cmd);
 //static int	ms_exec_cmd_check(t_shell *shell);
 static int	ms_exec_set_input(t_shell *shell);
 static int	ms_exec_set_output(t_shell *shell);
@@ -60,7 +61,7 @@ static int	ms_exec_set_input(t_shell *shell)
 			return (-1);
 		if (dup2(shell->cmd->input, STDIN_FILENO) == -1)
 			return (-1);
-		error = ms_cmd_replace(shell, shell->cmd->curr_cmd);
+		error = ms_cmd_replace_in(shell, shell->cmd->curr_cmd);
 	}
 	close(shell->cmd->input);
 	if (error != EXIT_SUCCESS)
@@ -72,26 +73,37 @@ static int	ms_exec_set_output(t_shell *shell)
 {
 	int	cmd_len;
 	int	error;
+	int i;
 
-	while (ft_strchr(shell->cmd->curr_cmd[0], '>') != NULL)
+	i = 0;
+	cmd_len = ms_args_len(shell->cmd->curr_cmd);
+	while (i < cmd_len)
 	{
-		cmd_len = ms_args_len(shell->cmd->curr_cmd);
-		if (ft_strncmp(shell->cmd->curr_cmd[cmd_len - 2], ">>", 2) == 0)
-			shell->cmd->output = open(shell->cmd->curr_cmd[cmd_len - 1],
-					O_CREAT | O_APPEND | O_TRUNC, 00777);
-		else
-			shell->cmd->output = open(shell->cmd->curr_cmd[cmd_len - 1],
-					O_WRONLY | O_RDWR | O_CREAT, 00777);
-		if (shell->cmd->output < 0)
-			return (EXIT_FAILURE);
-		error = ms_cmd_replace(shell, shell->cmd->curr_cmd);
+		if (shell->cmd->curr_cmd[i] != NULL && ft_strchr(shell->cmd->curr_cmd[i], '>') != NULL)
+		{
+			if (shell->cmd->output != shell->cmd->temp_fd[1])
+				close(shell->cmd->output);
+			cmd_len = ms_args_len(shell->cmd->curr_cmd);
+			if (ft_strncmp(shell->cmd->curr_cmd[i], ">>", 2) == 0)
+				shell->cmd->output = open(shell->cmd->curr_cmd[i + 1],
+						O_CREAT | O_APPEND | O_TRUNC, 00777);
+			else
+				shell->cmd->output = open(shell->cmd->curr_cmd[i + 1],
+						O_WRONLY | O_CREAT, 00777);
+			if (shell->cmd->output < 0)
+				return (EXIT_FAILURE);
+			error = ms_cmd_replace_out(shell, shell->cmd->curr_cmd);
+			cmd_len = ms_args_len(shell->cmd->curr_cmd);
+			i = -1;
+		}
+		i += 1;
 	}
 	if (error != EXIT_SUCCESS)
 		return (error);
 	return (EXIT_SUCCESS);
 }
 
-static int	ms_cmd_replace(t_shell *shell, char **cmd)
+static int	ms_cmd_replace_in(t_shell *shell, char **cmd)
 {
 	char	**new_cmd;
 	int		i;
@@ -123,6 +135,39 @@ static int	ms_cmd_replace(t_shell *shell, char **cmd)
 		}
 		new_cmd[i] = NULL;
 	}
+	ms_free_args(shell->cmd->curr_cmd);
+	shell->cmd->curr_cmd = new_cmd;
+	return (EXIT_SUCCESS);
+}
+
+static int	ms_cmd_replace_out(t_shell *shell, char **cmd)
+{
+	char	**new_cmd;
+	int		i;
+	int		j;
+	int		flag;
+	int		len;
+
+	i = 0;
+	j = 0;
+	flag = 0;
+	len = ms_args_len(cmd);
+	new_cmd = ft_calloc(len, sizeof(char *));
+	if (new_cmd == NULL)
+		return (ALLOCATION_PROBLEM_EXIT);
+	while (i < len)
+	{
+		if (ft_strchr(cmd[i], '>') != NULL && flag == 0)
+		{
+			i += 2;
+			flag = 1;	
+		}
+		if (j < len - 2)
+			new_cmd[j] = ft_strdup(cmd[i]);
+		i += 1;
+		j += 1;
+	}
+	new_cmd[j] = NULL;
 	ms_free_args(shell->cmd->curr_cmd);
 	shell->cmd->curr_cmd = new_cmd;
 	return (EXIT_SUCCESS);

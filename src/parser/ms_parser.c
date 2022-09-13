@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:24:01 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 16:11:10 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ms_parser(t_shell *shell)
 			return (shell->status);
 		ms_lexer(shell);
 	}
+
 	shell->cmd->seq = create_seq_from_lexer(shell);
 	if (shell->cmd->seq == NULL)
 	{

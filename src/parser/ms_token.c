@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 14:21:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:15:50 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ static char	**break_quotes(t_shell *shell, char *str)
 	{
 		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) || str[i] == '\0')
 		{
-			new[k] = ft_calloc(j + 2, sizeof(char));
-			ft_strlcpy(new[k], &str[i - j], j + 2);
+			new[k] = ft_calloc(j + 1, sizeof(char));
+			ft_strlcpy(new[k], &str[i - j], j + 1);
 			new[k] = (char *)ms_dollar_check(shell, new[k]);
 			new[k] = check_quotes_pre_lexer(new[k]);
 			k++;
