@@ -1,8 +1,0 @@
-total 384
--rw-rw-r-- 1 merve merve   3845 Sep  7 18:46 Makefile
--rw-rw-r-- 1 merve merve     59 Sep  7 18:46 README.md
--rw-rw-r-- 1 merve merve      0 Sep  8 20:48 exp.txt
-drwxrwxr-x 2 merve merve   4096 Sep  7 18:46 header
-drwxrwxr-x 5 merve merve   4096 Sep  8 20:45 libft
--rwxrwxr-x 1 merve merve 371496 Sep  8 20:46 minishell
-drwxrwxr-x 6 merve merve   4096 Sep  7 18:46 src

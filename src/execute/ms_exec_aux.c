@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 17:05:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:50:15 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int	ms_exec_set_in_out(t_shell *shell)
 		|| ft_strncmp(cmd[0], "<<", 2) == 0)
 		error = ms_exec_set_input(shell);
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
+	cmd = shell->cmd->curr_cmd;
 	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
-		|| ft_strncmp(cmd[cmd_len], ">>", 2) == 0))
+		|| ft_strncmp(cmd[cmd_len - 2], ">>", 2) == 0))
 		error = ms_exec_set_output(shell);
 	else
 	{
@@ -88,7 +89,7 @@ static int	ms_exec_set_output(t_shell *shell)
 			cmd_len = ms_args_len(shell->cmd->curr_cmd);
 			if (ft_strncmp(shell->cmd->curr_cmd[i], ">>", 2) == 0)
 				shell->cmd->output = open(shell->cmd->curr_cmd[i + 1],
-						O_CREAT | O_APPEND | O_TRUNC, 00777);
+						O_RDWR | O_CREAT | O_APPEND, 00777);
 			else
 				shell->cmd->output = open(shell->cmd->curr_cmd[i + 1],
 						O_WRONLY | O_CREAT, 00777);
