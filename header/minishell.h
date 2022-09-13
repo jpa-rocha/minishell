@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:18:22 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:08:14 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char		**get_each_word(char *str);
 char		*remove_sq(char *str, int index, int quote);
 char		*remove_dq(char *str);
 char		*check_quotes_pre_lexer(char *str);
-int			check_pipe_in_quotes(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char **str);
 int			check_char_in_quotes(char *str, char c);

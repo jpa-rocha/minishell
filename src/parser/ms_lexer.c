@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:09:10 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:07:46 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ms_lexer(t_shell *shell)
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE && check_pipe_in_quotes(shell->cmd->line) == 0 && 
+		if ((shell->cmd->line[i] == PIPE && check_char_in_quotes(shell->cmd->line, PIPE) == 0 && 
 			shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
 		{
 			temp = ft_calloc(count + 1, sizeof(char));

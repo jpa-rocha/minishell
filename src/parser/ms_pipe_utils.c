@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:40:17 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:07:27 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	check_char_in_quotes(char *str, char c)
 }
 
 /* check */
-int	check_pipe_in_quotes(char *str)
+/* int	check_pipe_in_quotes(char *str)
 {
 	if (check_char_in_quotes(str, PIPE) == 1)
 		return (1);
 	return (0);
-}
+} */
 
 /* if there is nothing btw two pipes, bash prints an error message */
 int	check_empty_pipes(t_cmd *cmd)
