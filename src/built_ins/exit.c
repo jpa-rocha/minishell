@@ -6,12 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:15:57 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:22:27 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 12:50:36 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
+/* test  */
 static int	check_if_int(char *str)
 {
 	int	i;
