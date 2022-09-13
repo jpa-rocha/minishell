@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 10:25:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/13 11:44:22 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-
 static int	ms_cmd_replace(t_shell *shell, char **cmd);
 //static int	ms_exec_cmd_check(t_shell *shell);
 static int	ms_exec_set_input(t_shell *shell);

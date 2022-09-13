@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:15:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:34:35 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	*ms_dollar_check(t_shell *shell, char **str)
 	i = 0;
 	while (str[i] != NULL)
 	{
-		if (check_dollar_in_quotes(str[i]) == 0)
+		if (check_char_in_quotes(str[i], '$') == 0)
 		{
 			dollar = ft_strchr(str[i], '$');
 			if (dollar != NULL)

@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:08:40 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:27:56 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	check_quotes(t_cmd *cmd)
 	int	quote_end;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (cmd->line[i] != '\0')
 	{
-		if (str[i] == SQ || str[i] == DQ)
+		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
 		{
 			quote_end = i + 1;
-			while (str[i] && (str[quote_end] != str[i]))
+			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
 			{
-				if (!str[quote_end])
+				if (!cmd->line[quote_end])
 				{
 					printf("quotes are not closed\n");
 					return (EXIT_FAILURE);
@@ -43,7 +43,7 @@ static int	check_quotes(t_cmd *cmd)
 		}
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* redirections are properly used */
@@ -139,16 +139,16 @@ static int	check_slash(t_cmd *cmd)
 
 int	check_char_errors(t_shell *shell, t_cmd *cmd)
 {
-	shell->exitcode = EXIT_SUCCESS;
+	shell->status = EXIT_SUCCESS;
 	if (check_quotes(cmd))
-		shell->exitcode = EXIT_FAILURE;
+		shell->status = EXIT_FAILURE;
 	if (check_redirections(cmd))
-		shell->exitcode = EXIT_FAILURE;
+		shell->status = EXIT_FAILURE;
 	if (check_slash(cmd))
-		shell->exitcode = EXIT_FAILURE;
+		shell->status = EXIT_FAILURE;
 	if (check_empty_pipes(cmd))
-		shell->exitcode = EXIT_FAILURE;
+		shell->status = EXIT_FAILURE;
 	if (check_pipes(cmd))
-		shell->exitcode = EXIT_FAILURE;
-	return (shell->exitcode);
+		shell->status = EXIT_FAILURE;
+	return (shell->status);
 }

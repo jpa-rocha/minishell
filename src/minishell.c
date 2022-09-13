@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:16:34 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:23:41 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ms_shell(char **env, char **argv, int shlvl)
 			if (ms_parser(shell) == EXIT_SUCCESS)
 			{
 				add_history(shell->cmd->line);
-				shell->exitcode = ms_exec(shell);
+				shell->status = ms_exec(shell);
 				ms_cmd_cleanup(shell->cmd);
 			}
 			else
