@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/05 16:09:43 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/12 09:28:50 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ms_echo(t_cmd *cmd)
 	int		i;
 	int		flag_n;
 
-	flag_n = 0;	
+	flag_n = 0;
 
 	i = 1;
 	while (cmd->curr_cmd[i] && n_check(cmd->curr_cmd[i]))
@@ -48,7 +48,7 @@ int	ms_echo(t_cmd *cmd)
 		if (cmd->curr_cmd[i])
 			write (1, " ", 1);
 	}
-	if (flag_n == 1)
+	if (flag_n == 0)
 		write(1, "\n", 1);
 	return (0);
 }

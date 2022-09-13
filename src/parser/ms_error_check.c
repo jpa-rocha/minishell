@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 22:33:27 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:45:50 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,17 +137,18 @@ static int	check_slash(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int	check_char_errors(t_cmd *cmd)
+int	check_char_errors(t_shell *shell, t_cmd *cmd)
 {
+	shell->exitcode = EXIT_SUCCESS;
 	if (check_quotes(cmd))
-		return (EXIT_FAILURE);
+		shell->exitcode = EXIT_FAILURE;
 	if (check_redirections(cmd))
-		return (EXIT_FAILURE);
+		shell->exitcode = EXIT_FAILURE;
 	if (check_slash(cmd))
-		return (EXIT_FAILURE);
+		shell->exitcode = EXIT_FAILURE;
 	if (check_empty_pipes(cmd))
-		return (EXIT_FAILURE);
+		shell->exitcode = EXIT_FAILURE;
 	if (check_pipes(cmd))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		shell->exitcode = EXIT_FAILURE;
+	return (shell->exitcode);
 }

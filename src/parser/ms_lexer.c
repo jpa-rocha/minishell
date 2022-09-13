@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/08 23:03:00 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:55:18 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	ms_lexer(t_shell *shell)
 			check_temp(temp, shell);
 			ft_strlcpy(temp, &shell->cmd->line[i] - count, count + 1);
 			shell->lexer[j] = ft_strtrim(temp, " ");
+			//shell->lexer[j] = ft_strdup(temp);
 			free(temp);
 			if (!shell->lexer[j])
 				check_lexer(shell);

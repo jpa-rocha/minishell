@@ -8,7 +8,7 @@ CFLAGS =	-Wall -Wextra -Werror
 
 DEBUG =		-Wall -Wextra -Werror -ggdb3
 
-VAL =		valgrind -s --track-fds=yes --track-origins=yes --leak-check=full --show-leak-kinds=all
+VAL =		valgrind -s --track-fds=yes --track-origins=yes --show-reachable=no #--leak-check=full #--show-leak-kinds=all
 
 ################################################################################
 ################################## DIRECTORIES #################################
