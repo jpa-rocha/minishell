@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 16:59:59 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:05:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	ms_exec_set_input(t_shell *shell)
 
 	while (ft_strchr(shell->cmd->curr_cmd[0], '<') != NULL)
 	{
+		if (shell->cmd->input != shell->cmd->temp_fd[0])
+				close(shell->cmd->input);
 		if (ft_strncmp(shell->cmd->curr_cmd[0], "<<", 2) == 0)
 		{
 			if (ms_exec_here_doc(shell) != 0)
