@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:10:48 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:06:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,18 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL)
 		return (EXIT_FAILURE);
+	ms_dollar_check(shell, shell->cmd->curr_cmd);
 	check = ms_exec_first_check(shell);
 	if (check != 0)
-		return (shell->exitcode);
-	shell->exitcode = ms_command_processing(shell);
+		return (shell->status);
+	shell->status = ms_command_processing(shell);
 	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
 	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
 	close(shell->cmd->temp_fd[0]);
 	close(shell->cmd->temp_fd[1]);
-	return (shell->exitcode);
+	close(shell->cmd->input);
+	close(shell->cmd->output);
+	return (shell->status);
 }
 
 // Check if there are arguments, and if so if they are printable characters
@@ -60,21 +63,16 @@ static int	ms_exec_first_check(t_shell *shell)
 static int	ms_command_processing(t_shell *shell)
 {
 	int	pid;
+	int	error;
 
 	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
-		if (ms_exec_set_in_out(shell, shell->cmd->curr_cmd) == EXIT_FAILURE)
+		if (ms_exec_set_in_out(shell) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		ms_is_built_in(shell, shell->cmd->curr_cmd);
-		if (shell->cmd->builtin_num == -1)
-		{
-			shell->exitcode = ms_cmd_separator(shell);
-			if (shell->exitcode != EXIT_SUCCESS)
-				return (shell->exitcode);
-		}
-		shell->exitcode = ms_top_pipe(shell);
-		if (shell->exitcode != 0)
-			return (shell->exitcode);
+		error = ms_top_pipe(shell);
+		if (error != EXIT_SUCCESS)
+			return (error);
 		if (shell->cmd->cmd_idx == 0 && shell->cmd->changes_state == 1)
 			ms_call_built_in(shell);
 		else
@@ -83,39 +81,40 @@ static int	ms_command_processing(t_shell *shell)
 			if (pid == -1)
 				return (EXIT_FAILURE);
 			if (pid == 0)
-					ms_cmd_executing(shell);
-			waitpid(-1, &shell->exitcode, 0);
+				ms_cmd_executing(shell);
+			waitpid(-1, &shell->status, 0);
+			shell->status = WEXITSTATUS(shell->status);
 		}
-		shell->exitcode = ms_bot_pipe(shell);
-		if (shell->exitcode != 0)
-			return (shell->exitcode);
+		error = ms_bot_pipe(shell);
+		if (error != 0)
+			return (error);
 	}
-	return (shell->exitcode);
+	return (shell->status);
 }
 
 static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
 	int		i;
+	char	*mini;
 
 	i = 0;
-	shell->builtins[0] = "cd.c";
-	shell->builtins[1] = "exit.c";
-	shell->builtins[2] = "export.c";
-	shell->builtins[3] = "unset.c";
-	shell->builtins[4] = "env.c";
-	shell->builtins[5] = "echo.c";
-	shell->builtins[6] = "pwd.c";
-	shell->builtins[7] = "minishell.c";
+	mini = "./minishell";
 	while (i < BI_NUM)
 	{
-		if (ft_strncmp(shell->builtins[i], curr_cmd[0],
-				ft_strlen(shell->builtins[i]) - 2) == 0)
+		if (curr_cmd[0] != NULL && ft_strncmp(shell->builtins[i], curr_cmd[0],
+				ft_strlen(shell->builtins[i])) == 0)
 		{
 			shell->cmd->builtin_num = i;
 			shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
 			return (EXIT_SUCCESS);
 		}
 		i += 1;
+	}
+	if (curr_cmd[0] != NULL && ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
+	{
+		shell->cmd->builtin_num = 2;
+		shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
+		return (EXIT_SUCCESS);
 	}
 	shell->cmd->builtin_num = -1;
 	shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
@@ -124,9 +123,9 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 
 static int	ms_control_state(t_shell *shell, char **curr_cmd)
 {
-	if (shell->cmd->builtin_num <= 1 && shell->cmd->builtin_num >= 0)
+	if (shell->cmd->builtin_num <= 2 && shell->cmd->builtin_num >= 0)
 		return (1);
-	else if (shell->cmd->builtin_num == 2 || shell->cmd->builtin_num == 3)
+	else if (shell->cmd->builtin_num == 3 || shell->cmd->builtin_num == 4)
 	{
 		if (ms_args_len(curr_cmd) > 1)
 			return (1);
@@ -143,16 +142,16 @@ int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 1)
 		return (ms_exit(shell));
 	if (shell->cmd->builtin_num == 2)
-		return (ms_export(shell, shell->cmd->curr_cmd));
+		return (ms_shell(shell->env, shell->argv, shell->shlvl + 1));
 	if (shell->cmd->builtin_num == 3)
-		return (ms_unset(shell, shell->cmd->curr_cmd));
+		return (ms_export(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 4)
-		return (ms_env(shell));
+		return (ms_unset(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 5)
 		return (ms_echo(shell->cmd));
 	if (shell->cmd->builtin_num == 6)
 		return (ms_pwd());
 	if (shell->cmd->builtin_num == 7)
-		return (ms_shell(shell->env, shell->argv));
+		return (ms_env(shell));
 	return (EXIT_FAILURE);
 }

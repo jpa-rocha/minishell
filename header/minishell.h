@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 10:57:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:18:22 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 
 # define PATH_SIZE 1024
 
+extern int	g_exit;
+
 typedef struct s_envvar {
 	char	*name;
 	char	*value;
@@ -68,20 +70,22 @@ typedef struct s_cmd {
 }	t_cmd;
 
 typedef struct s_shell {
+	int			shlvl;
 	char		*name;
+	char		*user;
 	t_cmd		*cmd;
 	t_list		*workenv;
 	char		*builtins[BI_NUM];
 	char		**env;
 	char		**argv;
 	char		**lexer;
-	int			exitcode;
+	int			status;
 }	t_shell;
 
 // General Functions
 
-int			ms_shell(char **env, char **argv);
-t_shell		*ms_shell_init(char **env, char **argv);
+int			ms_shell(char **env, char **argv, int shlvl);
+t_shell		*ms_shell_init(char **env, char **argv, int shlvl);
 t_cmd		*ms_cmd_init(t_shell *shell);
 int			ms_cmd_cleanup(t_cmd *cmd);
 int			ms_shell_cleanup(t_shell *shell);
@@ -97,11 +101,10 @@ void		ms_free_seq(t_cmd *cmd);
 char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 char		**ms_copy_cmd(char **cmd);
-
+char		*ms_env_ret_value(t_shell *shell, char *name);
 // Signal Functions
 
-void		ms_signals_parent(void);
-void		ms_signal_child(void);
+void		ms_signals(void);
 
 // Parsing Functions
 
@@ -134,7 +137,7 @@ void		print_lexer(t_shell *shell);
 
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
-int			ms_exec_set_in_out(t_shell *shell, char **cmd);
+int			ms_exec_set_in_out(t_shell *shell);
 int			ms_exec_here_doc(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);
@@ -151,15 +154,15 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 // Entry point into the export function
 int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
-int			ms_var_check(t_shell	*shell, char *called_from, char *newvar);
+int			ms_var_check(t_shell *shell, char *called_from, char *newvar);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char **args);
+int			ms_unset_var(t_shell *shell, char *var);
 
 // Entry point into cd
 int			ms_cd(t_shell *shell, char **args);
-int			ms_cd_new_path(t_shell *shell, t_envvar *path);
-int			ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath);
+int			ms_cd_new_path(t_shell *shell, t_envvar *path, char *var);
 int			ms_cd_switch_path(t_envvar *oldpath, char *newpath);
 t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 

@@ -8,7 +8,7 @@ CFLAGS =	-Wall -Wextra -Werror
 
 DEBUG =		-Wall -Wextra -Werror -ggdb3
 
-VAL =		valgrind -s --track-fds=yes --track-origins=yes --show-reachable=no #--leak-check=full #--show-leak-kinds=all
+VAL =		valgrind -s --track-fds=yes --track-origins=yes --leak-check=full --leak-check=full --show-leak-kinds=all --show-reachable=no# #
 
 ################################################################################
 ################################## DIRECTORIES #################################
@@ -55,9 +55,16 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(SRCDIR)ms_cleanup.c		\
 			$(SIGNALS)ms_signals.c		\
 			$(PARSER)ms_parser.c		\
+			$(PARSER)ms_lexer.c			\
+			$(PARSER)ms_error_check.c	\
+			$(PARSER)ms_token.c			\
+			$(PARSER)ms_other_checks.c	\
+			$(PARSER)ms_pipe_utils.c	\
+			$(PARSER)ms_quotes.c		\
 			$(EXECUTER)ms_exec.c		\
 			$(EXECUTER)ms_exec_aux.c	\
 			$(EXECUTER)ms_exec_setup.c	\
+			$(EXECUTER)ms_heredoc.c		\
 			$(BUILTINS)env.c			\
 			$(BUILTINS)export.c			\
 			$(BUILTINS)export_utils.c	\
@@ -67,13 +74,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(BUILTINS)pwd.c			\
 			$(BUILTINS)exit.c			\
 			$(BUILTINS)echo.c			\
-			$(PARSER)ms_lexer.c		\
-			$(PARSER)ms_error_check.c		\
-			$(PARSER)ms_pipe_utils.c		\
-			$(PARSER)ms_token.c        \
-			$(PARSER)ms_quotes.c        \
-			$(PARSER)ms_other_checks.c		\
-
+			
 ################################################################################
 #################################### PROGRAM ###################################
 ################################################################################

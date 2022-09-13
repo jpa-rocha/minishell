@@ -6,7 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/12 09:28:50 by mgulenay         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/08 15:39:26 by jrocha           ###   ########.fr       */
+>>>>>>> jrocha
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +24,7 @@ static int	n_check(char *s)
 	if (s[i] == '-')
 		i++;
 	else
-	 	return (0);
+		return (0);
 	while (s[i] == 'n')
 		i++;
 	if (s[i] != '\0')

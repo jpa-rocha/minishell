@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 10:45:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:08:40 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	check_quotes(t_cmd *cmd)
 	int	quote_end;
 
 	i = 0;
-	while (cmd->line[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if (cmd->line[i] == SQ || cmd->line[i] == DQ)
+		if (str[i] == SQ || str[i] == DQ)
 		{
 			quote_end = i + 1;
-			while (cmd->line[i] && (cmd->line[quote_end] != cmd->line[i]))
+			while (str[i] && (str[quote_end] != str[i]))
 			{
-				if (!cmd->line[quote_end])
+				if (!str[quote_end])
 				{
 					printf("quotes are not closed\n");
 					return (EXIT_FAILURE);
@@ -43,7 +43,7 @@ static int	check_quotes(t_cmd *cmd)
 		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 /* redirections are properly used */

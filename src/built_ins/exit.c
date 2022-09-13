@@ -6,7 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:15:57 by mgulenay          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/05 16:10:21 by mgulenay         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/08 15:42:40 by jrocha           ###   ########.fr       */
+>>>>>>> jrocha
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +55,7 @@ int	ms_exit(t_shell *shell)
 		else if (check_if_int(shell->cmd->curr_cmd[1]))
 		{
 			printf("exit\n");
-			printf("minishell: exit: %s: numeric argument required\n", shell->cmd->curr_cmd[1]);
+			ft_printf(STDERR_FILENO, EXIT_MSG, shell->cmd->curr_cmd[1]);
 			status = 2;
 			exit(status);
 		}
@@ -62,5 +66,5 @@ int	ms_exit(t_shell *shell)
 	}
 	printf("exit\n");
 	ms_shell_cleanup(shell);
-	exit(status);
+	exit(shell->status);
 }

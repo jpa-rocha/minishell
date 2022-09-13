@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 16:18:52 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:06:46 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,31 @@ int	ms_bot_pipe(t_shell *shell)
 {
 	if (dup2(shell->cmd->pfd[0], STDIN_FILENO) == -1)
 		return (4);
-	//close(STDOUT_FILENO);
 	close(shell->cmd->pfd[0]);
 	if (ms_next_cmd(shell) == -1)
 	{
-		shell->exitcode = EXIT_FAILURE;
-		return (shell->exitcode);
+		shell->status = EXIT_FAILURE;
+		return (shell->status);
 	}
 	return (EXIT_SUCCESS);
 }
 
 int	ms_cmd_executing(t_shell *shell)
 {
-	if (shell->cmd->builtin_num == -1)
+	int	error;
+
+	if (shell->cmd->builtin_num == -1 && shell->cmd->curr_cmd[0] != NULL)
 	{
+		shell->status = ms_cmd_separator(shell);
+		if (shell->status != EXIT_SUCCESS)
+		{
+			error = shell->status;
+			if (error == COMMAND_NOT_FOUND)
+				ft_printf(STDERR_FILENO,
+					"%s%s", shell->cmd->curr_cmd[0], ERR_INV);
+			ms_shell_cleanup(shell);
+			exit(error);
+		}
 		execve(shell->cmd->cmd_name, shell->cmd->curr_cmd, shell->env);
 		perror("Problem ocurred");
 	}
@@ -62,27 +73,28 @@ int	ms_cmd_executing(t_shell *shell)
 	return (EXIT_FAILURE);
 }
 
-// maybe the names have to have .c in the end
 static void	ms_pipe_builtins(t_shell *shell)
 {
-	ms_call_built_in(shell);
+	if (shell->cmd->curr_cmd[0] != NULL)
+		ms_call_built_in(shell);
 	ms_shell_cleanup(shell);
 	exit(0);
 }
 
-//NEEDS TO BE CHECKED IT WILL WORK ACCORDING TO EVALSHEET
+// CHECKS FOR NULL COMMAND TEST
 int	ms_cmd_separator(t_shell *shell)
 {
-	//char	*cmdctrl;
 
 	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
-		if (access(shell->cmd->curr_cmd[0], F_OK) == 0)
-			shell->cmd->cmd_name = ft_strdup(shell->cmd->curr_cmd[0]);
-		else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
+		if (shell->cmd->curr_cmd[0] != NULL)
 		{
-			printf("%s%s", shell->cmd->curr_cmd[0], ERR_INV);
-			return (COMMAND_NOT_FOUND);
+			if (access(shell->cmd->curr_cmd[0], F_OK) == 0)
+				shell->cmd->cmd_name = ft_strdup(shell->cmd->curr_cmd[0]);
+			else if (ms_find_cmd_loop(shell) == EXIT_FAILURE)
+			{
+				return (COMMAND_NOT_FOUND);
+			}
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -96,6 +108,11 @@ static int	ms_find_cmd_loop(t_shell *shell)
 	char	*cmd;
 
 	i = 0;
+	if (shell->cmd->cmd_name != NULL)
+	{
+		free(shell->cmd->cmd_name);
+		shell->cmd->cmd_name = NULL;
+	}
 	while (shell->cmd->path[i] != NULL)
 	{
 		tmp = ft_strjoin(shell->cmd->path[i], "/");
@@ -118,8 +135,11 @@ static int	ms_find_cmd_loop(t_shell *shell)
 
 static int	ms_next_cmd(t_shell *shell)
 {
-	//if (shell->cmd->cmd_name != NULL)
-	//	free(shell->cmd->cmd_name);
+	if (shell->cmd->cmd_name != NULL)
+	{
+		free(shell->cmd->cmd_name);
+		shell->cmd->cmd_name = NULL;
+	}
 	shell->cmd->cmd_idx += 1;
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);

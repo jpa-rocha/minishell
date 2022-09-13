@@ -6,7 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/05 16:10:31 by mgulenay         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/07 11:49:12 by jrocha           ###   ########.fr       */
+>>>>>>> jrocha
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +25,25 @@ int	ms_unset(t_shell *shell, char **args)
 
 	if (ms_args_len(args) == 1)
 	{
-		shell->exitcode = EXIT_SUCCESS;
-		return (shell->exitcode);
+		shell->status = EXIT_SUCCESS;
+		return (shell->status);
 	}
 	if (ms_var_check(shell, "unset", args[1]) == -1)
-		return (shell->exitcode);
+		return (shell->status);
 	node = ms_env_find_entry(shell->workenv, args[1]);
 	if (node != NULL)
 	{
 		ms_unset_var_exists(shell, node);
-		if (shell->exitcode != EXIT_SUCCESS)
-			return (shell->exitcode);
-		shell->exitcode = ms_export_order(shell->workenv);
+		if (shell->status != EXIT_SUCCESS)
+			return (shell->status);
+		shell->status = ms_export_order(shell->workenv);
 		shell->env = ms_env_init_env(shell);
+		if (shell->cmd->path != NULL)
+			ms_free_args(shell->cmd->path);
 		shell->cmd->path = ms_cmd_path_creator(shell);
 	}
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	shell->status = EXIT_SUCCESS;
+	return (shell->status);
 }
 
 static int	ms_unset_var_exists(t_shell *shell, t_node *node)
@@ -47,9 +53,9 @@ static int	ms_unset_var_exists(t_shell *shell, t_node *node)
 
 	line = (t_envvar *)node->data;
 	env_order = line->env_order;
-	shell->exitcode = ms_unset_free_lines(shell, node, line);
-	if (shell->exitcode != EXIT_SUCCESS)
-		return (shell->exitcode);
+	shell->status = ms_unset_free_lines(shell, node, line);
+	if (shell->status != EXIT_SUCCESS)
+		return (shell->status);
 	shell->workenv->last = shell->workenv->last->prev;
 	shell->workenv->last->next = NULL;
 	shell->workenv->current = shell->workenv->last;
@@ -65,8 +71,8 @@ static int	ms_unset_var_exists(t_shell *shell, t_node *node)
 	if (shell->workenv->total < (int) shell->workenv->capacity / 4)
 		list_resize(shell->workenv, (int) shell->workenv->capacity / 4);
 	if (shell->workenv->nodes == NULL)
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
-	return (shell->exitcode);
+		shell->status = ALLOCATION_PROBLEM_EXIT;
+	return (shell->status);
 }
 
 static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line)
@@ -76,9 +82,9 @@ static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line)
 	if (node != shell->workenv->last)
 	{
 		last = (t_envvar *) shell->workenv->last->data;
-		shell->exitcode = ms_env_swap_data(line, last);
-		if (shell->exitcode != EXIT_SUCCESS)
-			return (shell->exitcode);
+		shell->status = ms_env_swap_data(line, last);
+		if (shell->status != EXIT_SUCCESS)
+			return (shell->status);
 		free(last->name);
 		free(last->value);
 	}
@@ -88,5 +94,5 @@ static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line)
 		free(line->value);
 	}
 	ft_memset(shell->workenv->last->data, 0, shell->workenv->data_size);
-	return (shell->exitcode);
+	return (shell->status);
 }

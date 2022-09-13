@@ -6,11 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 10:56:37 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:15:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*ms_replace_err(t_shell* shell, char *dollar, char *str);
+static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
 
 char	*remove_sq(char *str, int index, int quote)
 {
@@ -154,4 +157,80 @@ char	*check_quotes_pre_lexer(char *str)
 		i++;
 	}
 	return (str);
+}
+
+
+void	*ms_dollar_check(t_shell *shell, char **str)
+{
+	char	*dollar;
+	int		i;
+
+	i = 0;
+	while (str[i] != NULL)
+	{
+		if (check_dollar_in_quotes(str[i]) == 0)
+		{
+			dollar = ft_strchr(str[i], '$');
+			if (dollar != NULL)
+			{
+				if (ft_strncmp(dollar + 1, "?", 1) != 0)
+				{
+					str[i] = ms_replace_var(shell, dollar, str[i]);
+				}
+				else
+				{
+					str[i] = ms_replace_err(shell, dollar, str[i]);
+				}
+			}
+		}
+		i += 1;
+	}
+	return (EXIT_SUCCESS);
+}
+
+static char	*ms_replace_err(t_shell* shell, char *dollar, char *str)
+{
+	char	*end;
+	char	*beginning;
+	char	*num;
+	int		i;
+
+	i = 0;
+	while (str[i] != '$')
+		i += 1;
+	beginning = ft_calloc(i + 1, sizeof(char));
+	ft_strlcpy(beginning, str, i + 1);
+	dollar += 2;
+	num = ft_itoa(shell->status);
+	end = ft_strjoin(num, dollar);
+	free(str);
+	str = ft_strjoin(beginning, end);
+	free(num);
+	free(beginning);
+	free(end);
+	return (str);
+}
+
+static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
+{
+	char	*end;
+	char	*beginning;
+	int		i;
+
+	i = 0;
+	end = ms_env_ret_value(shell, dollar + 1);
+	if (end != NULL)
+	{
+		while (str[i] != '$')
+			i += 1;
+		beginning = ft_calloc(i + 1, sizeof(char));
+		ft_strlcpy(beginning, str, i + 1);
+		free(str);
+		str = ft_strjoin(beginning, end);
+		free(beginning);
+		free(end);
+		return (str);
+	}
+	free(str);
+	return (ft_strdup(""));
 }

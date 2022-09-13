@@ -6,13 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/05 10:31:28 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/07 13:12:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-t_shell	*ms_shell_init(char **env, char **argv)
+t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 {
 	t_shell	*shell;
 
@@ -20,14 +20,24 @@ t_shell	*ms_shell_init(char **env, char **argv)
 	if (shell == NULL)
 		return (NULL);
 	shell->name = argv[0];
+	shell->argv = argv;
+	shell->shlvl = shlvl;
 	shell->workenv = ms_env_create_work_env(shell, env);
 	if (shell->workenv == NULL)
 		ms_shell_cleanup(shell);
 	shell->env = ms_env_init_env(shell);
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
-	shell->argv = argv;
-	shell->exitcode = 0;
+	shell->user = ms_env_ret_value(shell, "USER=");
+	shell->builtins[0] = "cd";
+	shell->builtins[1] = "exit";
+	shell->builtins[2] = "minishell";
+	shell->builtins[3] = "export";
+	shell->builtins[4] = "unset";
+	shell->builtins[5] = "echo";
+	shell->builtins[6] = "pwd";
+	shell->builtins[7] = "env";
+	shell->status = 0;
 	return (shell);
 }
 
@@ -37,6 +47,7 @@ char	**ms_cmd_path_creator(t_shell *shell)
 	t_envvar	*line;
 	t_node		*node;
 	char		**path;
+
 
 	path = NULL;
 	node = ms_env_find_entry(shell->workenv, "PATH=");
@@ -65,7 +76,7 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (cmd == NULL)
 	{
-		shell->exitcode = ALLOCATION_PROBLEM_EXIT;
+		shell->status = ALLOCATION_PROBLEM_EXIT;
 		return (NULL);
 	}
 	cmd->path = ms_cmd_path_creator(shell);
@@ -76,6 +87,5 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 		return (NULL);
 	cmd->line = readline(prompt);
 	free(prompt);
-	shell->exitcode = EXIT_SUCCESS;
 	return (cmd);
 }

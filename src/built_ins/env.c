@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/02 10:47:16 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/08 12:44:16 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	ms_env(t_shell *shell)
 		else
 			node = node->next;
 	}
-	shell->exitcode = EXIT_SUCCESS;
-	return (shell->exitcode);
+	shell->status = EXIT_SUCCESS;
+	return (shell->status);
 }
 
 t_list	*ms_env_create_work_env(t_shell *shell, char **env)
@@ -59,7 +59,6 @@ t_list	*ms_env_create_work_env(t_shell *shell, char **env)
 	return (w_env);
 }
 
-//TAKE CARE OF NULLS
 static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 {
 	t_envvar	line;
@@ -75,6 +74,8 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	ft_strlcpy(line.name, env_line, i);
 	if (ft_strncmp(line.name, "SHELL=", 5) == 0)
 		line.value = ft_strdup(shell->name);
+	else if (ft_strncmp(line.name, "SHLVL=", 5) == 0)
+		line.value = ft_itoa(shell->shlvl);
 	else
 	{	
 		value = ft_strchr(env_line, '=');
@@ -87,7 +88,6 @@ static t_envvar	ms_env_create_data(t_shell *shell, char *env_line, int order)
 	return (line);
 }
 
-// TAKE CARE OF NULLS
 char	**ms_env_init_env(t_shell *shell)
 {
 	char		**newenv;

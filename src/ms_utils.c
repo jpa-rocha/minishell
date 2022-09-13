@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 10:50:41 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:17:14 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ms_error_management(t_shell *shell)
 		printf("%s", ERR_NULL);
 		return (ALLOCATION_PROBLEM_EXIT);
 	}
-	if (shell->exitcode == ALLOCATION_PROBLEM_EXIT)
+	if (shell->status == ALLOCATION_PROBLEM_EXIT)
 	{
 		ms_cmd_cleanup(shell->cmd);
 		printf("%s", ERR_NULL);
@@ -30,7 +30,7 @@ int	ms_error_management(t_shell *shell)
 	{
 		ms_cmd_cleanup(shell->cmd);
 	}
-	return (shell->exitcode);
+	return (shell->status);
 }
 
 void	ms_list_data_cleaner(t_list *list)
@@ -100,4 +100,23 @@ char	**ms_copy_cmd(char **cmd)
 	}
 	copy[i] = NULL;
 	return (copy);
+}
+
+char	*ms_env_ret_value(t_shell *shell, char *name)
+{
+	t_node	*node;
+	t_envvar *var;
+	char 	*search;
+
+	search = ft_strjoin(name, "=");
+	node = ms_env_find_entry(shell->workenv, search);
+	if (node == NULL)
+	{
+		free(search);
+		return (NULL);
+	}
+	var = (t_envvar *)node->data;
+	free(search);
+	search = ft_strdup(var->value);
+	return (search);
 }

@@ -6,7 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/05 16:09:37 by mgulenay         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/08 15:39:07 by jrocha           ###   ########.fr       */
+>>>>>>> jrocha
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +18,7 @@
 
 static char	**ms_cd_alloc_setter(char *update);
 
-int	ms_cd_new_path(t_shell *shell, t_envvar *path)
+int	ms_cd_new_path(t_shell *shell, t_envvar *path, char *var)
 {	
 	char		**setter;
 	char		*update;
@@ -26,30 +30,9 @@ int	ms_cd_new_path(t_shell *shell, t_envvar *path)
 		setter = ms_cd_alloc_setter(update);
 		if (setter == NULL)
 			return (ALLOCATION_PROBLEM_EXIT);
-		ft_strlcpy(setter[1], "PWD=", ft_strlen("PWD=") + 1);
-		ft_strlcpy(&setter[1][ft_strlen(setter[1])], update, ft_strlen(update) + 1);
-		ms_export(shell, setter);
-		ms_free_args(setter);
-	}
-	if (update != NULL)
-		free(update);
-	return (EXIT_SUCCESS);
-}
-
-int	ms_cd_new_oldpath(t_shell *shell, t_envvar *oldpath)
-{
-	char		**setter;
-	char		*update;
-
-	update = NULL;
-	update = getcwd(update, 1024);
-	if (oldpath == NULL)
-	{
-		setter = ms_cd_alloc_setter(update);
-		if (setter == NULL)
-			return (ALLOCATION_PROBLEM_EXIT);
-		ft_strlcpy(setter[1], "OLDPWD=", ft_strlen("OLDPWD="));
-		ft_strlcpy(&setter[1][ft_strlen(setter[1])], update, ft_strlen(update) + 1);
+		ft_strlcpy(setter[1], var, ft_strlen(var) + 1);
+		ft_strlcpy(&setter[1][ft_strlen(setter[1])],
+			update, ft_strlen(update) + 1);
 		ms_export(shell, setter);
 		ms_free_args(setter);
 	}
@@ -75,7 +58,6 @@ t_envvar	*ms_init_vars(t_shell *shell, char *envvar)
 	var = NULL;
 	if (ms_env_find_entry(shell->workenv, envvar) != NULL)
 		var = (t_envvar *)ms_env_find_entry(shell->workenv, envvar)->data;
-	shell->exitcode = EXIT_SUCCESS;
 	return (var);
 }
 
@@ -90,4 +72,17 @@ static char	**ms_cd_alloc_setter(char *update)
 	if (setter[1] == NULL)
 		return (NULL);
 	return (setter);
+}
+
+int	ms_unset_var(t_shell *shell, char *var)
+{
+	char	**unset;
+
+	unset = ft_calloc(3, sizeof(char *));
+	unset[0] = ft_strdup("unset");
+	unset[1] = ft_strdup(var);
+	unset[2] = NULL;
+	ms_unset(shell, unset);
+	ms_free_args(unset);
+	return (EXIT_SUCCESS);
 }
