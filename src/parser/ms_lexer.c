@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 13:07:46 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:09:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 	count = 1;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE && check_pipe_in_quotes(cmd->line) == 0)
+		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, PIPE) == 0)
 		{
 			i += 1;
 			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
