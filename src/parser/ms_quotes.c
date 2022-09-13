@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:34:35 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:21:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static char	*ms_replace_err(t_shell* shell, char *dollar, char *str);
 static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
+static int	check_dollar_in_quotes(char *str, size_t idx, int c);
 
 char	*remove_sq(char *str, int index, int quote)
 {
@@ -160,32 +161,83 @@ char	*check_quotes_pre_lexer(char *str)
 }
 
 
-void	*ms_dollar_check(t_shell *shell, char **str)
+static int	check_dollar_in_quotes(char *str, size_t idx, int c)
+{
+	int		quotes_flag;
+	int		index;
+	size_t	i;
+	
+	i = 0;
+	quotes_flag = 0;
+	index = 0;
+	while (i < idx)
+	{
+		if ((str[i] == SQ) && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		//else
+		//	return (0);
+		i++;
+	}
+	i++;
+	while (i < ft_strlen(str))
+	{
+		if ((str[i] == SQ) && quotes_flag == 1)
+		{
+			index += i;
+			quotes_flag = 0;
+			break ;
+		}
+		i++;
+	}
+	i = index - 1;
+	while (i < ft_strlen(str))
+	{
+		if (str[i] == c && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i--;
+	}
+	return (quotes_flag);
+}
+
+/* check the single quotes, needs to return the string, not the actual value*/
+void	*ms_dollar_check(t_shell *shell, char *str)
 {
 	char	*dollar;
+	char	*ret;
 	int		i;
 
 	i = 0;
-	while (str[i] != NULL)
+	while (str[i] != '\0')
 	{
-		if (check_char_in_quotes(str[i], '$') == 0)
-		{
-			dollar = ft_strchr(str[i], '$');
-			if (dollar != NULL)
+		if (str[i] == '$')
+		{	
+			if (check_dollar_in_quotes(str, i, '$') == 0)
 			{
-				if (ft_strncmp(dollar + 1, "?", 1) != 0)
+				dollar = ft_strchr(str, '$');
+				if (dollar != NULL)
 				{
-					str[i] = ms_replace_var(shell, dollar, str[i]);
-				}
-				else
-				{
-					str[i] = ms_replace_err(shell, dollar, str[i]);
+					if (ft_strncmp(dollar + 1, "?", 1) != 0)
+					{
+						str = ms_replace_var(shell, dollar, str);
+					}
+					else
+					{
+						str = ms_replace_err(shell, dollar, str);
+					}
 				}
 			}
 		}
-		i += 1;
+		i++;
 	}
-	return (EXIT_SUCCESS);
+	ret = ft_strdup(str);
+	free(str);
+	return (ret);
 }
 
 static char	*ms_replace_err(t_shell* shell, char *dollar, char *str)

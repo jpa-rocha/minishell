@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:43:16 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:53:16 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL)
 		return (EXIT_FAILURE);
-	ms_dollar_check(shell, shell->cmd->curr_cmd);
 	check = ms_exec_first_check(shell);
 	if (check != 0)
 		return (shell->status);

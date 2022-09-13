@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 13:07:27 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:29:20 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,53 @@
 
 /* checks whether pipe is in quotes */
 /* checks whether pipe is inside the quotes */
-int	check_char_in_quotes(char *str, char c)
+
+
+int	check_char_in_quotes(char *str, size_t idx, int c)
+{
+	int		quotes_flag;
+	int		index;
+	size_t	i;
+	
+	i = 0;
+	quotes_flag = 0;
+	index = 0;
+	while (i < idx)
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		//else
+		//	return (0);
+		i++;
+	}
+	i++;
+	while (i < ft_strlen(str))
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1)
+		{
+			index += i;
+			quotes_flag = 0;
+			break ;
+		}
+		i++;
+	}
+	i = index - 1;
+	while (i < ft_strlen(str))
+	{
+		if (str[i] == c && quotes_flag == 0)
+		{
+			quotes_flag = 1;
+			break ;
+		}
+		i--;
+	}
+	return (quotes_flag);
+}
+
+/* int	check_char_in_quotes(char *str, char c)
 {
 	size_t	i;
 	int		quotes_flag;
@@ -54,7 +100,7 @@ int	check_char_in_quotes(char *str, char c)
 		i--;
 	}
 	return (quotes_flag);
-}
+} */
 
 /* check */
 /* int	check_pipe_in_quotes(char *str)
@@ -72,7 +118,7 @@ int	check_empty_pipes(t_cmd *cmd)
 	i = 0;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, PIPE) == 0)
+		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i++;
 			while (cmd->line[i] == ' ')
@@ -117,19 +163,19 @@ int	check_pipes(t_cmd *cmd)
 	while (cmd->line[i] != '\0' && cmd->line[i] == PIPE)
 	{
 		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0' 
-			&& check_char_in_quotes(cmd->line, PIPE) == 0)
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' 
-			&& check_char_in_quotes(cmd->line, PIPE) == 0)
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ' 
-			&& check_char_in_quotes(cmd->line, PIPE) == 0)
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "||");
 			return (EXIT_FAILURE);

@@ -6,16 +6,15 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 10:55:49 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:21:50 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_words(char *str);
 static char **prepare_lexer(char **lexer);
 /* count number of words in a string */
-static int	count_words(char *str)
+/* static int	count_words(char *str)
 {
 	int		i;
 	int		nb_words;
@@ -33,7 +32,7 @@ static int	count_words(char *str)
 		i++;
 	}
 	return (nb_words);
-}
+} */
 
 /* print number of words in each lexer[nb_cmd] */
 /* void	print_nb_words(t_shell *shell)
@@ -119,7 +118,7 @@ char	*remove_white_spaces(char *str)
 	return (str);
 }
 
-static char	**break_quotes(char *str)
+static char	**break_quotes(t_shell *shell, char *str)
 {
 	int		i;
 	int		j;
@@ -147,6 +146,7 @@ static char	**break_quotes(char *str)
 		{
 			new[k] = ft_calloc(j + 2, sizeof(char));
 			ft_strlcpy(new[k], &str[i - j], j + 2);
+			new[k] = (char *)ms_dollar_check(shell, new[k]);
 			new[k] = check_quotes_pre_lexer(new[k]);
 			k++;
 			j = -1;
@@ -158,7 +158,7 @@ static char	**break_quotes(char *str)
 	return (new);
 }
 
-char	**get_each_word(char *str)
+/* char	**get_each_word(char *str)
 {
 	char	**words;
 	int		len;
@@ -190,7 +190,7 @@ char	**get_each_word(char *str)
 	}
 	words[num_words] = NULL;
 	return (words);
-}
+} */
 /* {
 	char	**words;
 	int		len;
@@ -250,7 +250,7 @@ char	***create_seq_from_lexer(t_shell *shell)
 	while (j < shell->cmd->n_cmd)
 	{
 		//if (check_char_in_quotes(shell->lexer[j], ' ') == 0)
-		shell->cmd->seq[j] = break_quotes(shell->lexer[j]);
+		shell->cmd->seq[j] = break_quotes(shell, shell->lexer[j]);
 		//shell->cmd->seq[j] = check_quotes_pre_lexer(shell->lexer[j]);
  		//shell->cmd->seq[j] = get_each_word(shell->cmd->seq[j]);
 		j++;

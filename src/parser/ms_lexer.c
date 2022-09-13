@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 13:09:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:25:34 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 	count = 1;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, PIPE) == 0)
+		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i += 1;
 			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
@@ -79,7 +79,7 @@ int	ms_lexer(t_shell *shell)
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE && check_char_in_quotes(shell->cmd->line, PIPE) == 0 && 
+		if ((shell->cmd->line[i] == PIPE && check_char_in_quotes(shell->cmd->line, i, PIPE) == 0 && 
 			shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
 		{
 			temp = ft_calloc(count + 1, sizeof(char));
