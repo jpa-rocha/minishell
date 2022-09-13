@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:17:14 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:20:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ms_error_management(t_shell *shell)
 		ms_cmd_cleanup(shell->cmd);
 		printf("%s", ERR_NULL);
 	}
-	if (shell->exitcode == EXIT_FAILURE)
+	if (shell->status == EXIT_FAILURE)
 	{
 		ms_cmd_cleanup(shell->cmd);
 	}
