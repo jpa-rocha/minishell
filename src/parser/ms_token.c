@@ -6,14 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/12 22:27:48 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:34:56 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	count_words(char *str);
-
+static char **prepare_lexer(char **lexer);
 /* count number of words in a string */
 static int	count_words(char *str)
 {
@@ -136,14 +136,16 @@ static char	**break_quotes(char *str)
 			count++;
 		i++;
 	}
-	new	= ft_calloc(count + 1, sizeof(char));
+	new	= ft_calloc(count + 1, sizeof(char *));
+	if (new == NULL)
+		return (NULL);
 	i = 0;
 	k = 0;
 	while (k < count)
 	{
 		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) || str[i] == '\0')
 		{
-			new[k] = ft_calloc(j + 1, sizeof(char));
+			new[k] = ft_calloc(j + 2, sizeof(char));
 			ft_strlcpy(new[k], &str[i - j], j + 2);
 			new[k] = check_quotes_pre_lexer(new[k]);
 			k++;
@@ -152,8 +154,6 @@ static char	**break_quotes(char *str)
 		j++;
 		i++;
 	}
-	free(str);
-	str = NULL;
 	new[k] = NULL;
 	return (new);
 }
@@ -222,16 +222,34 @@ char	**get_each_word(char *str)
 	return (words);
 } */
 
+static char **prepare_lexer(char **lexer)
+{
+	int len;
+	int i;
+	char **new;
+
+	i = 0;
+	len = ms_args_len(lexer);
+	new = ft_calloc(len + 1, sizeof(char *));
+	while (i < len)
+	{
+		new[i] = remove_white_spaces(lexer[i]);
+		i += 1;
+	}
+	ms_free_args(lexer);
+	return(new);
+}
+
 char	***create_seq_from_lexer(t_shell *shell)
 {
 	int	j;
 	
 	j = 0;
+	shell->lexer = prepare_lexer(shell->lexer);
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
 		//if (check_char_in_quotes(shell->lexer[j], ' ') == 0)
-		shell->lexer[j] = remove_white_spaces(shell->lexer[j]);
 		shell->cmd->seq[j] = break_quotes(shell->lexer[j]);
 		//shell->cmd->seq[j] = check_quotes_pre_lexer(shell->lexer[j]);
  		//shell->cmd->seq[j] = get_each_word(shell->cmd->seq[j]);

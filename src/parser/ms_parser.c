@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/12 22:20:10 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:45:35 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	ms_parser(t_shell *shell)
 	if (shell->cmd->line != NULL)
 	{
 		// why does it leak? if parser is exit-failure, it already calls error management & frees in minishell.c
-		if (check_char_errors(shell->cmd))
-			return (EXIT_FAILURE);
+		if (check_char_errors(shell, shell->cmd))
+			return (shell->exitcode);
 		shell->exitcode = ms_lexer(shell);
 	}
 	shell->cmd->seq = create_seq_from_lexer(shell);

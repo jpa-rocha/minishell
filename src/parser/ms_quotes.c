@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/12 22:19:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:34:20 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,21 @@ char	*remove_sq(char *str, int index, int quote)
 	return (NULL);
 }
 
-int	check_sq(char *str)
+int	flag_quotes(char *str, int quote)
 {
 	size_t	i;
 	size_t	len;
 	int		quotes_flag;
 
 	quotes_flag = 0;
-	len = ft_strlen(str);
+	if (ft_strncmp(str, "", 0) == 1)
+		len = ft_strlen(str);
+	else
+		len = 0;
 	i = 0;
-	while (str[i] != '\0')
+	while (i < len && str[i] != '\0')
 	{
-		if ((str[i] == SQ) && quotes_flag == 0)
+		if ((str[i] == quote) && quotes_flag == 0)
 		{
 			quotes_flag = 1;
 			break ;
@@ -70,9 +73,9 @@ int	check_sq(char *str)
 		i++;
 	}
 	i++;
-	while (i < len)
+	while (i < len && str[i] != '\0')
 	{
-		if ((str[i] == SQ) && quotes_flag == 1)
+		if ((str[i] == quote) && quotes_flag == 1)
 		{
 			quotes_flag = 0;
 			break ;
@@ -82,36 +85,6 @@ int	check_sq(char *str)
 	return (quotes_flag);
 }
 
-int	check_dq(char *str)
-{
-	size_t	i;
-	size_t	len;
-	int		quotes_flag;
-
-	quotes_flag = 0;
-	len = ft_strlen(str);
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if ((str[i] == DQ) && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i++;
-	}
-	i++;
-	while (i < len)
-	{
-		if (str[i] == DQ && quotes_flag == 1)
-		{
-			quotes_flag = 0;
-			break ;
-		}
-		i++;
-	}
-	return (quotes_flag);
-}
 
 char	*check_quotes_pre_lexer(char *str)
 {
@@ -124,8 +97,8 @@ char	*check_quotes_pre_lexer(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		s_flag = check_sq(str);
-		d_flag = check_dq(str);
+		s_flag = flag_quotes(str, SQ);
+		d_flag = flag_quotes(str, DQ);
 		if (str[i] == SQ && s_flag == 0)
 		{
 			while (str[i] != '\0' && str[i] != SQ)
@@ -141,7 +114,7 @@ char	*check_quotes_pre_lexer(char *str)
 				}
 				i++;
 			}
-			if (check_sq(str) == 0)
+			if (flag_quotes(str, SQ) == 0)
 			{
 				index = i;
 				index++;
@@ -167,7 +140,7 @@ char	*check_quotes_pre_lexer(char *str)
 				}
 				i++;
 			}
-			if (check_dq(str) == 0)
+			if (flag_quotes(str, DQ) == 0)
 			{
 					index = i;
 					index++;

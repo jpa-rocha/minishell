@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/12 22:29:01 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/13 10:46:22 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,11 @@ int			check_pipe_in_quotes(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char **str);
 int			check_char_in_quotes(char *str, char c);
-int			check_dq(char *str);
-int			check_sq(char *str);
+int			flag_quotes(char *str, int quote);
+
 
 // Error checks for the variable line
-int			check_char_errors(t_cmd *cmd);
+int			check_char_errors(t_shell *shell, t_cmd *cmd);
 int			check_empty_pipes(t_cmd *cmd);
 int			check_pipes(t_cmd *cmd);
 
