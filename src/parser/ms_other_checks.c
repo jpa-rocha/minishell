@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+static char	*ms_replace_err(t_shell *shell, char *dollar, char *str);
+static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
+static int	check_dollar_in_quotes(char *str, size_t idx, int c);
+
 /* finds  dollar sign in the string
  + if env comes after we need to get env variable
  + if ? comes after we need to get exit status of the previous command call
