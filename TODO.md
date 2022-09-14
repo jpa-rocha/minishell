@@ -3,12 +3,12 @@ CD
 
 [ ] fix home\
 [ ] fix absolute path\
-[ ] fix ~\
+[ ] fix ~
 
 Pipes
 ----------------------
-[ ] pipes in quotes\
+[ ] pipes in quotes
 
 Signals
 ----------------------
-[ ] difference between children and parent processes\
+[ ] difference between children and parent processes
