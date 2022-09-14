@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 16:11:10 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 17:20:43 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	ms_parser(t_shell *shell)
 	if (shell->cmd->line != NULL)
 	{
 		// why does it leak? if parser is exit-failure, it already calls error management & frees in minishell.c
-		if (check_char_errors(shell, shell->cmd))
-			return (shell->status);
+		if (check_char_errors(shell, shell->cmd) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		ms_lexer(shell);
 	}
 

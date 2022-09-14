@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 10:59:39 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 18:52:46 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@
 # define BSLASH '\\'
 
 # define PATH_SIZE 1024
-
-extern int	g_exit;
 
 typedef struct s_envvar {
 	char	*name;
@@ -86,7 +84,7 @@ typedef struct s_shell {
 
 // General Functions
 
-int			ms_shell(char **env, char **argv, int shlvl);
+int			ms_shell(char **env, char **argv, int shlvl, int id);
 t_shell		*ms_shell_init(char **env, char **argv, int shlvl);
 t_cmd		*ms_cmd_init(t_shell *shell);
 int			ms_cmd_cleanup(t_cmd *cmd);
@@ -107,7 +105,9 @@ char		*ms_env_ret_value(t_shell *shell, char *name);
 // Signal Functions
 
 void		ms_signals(void);
+//int			ms_pid_setter(int id);
 
+void	signal_check_child(void);
 // Parsing Functions
 
 int			ms_parser(t_shell *shell);
@@ -121,7 +121,7 @@ char		*remove_dq(char *str);
 char		*check_quotes_pre_lexer(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char *str);
-int			check_char_in_quotes(char *str, size_t idx, int c);
+int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);
 
 

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 09:14:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 18:55:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,20 @@ int	main(int argc, char **argv, char **env)
 		printf("%s", ERR_ARG);
 		return (1);
 	}
-	error = ms_shell(env, argv, 1);
+	error = ms_shell(env, argv, 0, -1);
 	return (error);
 }
 
 // Entry point for the minishell logic
-int	ms_shell(char **env, char **argv, int shlvl)
+int	ms_shell(char **env, char **argv, int shlvl, int id)
 {
 	t_shell	*shell;
+	int sad;
 
+	sad = id;
+	if (sad != -1)
+		return (1);
+	//ms_pid_setter(id);
 	shell = ms_shell_init(env, argv, shlvl);
 	if (shell == NULL)
 		return (ms_error_management(shell));

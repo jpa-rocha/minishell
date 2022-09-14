@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 13:53:16 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 18:54:37 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static int	ms_control_state(t_shell *shell, char **curr_cmd);
 
 int	ms_exec(t_shell *shell)
 {
-	int	check;
-
 	shell->cmd->temp_fd[0] = dup(STDIN_FILENO);
 	shell->cmd->temp_fd[1] = dup(STDOUT_FILENO);
 	shell->cmd->input = shell->cmd->temp_fd[0];
@@ -30,9 +28,7 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL)
 		return (EXIT_FAILURE);
-	check = ms_exec_first_check(shell);
-	if (check != 0)
-		return (shell->status);
+	
 	shell->status = ms_command_processing(shell);
 	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
 	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
@@ -48,21 +44,26 @@ int	ms_exec(t_shell *shell)
 static int	ms_exec_first_check(t_shell *shell)
 {
 	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
-		|| (shell->cmd->curr_cmd[0][0] <= 32 ||
-		shell->cmd->curr_cmd[0][0] == 58))
-		return (EXIT_FAILURE);
+		|| (shell->cmd->curr_cmd[0][0] <= 32
+		|| shell->cmd->curr_cmd[0][0] == 58))
+	{
+		shell->cmd->builtin_num = 8;
+		return (EXIT_SUCCESS);
+	}
 	else if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
 		&& shell->cmd->curr_cmd[0][0] == 33)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	{
+		shell->cmd->builtin_num = 9;
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
 }
 
 // Check if arguments are valid commands, if not print error
 // message and return
 static int	ms_command_processing(t_shell *shell)
 {
-	int	pid;
-	int	error;
+	int		error;
 
 	while (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
@@ -76,13 +77,19 @@ static int	ms_command_processing(t_shell *shell)
 			ms_call_built_in(shell);
 		else
 		{
-			pid = fork();
-			if (pid == -1)
+			shell->pid = fork();
+			signal_check_child();
+			if (shell->pid == -1)
 				return (EXIT_FAILURE);
-			if (pid == 0)
+			if (shell->pid == 0)
+			{
+				//ms_pid_setter(shell->pid);
 				ms_cmd_executing(shell);
+			}
 			waitpid(-1, &shell->status, 0);
 			shell->status = WEXITSTATUS(shell->status);
+			//ms_pid_setter(-1);
+			ms_signals();
 		}
 		error = ms_bot_pipe(shell);
 		if (error != 0)
@@ -95,9 +102,13 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 {
 	int		i;
 	char	*mini;
+	int		check;
 
 	i = 0;
 	mini = "./minishell";
+	check = ms_exec_first_check(shell);
+	if (check == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
 	while (i < BI_NUM)
 	{
 		if (curr_cmd[0] != NULL && ft_strncmp(shell->builtins[i], curr_cmd[0],
@@ -141,7 +152,7 @@ int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 1)
 		return (ms_exit(shell));
 	if (shell->cmd->builtin_num == 2)
-		return (ms_shell(shell->env, shell->argv, shell->shlvl + 1));
+		return (ms_shell(shell->env, shell->argv, shell->shlvl + 1, -1));
 	if (shell->cmd->builtin_num == 3)
 		return (ms_export(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 4)

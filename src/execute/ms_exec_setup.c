@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_setup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 16:50:46 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 17:05:58 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ int	ms_bot_pipe(t_shell *shell)
 	close(shell->cmd->pfd[0]);
 	if (ms_next_cmd(shell) == -1)
 	{
-		shell->status = EXIT_FAILURE;
-		return (shell->status);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -75,10 +74,15 @@ int	ms_cmd_executing(t_shell *shell)
 
 static void	ms_pipe_builtins(t_shell *shell)
 {
-	if (shell->cmd->curr_cmd[0] != NULL)
+	int exitcode;
+
+	exitcode = 0;
+	if (shell->cmd->builtin_num == 9)
+		exitcode = 1;
+	if (shell->cmd->curr_cmd[0] != NULL && shell->cmd->builtin_num < 8)
 		ms_call_built_in(shell);
 	ms_shell_cleanup(shell);
-	exit(0);
+	exit(exitcode);
 }
 
 // CHECKS FOR NULL COMMAND TEST

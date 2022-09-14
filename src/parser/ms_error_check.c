@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_error_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 15:20:51 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 17:20:13 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ static int	check_quotes(t_cmd *cmd)
 
 int	check_char_errors(t_shell *shell, t_cmd *cmd)
 {
-	shell->status = EXIT_SUCCESS;
 	if (check_quotes(cmd))
 		shell->status = EXIT_FAILURE;
 	/* if (check_redirections(cmd))
@@ -150,5 +149,5 @@ int	check_char_errors(t_shell *shell, t_cmd *cmd)
 		shell->status = EXIT_FAILURE;
 	if (check_pipes(cmd))
 		shell->status = EXIT_FAILURE;
-	return (shell->status);
+	return (EXIT_SUCCESS);
 }

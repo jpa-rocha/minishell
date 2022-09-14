@@ -7,7 +7,7 @@ CD
 
 Pipes
 ----------------------
-[ ] pipes in quotes
+[x] pipes in quotes
 
 Signals
 ----------------------

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 13:29:20 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:07:25 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,53 @@
 /* checks whether pipe is inside the quotes */
 
 
-int	check_char_in_quotes(char *str, size_t idx, int c)
+int	check_char_in_quotes(char *str, int idx, int c)
 {
+	int		quotes_flag;
+	int		firstq;
+	int		secondq;
+	int		iter;
+	int		i;
+
+	i = 0;
+	quotes_flag = 0;
+	while (str[i] != '\0')
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0 && i < idx)
+		{
+			quotes_flag = 1;
+			firstq = i;
+			i += 1;
+		}
+		if (str[i] == str[firstq] && quotes_flag > 0)
+		{
+			if (i > idx)
+			{
+				quotes_flag = 2;
+				secondq = i;
+			}
+			else
+			{
+				quotes_flag = 0;
+				firstq = i;
+			}
+		}
+		if (quotes_flag == 2 && secondq > idx)
+		{
+			iter = firstq;
+			while (iter < secondq)
+			{
+				if (str[iter] == c)
+					return (1);
+				iter += 1;
+			}
+		}
+		i++;	
+	}
+	return (0);
+}
+
+/* {
 	int		quotes_flag;
 	int		index;
 	size_t	i;
@@ -39,7 +84,7 @@ int	check_char_in_quotes(char *str, size_t idx, int c)
 	i++;
 	while (i < ft_strlen(str))
 	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1)
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1 && i > idx)
 		{
 			index += i;
 			quotes_flag = 0;
@@ -59,7 +104,7 @@ int	check_char_in_quotes(char *str, size_t idx, int c)
 	}
 	return (quotes_flag);
 }
-
+ */
 /* int	check_char_in_quotes(char *str, char c)
 {
 	size_t	i;

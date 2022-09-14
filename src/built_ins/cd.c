@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 11:09:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 18:06:41 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ms_cd(t_shell *shell, char **args)
 {
 	t_envvar	*oldpath;
 	t_envvar	*path;
-	
+
 	if (ms_args_len(args) <= 2)
 	{
 		oldpath = ms_init_vars(shell, "OLDPWD");
@@ -32,6 +32,7 @@ int	ms_cd(t_shell *shell, char **args)
 			shell->status = ms_cd_edge(shell, path, oldpath, args[1]);
 		else if (ms_args_len(args) == 2)
 		{
+			
 			shell->status = chdir(args[1]);
 			if (shell->status == EXIT_SUCCESS)
 				shell->status = ms_cd_path_exists(shell, path, oldpath);
