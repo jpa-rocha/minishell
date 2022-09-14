@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:52:46 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:04:13 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ char		*ms_env_ret_value(t_shell *shell, char *name);
 void		ms_signals(void);
 //int			ms_pid_setter(int id);
 
-void	signal_check_child(void);
+void		signal_check_child(void);
+
 // Parsing Functions
 
 int			ms_parser(t_shell *shell);
@@ -116,14 +117,12 @@ int			ms_lexer(t_shell *shell);
 void		alloc_lexer(t_shell *shell);
 char		***create_seq_from_lexer(t_shell *shell);
 char		**get_each_word(char *str);
-char		*remove_sq(char *str, int index, int quote);
-char		*remove_dq(char *str);
+char		*remove_quotes(char *str, int index, int quote);
 char		*check_quotes_pre_lexer(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char *str);
 int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);
-
 
 // Error checks for the variable line
 int			check_char_errors(t_shell *shell, t_cmd *cmd);

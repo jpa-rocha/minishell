@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 11:22:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 20:08:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	ms_echo(t_cmd *cmd)
 	int		flag_n;
 
 	flag_n = 0;
-
 	i = 1;
 	while (cmd->curr_cmd[i] && n_check(cmd->curr_cmd[i]))
 	{

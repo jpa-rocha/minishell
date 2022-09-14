@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 12:53:37 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 20:11:00 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ char	**ms_copy_cmd(char **cmd)
 
 char	*ms_env_ret_value(t_shell *shell, char *name)
 {
-	t_node	*node;
-	t_envvar *var;
-	char 	*search;
+	t_node		*node;
+	t_envvar	*var;
+	char		*search;
 
 	search = ft_strjoin(name, "=");
 	node = ms_env_find_entry(shell->workenv, search);

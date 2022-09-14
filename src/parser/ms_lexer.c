@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 11:39:20 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 19:41:27 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	check_lexer(t_shell *shell);
 static int	check_temp(char *temp, t_shell *shell);
 
-/* check how many group of commands we have - - the separator is the pipe */
+/* checks how many group of substrings we have -- the separator is the PIPE */
 int	get_nmb_cmd(t_cmd *cmd)
 {
 	int	i;
@@ -25,7 +25,8 @@ int	get_nmb_cmd(t_cmd *cmd)
 	count = 1;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, i, PIPE) == 0)
+		if (cmd->line[i] == PIPE \
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i += 1;
 			while (cmd->line[i] == ' ' || cmd->line[i] == PIPE)
@@ -79,8 +80,9 @@ int	ms_lexer(t_shell *shell)
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE && check_char_in_quotes(shell->cmd->line, i, PIPE) == 0 && 
-			shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
+		if ((shell->cmd->line[i] == PIPE \
+			&& check_char_in_quotes(shell->cmd->line, i, PIPE) == 0 \
+			&& shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
 		{
 			temp = ft_calloc(count + 1, sizeof(char));
 			check_temp(temp, shell);

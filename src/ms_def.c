@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_def.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:45:48 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:10:32 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ char	**ms_cmd_path_creator(t_shell *shell)
 	t_envvar	*line;
 	t_node		*node;
 	char		**path;
-
 
 	path = NULL;
 	node = ms_env_find_entry(shell->workenv, "PATH=");

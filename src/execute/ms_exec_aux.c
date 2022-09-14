@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 11:42:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 17:50:15 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 20:12:13 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
 static int	ms_cmd_replace_in(t_shell *shell, char **cmd);
 static int	ms_cmd_replace_out(t_shell *shell, char **cmd);
 //static int	ms_exec_cmd_check(t_shell *shell);
@@ -52,7 +53,7 @@ static int	ms_exec_set_input(t_shell *shell)
 	while (ft_strchr(shell->cmd->curr_cmd[0], '<') != NULL)
 	{
 		if (shell->cmd->input != shell->cmd->temp_fd[0])
-				close(shell->cmd->input);
+			close(shell->cmd->input);
 		if (ft_strncmp(shell->cmd->curr_cmd[0], "<<", 2) == 0)
 		{
 			if (ms_exec_here_doc(shell) != 0)
@@ -82,7 +83,8 @@ static int	ms_exec_set_output(t_shell *shell)
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	while (i < cmd_len)
 	{
-		if (shell->cmd->curr_cmd[i] != NULL && ft_strchr(shell->cmd->curr_cmd[i], '>') != NULL)
+		if (shell->cmd->curr_cmd[i] != NULL
+			&& ft_strchr(shell->cmd->curr_cmd[i], '>') != NULL)
 		{
 			if (shell->cmd->output != shell->cmd->temp_fd[1])
 				close(shell->cmd->output);
@@ -163,7 +165,7 @@ static int	ms_cmd_replace_out(t_shell *shell, char **cmd)
 		if (ft_strchr(cmd[i], '>') != NULL && flag == 0)
 		{
 			i += 2;
-			flag = 1;	
+			flag = 1;
 		}
 		if (j < len - 2)
 			new_cmd[j] = ft_strdup(cmd[i]);

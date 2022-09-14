@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:54:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:10:16 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL)
 		return (EXIT_FAILURE);
-	
 	shell->status = ms_command_processing(shell);
 	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
 	dup2(shell->cmd->temp_fd[1], STDOUT_FILENO);
@@ -120,7 +119,8 @@ static int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 		}
 		i += 1;
 	}
-	if (curr_cmd[0] != NULL && ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
+	if (curr_cmd[0] != NULL
+		&& ft_strncmp(mini, curr_cmd[0], ft_strlen(mini)) == 0)
 	{
 		shell->cmd->builtin_num = 2;
 		shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
