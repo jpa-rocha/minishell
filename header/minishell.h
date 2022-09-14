@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 14:05:42 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 10:59:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ typedef struct s_cmd {
 
 typedef struct s_shell {
 	int			shlvl;
+	pid_t		pid;
 	char		*name;
+	char		*home;
 	char		*user;
 	t_cmd		*cmd;
 	t_list		*workenv;
