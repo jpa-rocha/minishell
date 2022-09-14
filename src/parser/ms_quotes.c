@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-static char	*ms_replace_err(t_shell *shell, char *dollar, char *str);
-static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
-static int	check_dollar_in_quotes(char *str, size_t idx, int c);
-
 char	*remove_quotes(char *str, int index, int quote)
 {
 	char	*temp;
