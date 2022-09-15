@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 10:08:59 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 10:12:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	ms_exec(t_shell *shell)
 }
 
 // Check if there are arguments, and if so if they are printable characters
-// MIGHT BE MADE UNUSABLE BY LEXER
 static int	ms_exec_first_check(t_shell *shell)
 {
 	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
