@@ -65,6 +65,7 @@ SRCS	=	$(SRCDIR)minishell.c		\
 			$(EXECUTER)ms_exec_aux.c	\
 			$(EXECUTER)ms_exec_setup.c	\
 			$(EXECUTER)ms_heredoc.c		\
+			$(BUILTINS)builtins.c		\
 			$(BUILTINS)env.c			\
 			$(BUILTINS)export.c			\
 			$(BUILTINS)export_utils.c	\

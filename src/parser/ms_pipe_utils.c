@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/15 10:08:08 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 10:23:44 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,99 +59,6 @@ int	check_char_in_quotes(char *str, int idx, int c)
 	}
 	return (0);
 }
-
-/* {
-	int		quotes_flag;
-	int		index;
-	size_t	i;
-	
-	i = 0;
-	quotes_flag = 0;
-	index = 0;
-	while (i < idx)
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		//else
-		//	return (0);
-		i++;
-	}
-	i++;
-	while (i < ft_strlen(str))
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1 && i > idx)
-		{
-			index += i;
-			quotes_flag = 0;
-			break ;
-		}
-		i++;
-	}
-	i = index - 1;
-	while (i < ft_strlen(str))
-	{
-		if (str[i] == c && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i--;
-	}
-	return (quotes_flag);
-}
- */
-/* int	check_char_in_quotes(char *str, char c)
-{
-	size_t	i;
-	int		quotes_flag;
-	int		index;
-
-	quotes_flag = 0;
-	index = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i++;
-	}
-	i++;
-	while (i < ft_strlen(str))
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1)
-		{
-			index += i;
-			quotes_flag = 0;
-			break ;
-		}
-		i++;
-	}
-	i = index - 1;
-	while (i < ft_strlen(str))
-	{
-		if (str[i] == c && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i--;
-	}
-	return (quotes_flag);
-} */
-
-/* check */
-/* int	check_pipe_in_quotes(char *str)
-{
-	if (check_char_in_quotes(str, PIPE) == 1)
-		return (1);
-	return (0);
-} */
 
 /* if there is nothing btw two pipes, bash prints an error message */
 int	check_empty_pipes(t_cmd *cmd)

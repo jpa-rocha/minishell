@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 10:09:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 16:24:20 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_shell {
 
 // General Functions
 
-int			ms_shell(char **env, char **argv, int shlvl, int id);
+int			ms_shell(char **env, char **argv, int shlvl);
 t_shell		*ms_shell_init(char **env, char **argv, int shlvl);
 t_cmd		*ms_cmd_init(t_shell *shell);
 int			ms_cmd_cleanup(t_cmd *cmd);
@@ -105,8 +105,9 @@ char		**ms_copy_cmd(char **cmd);
 char		*ms_env_ret_value(t_shell *shell, char *name);
 // Signal Functions
 
-void		ms_signals(void);
-int			ms_pid_setter(int id);
+void		ms_signals_parent(void);
+void		ms_signals_child(void);
+void		ms_signals_block(void);
 
 // Parsing Functions
 
@@ -143,6 +144,10 @@ int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
 int			ms_call_built_in(t_shell *shell);
 int			ms_cmd_separator(t_shell *shell);
+
+// Built-handling
+int			ms_is_built_in(t_shell *shell, char **curr_cmd);
+int			ms_control_state(t_shell *shell, char **curr_cmd);
 
 // Entry point into the env function
 int			ms_env(t_shell *shell);

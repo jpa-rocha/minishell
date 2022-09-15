@@ -6,80 +6,53 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 22:58:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 16:20:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static void	ms_signal_handler(int num);
-static void ms_signal_sigint(void);
-static void	ms_signal_sigquit(void);
+static void	ms_parent_signal_handler(int num);
+static void	ms_child_signal_handler(int num);
 
-void	ms_signals()
+void	ms_signals_parent(void)
 {
-	signal(SIGINT, ms_signal_handler);
-	signal(SIGQUIT, ms_signal_handler);
+	signal(SIGINT, ms_parent_signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	
 }
 
-static void	ms_signal_handler(int num)
+void	ms_signals_child(void)
+{
+	signal(SIGINT, ms_child_signal_handler);
+	signal(SIGQUIT, ms_child_signal_handler);
+}
+
+void	ms_signals_block(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	ms_parent_signal_handler(int num)
 {	
 	if (num == SIGINT)
-		ms_signal_sigint();
-	if (num == SIGQUIT)
-		ms_signal_sigquit();
-}
-
-static void	ms_signal_sigint(void)
-{
-	int	id;
-
-	ft_printf(STDERR_FILENO, "get new_id\n");
-	id = ms_pid_setter(-2);
-	if (id == -1)
-	{	
+	{
 		ft_printf(STDOUT_FILENO, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		ft_printf(STDERR_FILENO, "PARENT\n");
 	}
-	if (id > -1)
-	{
-		ft_printf(STDERR_FILENO, "CHILD\n");
-		kill(id, SIGINT);
-	}
-	return ;
 }
 
-void	ms_signal_sigquit(void)
+static void	ms_child_signal_handler(int num)
 {
-	int id;
-
-	id = ms_pid_setter(-2);
-	if (id == -1)
-		ft_printf(STDOUT_FILENO, "\b\b  \b\b");
-	if (id != -1)
+	if (num == SIGINT)
 	{
-		ft_printf(STDERR_FILENO, "\b\b\\Quit (core dumped)\n");
-		kill(id, SIGQUIT);
-	}	
-	
-	return ;
-}
-
-int		ms_pid_setter(int id)
-{
-	static int	new_id;
-	
-	if (id == -1)
-	{
-		new_id = -1;
-	//	ft_printf(STDERR_FILENO,"new_id: %i\n", new_id);
-		return (new_id);
+		ft_printf(STDERR_FILENO, "\n");
 	}
-	if (id > new_id)
-		new_id = id;
-	//ft_printf(STDERR_FILENO,"new_id: %i\n", new_id);
-	return (new_id);
+	if (num == SIGQUIT)
+	{
+		ft_printf(STDERR_FILENO, "Quit (core dumped)\n");
+	}
 }
