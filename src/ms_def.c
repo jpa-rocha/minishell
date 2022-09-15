@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 09:37:08 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 10:09:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ char	**ms_cmd_path_creator(t_shell *shell)
 	t_envvar	*line;
 	t_node		*node;
 	char		**path;
-
 
 	path = NULL;
 	node = ms_env_find_entry(shell->workenv, "PATH=");

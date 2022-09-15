@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 15:15:50 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/14 19:48:36 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	ms_is_in_quotes(char *str, size_t idx, int c)
 	int		quotes_flag;
 	int		index;
 	size_t	i;
-	
+
 	i = 0;
 	quotes_flag = 0;
 	index = 0;
@@ -65,8 +65,6 @@ static int	ms_is_in_quotes(char *str, size_t idx, int c)
 			quotes_flag = 1;
 			break ;
 		}
-		//else
-		//	return (0);
 		i++;
 	}
 	i++;
@@ -104,7 +102,8 @@ char	*remove_white_spaces(char *str)
 	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	while (str[i] != '\0')
 	{
-		if ((str[i] == ' ' && str[i + 1] == ' ') != 0 && ms_is_in_quotes(str, i, ' ') == 0)
+		if ((str[i] == ' ' && str[i + 1] == ' ') != 0 \
+			&& ms_is_in_quotes(str, i, ' ') == 0)
 		{
 			i++;
 			continue ;
@@ -135,14 +134,15 @@ static char	**break_quotes(t_shell *shell, char *str)
 			count++;
 		i++;
 	}
-	new	= ft_calloc(count + 1, sizeof(char *));
+	new = ft_calloc(count + 1, sizeof(char *));
 	if (new == NULL)
 		return (NULL);
 	i = 0;
 	k = 0;
 	while (k < count)
 	{
-		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) || str[i] == '\0')
+		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) \
+			|| str[i] == '\0')
 		{
 			new[k] = ft_calloc(j + 1, sizeof(char));
 			ft_strlcpy(new[k], &str[i - j], j + 1);
@@ -222,11 +222,11 @@ static char	**break_quotes(t_shell *shell, char *str)
 	return (words);
 } */
 
-static char **prepare_lexer(char **lexer)
+static char	**prepare_lexer(char **lexer)
 {
-	int len;
-	int i;
-	char **new;
+	int		len;
+	int		i;
+	char	**new;
 
 	i = 0;
 	len = ms_args_len(lexer);
@@ -237,22 +237,19 @@ static char **prepare_lexer(char **lexer)
 		i += 1;
 	}
 	ms_free_args(lexer);
-	return(new);
+	return (new);
 }
 
 char	***create_seq_from_lexer(t_shell *shell)
 {
 	int	j;
-	
+
 	j = 0;
 	shell->lexer = prepare_lexer(shell->lexer);
 	shell->cmd->seq = ft_calloc(ms_args_len(shell->lexer) + 1, sizeof(char *));
 	while (j < shell->cmd->n_cmd)
 	{
-		//if (check_char_in_quotes(shell->lexer[j], ' ') == 0)
 		shell->cmd->seq[j] = break_quotes(shell, shell->lexer[j]);
-		//shell->cmd->seq[j] = check_quotes_pre_lexer(shell->lexer[j]);
- 		//shell->cmd->seq[j] = get_each_word(shell->cmd->seq[j]);
 		j++;
 	}
 	shell->cmd->seq[j] = NULL;

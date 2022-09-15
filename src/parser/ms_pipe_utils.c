@@ -6,15 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 23:09:24 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 10:08:08 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-/* checks whether pipe is in quotes */
 /* checks whether pipe is inside the quotes */
-
 
 int	check_char_in_quotes(char *str, int idx, int c)
 {
@@ -163,7 +161,8 @@ int	check_empty_pipes(t_cmd *cmd)
 	i = 0;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE && check_char_in_quotes(cmd->line, i, PIPE) == 0)
+		if (cmd->line[i] == PIPE \
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i++;
 			while (cmd->line[i] == ' ')
@@ -195,31 +194,33 @@ static int	count_pipes(t_cmd *cmd)
 	return (count);
 }
 
-/* if we just write pipes, bash prints error messages (it should give the same error msg with echo cmd) */
+/* if we just write pipes, bash prints error messages
+ (it should give the same error msg with echo cmd) 
+*/
 int	check_pipes(t_cmd *cmd)
 {
 	int	i;
 	int	c;
-	
+
 	c = count_pipes(cmd);
 	i = 0;
 	while (cmd->line[i] == ' ')
 		i++;
 	while (cmd->line[i] != '\0' && cmd->line[i] == PIPE)
 	{
-		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0' 
+		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0' \
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
-		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' 
+		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' \
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "|");
 			return (EXIT_FAILURE);
 		}
-		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ' 
+		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ' \
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			printf(ERR_MU, "||");

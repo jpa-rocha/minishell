@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exec_setup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 17:05:58 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:11:37 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ static void	ms_pipe_builtins(t_shell *shell)
 // CHECKS FOR NULL COMMAND TEST
 int	ms_cmd_separator(t_shell *shell)
 {
-
 	if (shell->cmd->cmd_idx < shell->cmd->n_cmd)
 	{
 		if (shell->cmd->curr_cmd[0] != NULL)
