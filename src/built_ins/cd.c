@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:06:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 09:54:02 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ms_cd(t_shell *shell, char **args)
 {
 	t_envvar	*oldpath;
 	t_envvar	*path;
+	char		*home;
+	char		*homejoin;
 
 	if (ms_args_len(args) <= 2)
 	{
@@ -32,12 +34,34 @@ int	ms_cd(t_shell *shell, char **args)
 			shell->status = ms_cd_edge(shell, path, oldpath, args[1]);
 		else if (ms_args_len(args) == 2)
 		{
-			
-			shell->status = chdir(args[1]);
+			if (ft_strncmp(args[1], "~/", 2) == 0)
+			{
+				home = ms_env_ret_value(shell, "HOME=");
+				if (home == NULL)
+				{
+					home = ft_strjoin(shell->home, &args[1][1]);
+					shell->status = chdir(home);
+					free(home);
+				}
+				else
+				{
+					homejoin = ft_strjoin(home, &args[1][1]);
+					if (chdir(homejoin) == -1)
+					{
+						shell->status = EXIT_FAILURE;
+						ft_printf(STDERR_FILENO, ERR_CD, homejoin);
+						free(homejoin);
+						free(home);
+						return (shell->status);
+					}
+				}
+			}
+			else
+				shell->status = chdir(args[1]);
 			if (shell->status == EXIT_SUCCESS)
 				shell->status = ms_cd_path_exists(shell, path, oldpath);
 		}
-		else
+		if (shell->status == -1)
 		{
 			shell->status = EXIT_FAILURE;
 			ft_printf(STDERR_FILENO, ERR_CD, args[1]);

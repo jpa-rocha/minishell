@@ -6,50 +6,13 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 19:03:43 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 22:58:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-void	siginthandler(int signum)
-{
-	//printf("parent\n");
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		rl_clear_history();
-	}
-	//else if (signum == SIGQUIT)
-		//printf("\b\b  \b\b");
-}
-
-void	ms_signals(void)
-{
-	signal(SIGINT, siginthandler);
-	signal(SIGQUIT, siginthandler);
-}
-
-void	siginthandler_child(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		rl_clear_history();
-	}
-	else if (signum == SIGQUIT)
-		printf("\b\b\\Quit (core dumped)\n");
-}
-
-void	signal_check_child(void)
-{
-	signal(SIGINT, siginthandler_child);
-	signal(SIGQUIT, siginthandler_child);
-}
-/* static void	ms_signal_handler(int num);
+static void	ms_signal_handler(int num);
 static void ms_signal_sigint(void);
 static void	ms_signal_sigquit(void);
 
@@ -119,4 +82,4 @@ int		ms_pid_setter(int id)
 		new_id = id;
 	//ft_printf(STDERR_FILENO,"new_id: %i\n", new_id);
 	return (new_id);
-} */
+}

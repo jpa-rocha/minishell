@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:54:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 22:59:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,16 @@ static int	ms_command_processing(t_shell *shell)
 		else
 		{
 			shell->pid = fork();
-			signal_check_child();
 			if (shell->pid == -1)
 				return (EXIT_FAILURE);
 			if (shell->pid == 0)
 			{
-				//ms_pid_setter(shell->pid);
+				ms_pid_setter(shell->pid);
 				ms_cmd_executing(shell);
 			}
 			waitpid(-1, &shell->status, 0);
 			shell->status = WEXITSTATUS(shell->status);
-			//ms_pid_setter(-1);
+			ms_pid_setter(-1);
 			ms_signals();
 		}
 		error = ms_bot_pipe(shell);

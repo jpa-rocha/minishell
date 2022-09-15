@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:41:05 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:55:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 22:58:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ms_shell(char **env, char **argv, int shlvl, int id)
 	sad = id;
 	if (sad != -1)
 		return (1);
-	//ms_pid_setter(id);
+	ms_pid_setter(id);
 	shell = ms_shell_init(env, argv, shlvl);
 	if (shell == NULL)
 		return (ms_error_management(shell));

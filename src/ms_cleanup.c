@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:16:43 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/15 09:28:56 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	ms_shell_cleanup(t_shell *shell)
 {
 	if (shell->user != NULL)
 		free(shell->user);
+	if (shell->home != NULL)
+		free(shell->home);
 	if (shell->cmd != NULL)
 		ms_cmd_cleanup(shell->cmd);
 	if (shell->env != NULL)

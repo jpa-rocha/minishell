@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:52:46 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/14 23:28:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <errno.h>
+# include <dirent.h>
 
 # define BI_NUM 8
 # define BI_PATH "./src/built_ins/"
@@ -105,9 +106,8 @@ char		*ms_env_ret_value(t_shell *shell, char *name);
 // Signal Functions
 
 void		ms_signals(void);
-//int			ms_pid_setter(int id);
+int			ms_pid_setter(int id);
 
-void	signal_check_child(void);
 // Parsing Functions
 
 int			ms_parser(t_shell *shell);

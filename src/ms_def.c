@@ -6,11 +6,14 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 18:45:48 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/15 09:37:08 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+static void	ms_set_builtins(t_shell *shell);
+static void	ms_update_shell_home(t_shell *shell);
 
 t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 {
@@ -28,7 +31,15 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	shell->env = ms_env_init_env(shell);
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
+	ms_set_builtins(shell);
 	shell->user = ms_env_ret_value(shell, "USER=");
+	shell->home = ms_env_ret_value(shell, "HOME=");
+	shell->status = 0;
+	return (shell);
+}
+
+static void ms_set_builtins(t_shell *shell)
+{
 	shell->builtins[0] = "cd";
 	shell->builtins[1] = "exit";
 	shell->builtins[2] = "minishell";
@@ -37,10 +48,7 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	shell->builtins[5] = "echo";
 	shell->builtins[6] = "pwd";
 	shell->builtins[7] = "env";
-	shell->status = 0;
-	return (shell);
 }
-
 // CONTROLL NULL WHAT IF PATH IS NULL NEEDS TO BE FREED AT END?
 char	**ms_cmd_path_creator(t_shell *shell)
 {
@@ -80,6 +88,7 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 		return (NULL);
 	}
 	cmd->path = ms_cmd_path_creator(shell);
+	ms_update_shell_home(shell);
 	cmd->cmd_idx = 0;
 	cmd->changes_state = 0;
 	prompt = ms_prompt(shell);
@@ -88,4 +97,28 @@ t_cmd	*ms_cmd_init(t_shell *shell)
 	cmd->line = readline(prompt);
 	free(prompt);
 	return (cmd);
+}
+
+static void	ms_update_shell_home(t_shell *shell)
+{
+	DIR		*dir;
+	char	*home;
+
+	home = ms_env_ret_value(shell, "HOME=");
+	if (home != NULL && ft_strncmp(home, shell->home,
+			ft_strlen(home) == 1))
+	{
+		dir = opendir(home);
+		if (dir)
+		{
+			if (shell->home != NULL)
+				free(shell->home);
+			shell->home = ft_strdup(home);
+			closedir(dir);
+		}
+		else if (ENOENT == errno)
+			free(home);
+	}
+	if (home != NULL)
+		free(home);
 }

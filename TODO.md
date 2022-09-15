@@ -1,13 +1,13 @@
 CD
 ----------------------
 
-[ ] fix home\
-[ ] fix absolute path\
-[ ] fix ~
+[X] fix home\
+[X] fix absolute path\
+[X] fix ~
 
 Pipes
 ----------------------
-[x] pipes in quotes
+[X] pipes in quotes
 
 Signals
 ----------------------
