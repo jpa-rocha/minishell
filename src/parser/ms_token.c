@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 19:48:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/15 21:31:22 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*remove_white_spaces(char *str)
 	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	while (str[i] != '\0')
 	{
-		if ((str[i] == ' ' && str[i + 1] == ' ') != 0 \
+		if ((str[i] == ' ' && str[i + 1] == ' ') != 0
 			&& ms_is_in_quotes(str, i, ' ') == 0)
 		{
 			i++;
@@ -141,7 +141,7 @@ static char	**break_quotes(t_shell *shell, char *str)
 	k = 0;
 	while (k < count)
 	{
-		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) \
+		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0)
 			|| str[i] == '\0')
 		{
 			new[k] = ft_calloc(j + 1, sizeof(char));

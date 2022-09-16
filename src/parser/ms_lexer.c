@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 13:31:33 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 19:41:27 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:11:24 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
-
-static int	check_lexer(t_shell *shell);
-static int	check_temp(char *temp, t_shell *shell);
 
 /* checks how many group of substrings we have -- the separator is the PIPE */
 int	get_nmb_cmd(t_cmd *cmd)
@@ -25,7 +22,7 @@ int	get_nmb_cmd(t_cmd *cmd)
 	count = 1;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE \
+		if (cmd->line[i] == PIPE
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i += 1;
@@ -80,8 +77,8 @@ int	ms_lexer(t_shell *shell)
 	alloc_lexer(shell);
 	while (1)
 	{
-		if ((shell->cmd->line[i] == PIPE \
-			&& check_char_in_quotes(shell->cmd->line, i, PIPE) == 0 \
+		if ((shell->cmd->line[i] == PIPE
+			&& check_char_in_quotes(shell->cmd->line, i, PIPE) == 0
 			&& shell->cmd->line[i + 1] != '\0') || shell->cmd->line[i] == '\0')
 		{
 			temp = ft_calloc(count + 1, sizeof(char));
