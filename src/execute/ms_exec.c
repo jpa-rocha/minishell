@@ -6,13 +6,14 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 16:28:10 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 12:58:34 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_command_processing(t_shell *shell);
+static int	ms_exec_fork(t_shell *shell);
 
 int	ms_exec(t_shell *shell)
 {
@@ -22,8 +23,9 @@ int	ms_exec(t_shell *shell)
 	shell->cmd->output = shell->cmd->temp_fd[1];
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);
-	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
-	if (shell->cmd->curr_cmd == NULL)
+	if (shell->cmd->builtin_num == 0)
+		shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
+	if (shell->cmd->curr_cmd == NULL && shell->cmd->builtin_num == 0)
 		return (EXIT_FAILURE);
 	shell->status = ms_command_processing(shell);
 	dup2(shell->cmd->temp_fd[0], STDIN_FILENO);
@@ -55,22 +57,7 @@ static int	ms_command_processing(t_shell *shell)
 			ms_call_built_in(shell);
 		else
 		{
-			shell->pid = fork();
-			ms_signals_child();
-			if (shell->pid == 0)
-			{
-				ms_cmd_executing(shell);
-			}
-			else if (shell->pid > 0)
-			{
-				waitpid(-1, &shell->status, 0);
-				ms_signals_parent();
-				if (WIFSIGNALED(shell->status) == 1)
-					shell->status = 128 + WTERMSIG(shell->status);
-				else
-					shell->status = WEXITSTATUS(shell->status);
-			}
-			else
+			if (ms_exec_fork(shell) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
 		error = ms_bot_pipe(shell);
@@ -80,3 +67,24 @@ static int	ms_command_processing(t_shell *shell)
 	return (shell->status);
 }
 
+static int	ms_exec_fork(t_shell *shell)
+{
+	shell->pid = fork();
+	ms_signals_child();
+	if (shell->pid == 0)
+	{
+		ms_cmd_executing(shell);
+	}
+	else if (shell->pid > 0)
+	{
+		waitpid(-1, &shell->status, 0);
+		ms_signals_parent();
+		if (WIFSIGNALED(shell->status) == 1)
+			shell->status = 128 + WTERMSIG(shell->status);
+		else
+			shell->status = WEXITSTATUS(shell->status);
+	}
+	else
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}

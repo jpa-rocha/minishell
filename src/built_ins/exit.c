@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:15:57 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/13 12:50:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:58:47 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	ms_exit(t_shell *shell)
 			printf("exit\n");
 			ft_printf(STDERR_FILENO, EXIT_MSG, shell->cmd->curr_cmd[1]);
 			status = 2;
+			ms_cmd_cleanup(shell->cmd);
 			exit(status);
 		}
 		else if (status)
@@ -62,6 +63,6 @@ int	ms_exit(t_shell *shell)
 		}
 	}
 	printf("exit\n");
-	ms_shell_cleanup(shell);
+	ms_cmd_cleanup(shell->cmd);
 	exit(shell->status);
 }

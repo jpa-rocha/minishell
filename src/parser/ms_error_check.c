@@ -6,15 +6,15 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 17:20:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 13:58:41 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	check_quotes(t_cmd *cmd);
-//static int	counter_io(t_cmd *cmd);
-//static int	check_redirections(t_cmd *cmd);
+static int	counter_io(t_cmd *cmd);
+static int	check_redirections(t_cmd *cmd);
 //static int	check_slash(t_cmd *cmd);
 
 /* ERROR CHECKS AT THE BEGINNING */
@@ -34,7 +34,8 @@ static int	check_quotes(t_cmd *cmd)
 			{
 				if (!cmd->line[quote_end])
 				{
-					printf("quotes are not closed\n");
+					cmd->builtin_num = -2;
+					//printf("quotes are not closed\n");
 					return (EXIT_FAILURE);
 				}
 				quote_end++;
@@ -47,7 +48,7 @@ static int	check_quotes(t_cmd *cmd)
 }
 
 /* redirections are properly used */
-/* static int	counter_io(t_cmd *cmd)
+static int	counter_io(t_cmd *cmd)
 {
 	int	i;
 	int	count;
@@ -64,11 +65,11 @@ static int	check_quotes(t_cmd *cmd)
 	}
 	return (count);
 }
- */
+
 /* Error check for cases like: < , > , <<, >>, <> and
 	>>>>>, <<<<<<, > > > >, >> >> >> >> etc.
 */
-/* static int	check_redirections(t_cmd *cmd)
+static int	check_redirections(t_cmd *cmd)
 {
 	int	i;
 	int	c;
@@ -83,34 +84,34 @@ static int	check_quotes(t_cmd *cmd)
 			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
 			|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
 		{
-			printf(ERR_MU, "newline");
+			cmd->builtin_num = -5;
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
 		{
-			printf(ERR_MU, "<");
+			cmd->builtin_num = -6;
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == SM && c > 2)
 		{
-			printf(ERR_MU, "<<");
+			cmd->builtin_num = -7;
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == GR && c > 2 && cmd->line[i + 1] == ' ')
 		{
-			printf(ERR_MU, ">");
+			cmd->builtin_num = -8;
 			return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == GR && c > 2)
 		{
-			printf(ERR_MU, ">>");
+			cmd->builtin_num = -9;
 			return (EXIT_FAILURE);
 		}
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
- */
+
 /* error check for cases like
 	 /, //, /. etc. 
 */
@@ -137,17 +138,17 @@ static int	check_quotes(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 } */
 
-int	check_char_errors(t_shell *shell, t_cmd *cmd)
+int	check_char_errors(t_cmd *cmd)
 {
 	if (check_quotes(cmd))
-		shell->status = EXIT_FAILURE;
-	/* if (check_redirections(cmd))
-		shell->status = EXIT_FAILURE; */
+		return(EXIT_FAILURE);
+	if (check_redirections(cmd))
+		return(EXIT_FAILURE);
 	/* if (check_slash(cmd))
 		shell->status = EXIT_FAILURE; */
-	if (check_empty_pipes(cmd))
-		shell->status = EXIT_FAILURE;
 	if (check_pipes(cmd))
-		shell->status = EXIT_FAILURE;
+		return (EXIT_FAILURE);
+	if (check_empty_pipes(cmd))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

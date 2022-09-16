@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 09:28:56 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 09:14:44 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,26 @@ int	ms_shell_cleanup(t_shell *shell)
 	if (shell != NULL)
 		free(shell);
 	return (EXIT_SUCCESS);
+}
+
+void	ms_list_data_cleaner(t_list *list)
+{
+	t_node		*last;
+	t_envvar	*env_line;
+
+	last = list->last;
+	while (last->prev != NULL)
+	{
+		env_line = (t_envvar *) last->data;
+		if (env_line->name != NULL)
+			free(env_line->name);
+		if (env_line->value != NULL)
+			free(env_line->value);
+		last = last->prev;
+	}
+	env_line = (t_envvar *)list->first->data;
+	if (env_line->name != NULL)
+		free(env_line->name);
+	if (env_line->value != NULL)
+		free(env_line->value);
 }
