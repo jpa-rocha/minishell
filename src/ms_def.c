@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 12:45:55 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 15:37:52 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	return (shell);
 }
 
-static void ms_set_builtins(t_shell *shell)
+static void	ms_set_builtins(t_shell *shell)
 {
 	shell->builtins[0] = "cd";
 	shell->builtins[1] = "exit";
@@ -49,6 +49,7 @@ static void ms_set_builtins(t_shell *shell)
 	shell->builtins[6] = "pwd";
 	shell->builtins[7] = "env";
 }
+
 // CONTROLL NULL WHAT IF PATH IS NULL NEEDS TO BE FREED AT END?
 char	**ms_cmd_path_creator(t_shell *shell)
 {

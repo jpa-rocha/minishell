@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/16 13:58:41 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 14:19:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,10 @@ static int	check_redirections(t_cmd *cmd)
 			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
 			|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
 		{
-			cmd->builtin_num = -5;
-			return (EXIT_FAILURE);
+			// -5
+			cmd->builtin_num = 0;
+			return (EXIT_SUCCESS);
+			//return (EXIT_FAILURE);
 		}
 		else if (cmd->line[i] == SM && c > 2 && cmd->line[i + 1] == ' ')
 		{
