@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 11:30:39 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:09:28 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,11 @@ int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);
 
 // Error checks for the variable line
-int			check_char_errors(t_shell *shell, t_cmd *cmd);
+
+int			check_char_errors(t_cmd *cmd);
 int			check_empty_pipes(t_cmd *cmd);
 int			check_pipes(t_cmd *cmd);
-
-// for printing
-void		print_nb_words(t_shell *shell);
-void		print_lexer(t_shell *shell);
+int			ms_error_messages(t_shell *shell, int error_num);
 
 // Executing Functions
 
@@ -139,11 +137,15 @@ int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
 int			ms_exec_set_in_out(t_shell *shell);
 int			ms_exec_here_doc(t_shell *shell);
+int			ms_find_cmd_loop(t_shell *shell);
+int			ms_next_cmd(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
 int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
 int			ms_call_built_in(t_shell *shell);
 int			ms_cmd_separator(t_shell *shell);
+int			ms_cmd_replace_in(t_shell *shell, char **cmd);
+int			ms_cmd_replace_out(t_shell *shell, char **cmd);
 
 // Built-handling
 int			ms_is_built_in(t_shell *shell, char **curr_cmd);
@@ -168,6 +170,8 @@ int			ms_unset_var(t_shell *shell, char *var);
 int			ms_cd(t_shell *shell, char **args);
 int			ms_cd_new_path(t_shell *shell, t_envvar *path, char *var);
 int			ms_cd_switch_path(t_envvar *oldpath, char *newpath);
+int			ms_cd_path_exists(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath);
 t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 
 // Return the current working path

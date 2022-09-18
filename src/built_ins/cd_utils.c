@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 10:56:23 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:23:08 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/15 20:48:15 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,31 @@ static char	**ms_cd_alloc_setter(char *update)
 	return (setter);
 }
 
-int	ms_unset_var(t_shell *shell, char *var)
+int	ms_cd_path_exists(t_shell *shell, t_envvar *path,
+				t_envvar *oldpath)
 {
-	char	**unset;
+	char		*temp;
+	char		*update;
 
-	unset = ft_calloc(3, sizeof(char *));
-	unset[0] = ft_strdup("unset");
-	unset[1] = ft_strdup(var);
-	unset[2] = NULL;
-	ms_unset(shell, unset);
-	ms_free_args(unset);
-	return (EXIT_SUCCESS);
+	temp = NULL;
+	update = NULL;
+	update = getcwd(update, 1024);
+	if (update == NULL)
+	{
+		shell->status = ERR_CWD;
+		ft_printf(STD_ERR, ERR_CWD_MSG);
+		return (shell->status);
+	}
+	if (path != NULL)
+	{
+		temp = ft_strdup(path->value);
+		shell->status = ms_cd_switch_path(path, update);
+	}
+	if (path != NULL && oldpath != NULL)
+		shell->status = ms_cd_switch_path(oldpath, temp);
+	if (update != NULL)
+		free(update);
+	if (temp != NULL)
+		free(temp);
+	return (shell->status);
 }

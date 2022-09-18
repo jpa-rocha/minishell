@@ -48,33 +48,37 @@ INCLUDES = 		$(FT_INC)
 ################################## SRCS & OBJS #################################
 ################################################################################
 
-SRCS	=	$(SRCDIR)minishell.c		\
-			$(SRCDIR)ms_def.c			\
-			$(SRCDIR)ms_extra.c			\
-			$(SRCDIR)ms_utils.c			\
-			$(SRCDIR)ms_cleanup.c		\
-			$(SIGNALS)ms_signals.c		\
-			$(PARSER)ms_parser.c		\
-			$(PARSER)ms_lexer.c			\
-			$(PARSER)ms_error_check.c	\
-			$(PARSER)ms_token.c			\
-			$(PARSER)ms_other_checks.c	\
-			$(PARSER)ms_pipe_utils.c	\
-			$(PARSER)ms_quotes.c		\
-			$(EXECUTER)ms_exec.c		\
-			$(EXECUTER)ms_exec_aux.c	\
-			$(EXECUTER)ms_exec_setup.c	\
-			$(EXECUTER)ms_heredoc.c		\
-			$(BUILTINS)builtins.c		\
-			$(BUILTINS)env.c			\
-			$(BUILTINS)export.c			\
-			$(BUILTINS)export_utils.c	\
-			$(BUILTINS)cd.c				\
-			$(BUILTINS)cd_utils.c		\
-			$(BUILTINS)unset.c			\
-			$(BUILTINS)pwd.c			\
-			$(BUILTINS)exit.c			\
-			$(BUILTINS)echo.c			\
+SRCS	=	$(SRCDIR)minishell.c			\
+			$(SRCDIR)ms_def.c				\
+			$(SRCDIR)ms_extra.c				\
+			$(SRCDIR)ms_utils.c				\
+			$(SRCDIR)ms_cleanup.c			\
+			$(SIGNALS)ms_signals.c			\
+			$(PARSER)ms_parser.c			\
+			$(PARSER)ms_lexer.c				\
+			$(PARSER)ms_error_check.c		\
+			$(PARSER)ms_token.c				\
+			$(PARSER)ms_other_checks.c		\
+			$(PARSER)ms_pipe_utils.c		\
+			$(PARSER)ms_quotes.c			\
+			$(PARSER)ms_quotes_utils.c			\
+			$(EXECUTER)ms_exec.c			\
+			$(EXECUTER)ms_exec_aux.c		\
+			$(EXECUTER)ms_exec_set_io.c		\
+			$(EXECUTER)ms_exec_setup.c		\
+			$(EXECUTER)ms_exec_pipeline.c	\
+			$(EXECUTER)ms_heredoc.c			\
+			$(BUILTINS)errors.c				\
+			$(BUILTINS)builtins.c			\
+			$(BUILTINS)env.c				\
+			$(BUILTINS)export.c				\
+			$(BUILTINS)export_utils.c		\
+			$(BUILTINS)cd.c					\
+			$(BUILTINS)cd_utils.c			\
+			$(BUILTINS)unset.c				\
+			$(BUILTINS)pwd.c				\
+			$(BUILTINS)exit.c				\
+			$(BUILTINS)echo.c				\
 			
 ################################################################################
 #################################### PROGRAM ###################################

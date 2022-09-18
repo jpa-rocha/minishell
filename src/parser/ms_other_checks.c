@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_other_checks.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 19:50:41 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/18 21:16:31 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	*ms_dollar_check(t_shell *shell, char *str)
 	return (ret);
 }
 
-static char	*ms_replace_err(t_shell* shell, char *dollar, char *str)
+static char	*ms_replace_err(t_shell *shell, char *dollar, char *str)
 {
 	char	*end;
 	char	*beginning;

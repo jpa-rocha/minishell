@@ -6,14 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/16 09:41:00 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/18 17:54:08 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 /* checks whether pipe is inside the quotes */
-
 int	check_char_in_quotes(char *str, int idx, int c)
 {
 	int		quotes_flag;
@@ -103,26 +102,20 @@ static int	count_pipes(t_cmd *cmd)
 }
 
 /* if we just write pipes, bash prints error messages
- (it should give the same error msg with echo cmd) 
+(it should give the same error msg with echo cmd) 
 */
-static int	check_pipes_helper(t_cmd *cmd, int i, int c)
+static int	pipes_helper(t_cmd *cmd, int i, int c)
 {
-	if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0'
+	if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' '
 		&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 	{
-		printf(ERR_MU, "|");
+		cmd->builtin_num = -3;
 		return (EXIT_FAILURE);
 	}
-	else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' '
+	if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' '
 		&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 	{
-		printf(ERR_MU, "|");
-		return (EXIT_FAILURE);
-	}
-	else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' '
-		&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
-	{
-		printf(ERR_MU, "||");
+		cmd->builtin_num = -4;
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -139,7 +132,14 @@ int	check_pipes(t_cmd *cmd)
 		i++;
 	while (cmd->line[i] != '\0' && cmd->line[i] == PIPE)
 	{
-		check_pipes_helper(cmd, i, c);
+		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0'
+			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
+		{
+			cmd->builtin_num = -3;
+			return (EXIT_FAILURE);
+		}
+		else if (pipes_helper(cmd, i, c) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);

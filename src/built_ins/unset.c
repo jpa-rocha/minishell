@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/14 20:13:09 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:30:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,17 @@ static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line)
 	}
 	ft_memset(shell->workenv->last->data, 0, shell->workenv->data_size);
 	return (shell->status);
+}
+
+int	ms_unset_var(t_shell *shell, char *var)
+{
+	char	**unset;
+
+	unset = ft_calloc(3, sizeof(char *));
+	unset[0] = ft_strdup("unset");
+	unset[1] = ft_strdup(var);
+	unset[2] = NULL;
+	ms_unset(shell, unset);
+	ms_free_args(unset);
+	return (EXIT_SUCCESS);
 }

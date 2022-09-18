@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ms_quotes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 20:03:04 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/18 19:52:26 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_r_quotes(char *str, char *temp)
+{
+	free(str);
+	free(temp);
+}
 
 char	*remove_quotes(char *str, int index, int quote)
 {
@@ -20,8 +26,6 @@ char	*remove_quotes(char *str, int index, int quote)
 
 	k = 0;
 	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	if (!temp)
-		return (NULL);
 	ft_strlcpy(temp, str, index + 1);
 	k = index;
 	while (str[index] != '\0')
@@ -31,8 +35,7 @@ char	*remove_quotes(char *str, int index, int quote)
 			if (str[index + 1] == quote)
 			{
 				ret = ft_strjoin(temp, &str[index + 2]);
-				free(str);
-				free(temp);
+				free_r_quotes(str, temp);
 				return (ret);
 			}
 			index += 1;
@@ -43,26 +46,29 @@ char	*remove_quotes(char *str, int index, int quote)
 				index += 1;
 			}
 			ret = ft_strjoin(temp, &str[index + 1]);
-			free(str);
-			free(temp);
+			free_r_quotes(str, temp);
 			return (ret);
 		}
 	}
 	return (NULL);
 }
 
-int	flag_quotes(char *str, int quote)
+static int	quotes_len(char *str)
 {
-	size_t	i;
 	size_t	len;
-	int		quotes_flag;
 
-	quotes_flag = 0;
 	if (ft_strncmp(str, "", 0) == 1)
 		len = ft_strlen(str);
 	else
 		len = 0;
-	i = 0;
+	return (len);
+}
+
+static void	flag_quotes_helper(char *str, size_t i, size_t len, int quote)
+{
+	int	quotes_flag;
+
+	quotes_flag = 0;
 	while (i < len && str[i] != '\0')
 	{
 		if ((str[i] == quote) && quotes_flag == 0)
@@ -72,6 +78,18 @@ int	flag_quotes(char *str, int quote)
 		}
 		i++;
 	}
+}
+
+int	flag_quotes(char *str, int quote)
+{
+	size_t	i;
+	size_t	len;
+	int		quotes_flag;
+
+	quotes_flag = 0;
+	len = quotes_len(str);
+	i = 0;
+	flag_quotes_helper(str, i, len, quote);
 	i++;
 	while (i < len && str[i] != '\0')
 	{
@@ -83,74 +101,4 @@ int	flag_quotes(char *str, int quote)
 		i++;
 	}
 	return (quotes_flag);
-}
-
-char	*check_quotes_pre_lexer(char *str)
-{
-	size_t		i;
-	int			index;
-	int			s_flag;
-	int			d_flag;
-
-	index = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		s_flag = flag_quotes(str, SQ);
-		d_flag = flag_quotes(str, DQ);
-		if (str[i] == SQ && s_flag == 0)
-		{
-			while (str[i] != '\0' && str[i] != SQ)
-			{
-				if (str[i] == DQ && d_flag == 0)
-				{
-					index = i;
-					index++;
-					while (str[index] != SQ)
-						index++;
-					str = remove_quotes(str, i, SQ);
-					i = index;
-				}
-				i++;
-			}
-			if (flag_quotes(str, SQ) == 0)
-			{
-				index = i;
-				index++;
-				while (str[index] != SQ)
-						index++;
-				str = remove_quotes(str, i, SQ);
-				i = index;
-				i -= 2;
-			}
-		}
-		else if (str[i] == DQ && d_flag == 0)
-		{
-			while (str[i] != '\0' && str[i] != DQ)
-			{
-				if (str[i] == SQ && s_flag == 0)
-				{
-					index = i;
-					index++;
-					while (str[index] != DQ)
-						index++;
-					str = remove_quotes(str, i, DQ);
-					i = index;
-				}
-				i++;
-			}
-			if (flag_quotes(str, DQ) == 0)
-			{
-				index = i;
-				index++;
-				while (str[index] != DQ)
-					index++;
-				str = remove_quotes(str, i, DQ);
-				i = index;
-				i -= 2;
-			}
-		}
-		i++;
-	}
-	return (str);
 }

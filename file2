@@ -1,3 +1,6 @@
+file
+file1
+file2
 header
 libft
 Makefile
@@ -5,4 +8,6 @@ minishell
 README.md
 src
 test
+test1
+test2
 TODO.md

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 16:59:03 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 13:41:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ms_builtin_shell_control(t_shell *shell, char **curr_cmd)
 	if (curr_cmd[0] != NULL)
 	{	
 		len = ft_strlen(curr_cmd[0]) - 1;
-		while (curr_cmd[0][len] != '/' && len >= 0)
+		while (len >= 0 && curr_cmd[0][len] != '/')
 			len -= 1;
 		if (ft_strncmp(shell->builtins[2], &curr_cmd[0][len + 1],
 			ft_strlen(shell->builtins[2])) == 0
@@ -80,6 +80,8 @@ int	ms_control_state(t_shell *shell, char **curr_cmd)
 
 int	ms_call_built_in(t_shell *shell)
 {
+	if (shell->cmd->builtin_num <= -2)
+		return (ms_error_messages(shell, shell->cmd->builtin_num));
 	if (shell->cmd->builtin_num == 0)
 		return (ms_cd(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 1)
@@ -101,6 +103,8 @@ int	ms_call_built_in(t_shell *shell)
 
 static int	ms_exec_first_check(t_shell *shell)
 {
+	if (shell->cmd->builtin_num < -1)
+		return (EXIT_SUCCESS);
 	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
 		|| (shell->cmd->curr_cmd[0][0] <= 32
 		|| shell->cmd->curr_cmd[0][0] == 58))

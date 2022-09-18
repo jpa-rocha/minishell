@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:32:19 by jrocha            #+#    #+#             */
-/*   Updated: 2022/07/18 10:50:54 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 11:45:36 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_list	*list_creator(int capacity, int data_size)
 	newlist->current = newlist->last;
 	return (newlist);
 }
-
 
 static void	**node_init(int capacity, int data_size)
 {

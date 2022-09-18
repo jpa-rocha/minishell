@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/13 11:44:57 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:28:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	ms_exec_here_doc(t_shell *shell)
 static int	ms_exec_here_doc_setup(t_shell *shell)
 {
 	shell->cmd->heredoc = 1;
-	shell->cmd->input = open("heredoc_aux.txt"
-			, O_CREAT | O_RDWR | O_TRUNC, 00777);
+	shell->cmd->input = open("heredoc_aux.txt",
+			O_CREAT | O_RDWR | O_TRUNC, 00777);
 	if (shell->cmd->input < 0)
 		return (EXIT_FAILURE);
 	shell->cmd->limiter = shell->cmd->curr_cmd[1];
