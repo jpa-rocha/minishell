@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 11:30:34 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 21:15:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	ms_cd(t_shell *shell, char **args)
 	{
 		oldpath = ms_init_vars(shell, "OLDPWD");
 		path = ms_init_vars(shell, "PWD");
-		if (args[1] == NULL || (ft_strlen(args[1]) == 1))
-			shell->status = ms_cd_edge(shell, path, oldpath, args[1]);
+		if (args[1] == NULL || (ft_strlen(args[1]) <= 1))
+			return (ms_cd_edge(shell, path, oldpath, args[1]));
 		else if (ms_args_len(args) == 2)
 			return (ms_cd_rel_abs_path(shell, args, path, oldpath));
 	}
@@ -107,7 +107,7 @@ static int	ms_cd_edge(t_shell *shell, t_envvar *path,
 		ft_printf(STDERR_FILENO, "minishell: cd: HOME not set\n");
 		shell->status = EXIT_FAILURE;
 	}
-	else if (newpath == NULL || newpath[0] == '~')
+	else if (newpath == NULL || newpath[0] == '~' || ft_strlen(newpath) == 0)
 	{
 		if (path == NULL)
 		{

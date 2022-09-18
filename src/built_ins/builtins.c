@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 17:43:18 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 21:38:52 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ms_is_built_in(t_shell *shell, char **curr_cmd)
 	while (i < BI_NUM)
 	{
 		if (curr_cmd[0] != NULL && ft_strncmp(shell->builtins[i], curr_cmd[0],
-				ft_strlen(shell->builtins[i])) == 0)
+				ft_strlen(curr_cmd[0])) == 0)
 		{
 			shell->cmd->builtin_num = i;
 			shell->cmd->changes_state = ms_control_state(shell, curr_cmd);
