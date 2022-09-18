@@ -3,51 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 19:48:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/18 21:13:59 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char **prepare_lexer(char **lexer);
-/* count number of words in a string */
-/* static int	count_words(char *str)
-{
-	int		i;
-	int		nb_words;
-	char	c;
-
- 	if (ft_strlen(str) > 0)
-		c = str[0];
-	nb_words = 1;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if ((str[i] == ' ' || str[i] == '\t') && c != ' ')
-			nb_words += 1;
-		c = str[i];
-		i++;
-	}
-	return (nb_words);
-} */
-
-/* print number of words in each lexer[nb_cmd] */
-/* void	print_nb_words(t_shell *shell)
-{
-	int j;
-	int c;
-
-	j = 0;
-	while (j < shell->cmd->n_cmd)
-	{
-		c = count_words(shell->lexer[j]);
-		printf("index [%d] has [%d] words\n", j, c);
-		j++;
-	}
-} */
 
 static int	ms_is_in_quotes(char *str, size_t idx, int c)
 {
@@ -102,7 +65,7 @@ char	*remove_white_spaces(char *str)
 	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	while (str[i] != '\0')
 	{
-		if ((str[i] == ' ' && str[i + 1] == ' ') != 0 \
+		if ((str[i] == ' ' && str[i + 1] == ' ') != 0
 			&& ms_is_in_quotes(str, i, ' ') == 0)
 		{
 			i++;
@@ -117,6 +80,24 @@ char	*remove_white_spaces(char *str)
 	return (str);
 }
 
+static int	count_break_q(char *str, int i, int count)
+{
+	while (str[i] != '\0')
+	{
+		if (str[i] == ' ' && ms_is_in_quotes(str, i, str[i]) == 0)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static int	check_new(char **new)
+{
+	if (new == NULL)
+		return (0);
+	return (0);
+}
+
 static char	**break_quotes(t_shell *shell, char *str)
 {
 	int		i;
@@ -128,20 +109,14 @@ static char	**break_quotes(t_shell *shell, char *str)
 	i = 0;
 	j = 0;
 	count = 1;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ' && ms_is_in_quotes(str, i, str[i]) == 0)
-			count++;
-		i++;
-	}
+	count = count_break_q(str, i, count);
 	new = ft_calloc(count + 1, sizeof(char *));
-	if (new == NULL)
-		return (NULL);
+	check_new(new);
 	i = 0;
 	k = 0;
 	while (k < count)
 	{
-		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0) \
+		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0)
 			|| str[i] == '\0')
 		{
 			new[k] = ft_calloc(j + 1, sizeof(char));
@@ -157,70 +132,6 @@ static char	**break_quotes(t_shell *shell, char *str)
 	new[k] = NULL;
 	return (new);
 }
-
-/* char	**get_each_word(char *str)
-{
-	char	**words;
-	int		len;
-	int		num_words;
-	size_t	i;
-	size_t	num_chars;
-
-	len = count_words(str);
-	num_words = 0;
-	num_chars = 0;
-	i = 0;
-	words = ft_calloc(len + 1, sizeof(char *));
-	while (num_words < len)
-	{
-		words[num_words] = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-		while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0')
-		{
-			words[num_words][num_chars] = str[i];
-			num_chars += 1;
-			i++;
-		}
-		if(str[i] == ' ' || str[i] == '\t' || num_chars == ft_strlen(&str[i]))
-		{
-			words[num_words][num_chars] = '\0';
-			num_chars = 0;
-		}
-		i++;
-		num_words++;
-	}
-	words[num_words] = NULL;
-	return (words);
-} */
-/* {
-	char	**words;
-	int		len;
-	size_t	i;
-
-	len = count_words(str);
-	int num_words = 0;
-	size_t num_chars = 0;
-	i = 0;
-	words = ft_calloc(len + 1, sizeof(char *));
-	while (num_words < len)
-	{
-		words[num_words] = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-		while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0')
-		{
-			words[num_words][num_chars] = str[i];
-			num_chars += 1;
-			i++;
-		}
-		if(str[i] == ' ' || str[i] == '\t' || num_chars == ft_strlen(&str[i]))
-		{
-			words[num_words][num_chars] = '\0';
-			num_chars = 0;
-		}
-		i++;
-		num_words++;
-	}
-	words[num_words] = NULL;
-	return (words);
-} */
 
 static char	**prepare_lexer(char **lexer)
 {

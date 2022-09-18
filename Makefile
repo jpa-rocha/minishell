@@ -61,6 +61,7 @@ SRCS	=	$(SRCDIR)minishell.c			\
 			$(PARSER)ms_other_checks.c		\
 			$(PARSER)ms_pipe_utils.c		\
 			$(PARSER)ms_quotes.c			\
+			$(PARSER)ms_quotes_utils.c			\
 			$(EXECUTER)ms_exec.c			\
 			$(EXECUTER)ms_exec_aux.c		\
 			$(EXECUTER)ms_exec_set_io.c		\

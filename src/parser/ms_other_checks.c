@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/18 21:08:54 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 21:44:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	*ms_dollar_check(t_shell *shell, char *str)
 	return (ret);
 }
 
-static char	*ms_replace_err(t_shell* shell, char *dollar, char *str)
+static char	*ms_replace_err(t_shell *shell, char *dollar, char *str)
 {
 	char	*end;
 	char	*beginning;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 12:33:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 13:57:44 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 14:41:25 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	ms_error_messages(t_shell *shell, int error_num)
 		printf(ERR_MU, ">");
 	if (error_num == -9)
 		printf(ERR_MU, ">>");
+	if (error_num == -10)
+		printf("pipe needs argument\n");
 	shell->status = 2;
 	return (EXIT_SUCCESS);
 }

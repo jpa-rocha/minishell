@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 11:44:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/16 13:48:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 17:54:08 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 /* checks whether pipe is inside the quotes */
-
 int	check_char_in_quotes(char *str, int idx, int c)
 {
 	int		quotes_flag;
@@ -56,7 +55,7 @@ int	check_char_in_quotes(char *str, int idx, int c)
 				iter += 1;
 			}
 		}
-		i += 1;	
+		i += 1;
 	}
 	return (0);
 }
@@ -69,7 +68,7 @@ int	check_empty_pipes(t_cmd *cmd)
 	i = 0;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == PIPE \
+		if (cmd->line[i] == PIPE
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			i++;
@@ -103,8 +102,25 @@ static int	count_pipes(t_cmd *cmd)
 }
 
 /* if we just write pipes, bash prints error messages
- (it should give the same error msg with echo cmd) 
+(it should give the same error msg with echo cmd) 
 */
+static int	pipes_helper(t_cmd *cmd, int i, int c)
+{
+	if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' '
+		&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
+	{
+		cmd->builtin_num = -3;
+		return (EXIT_FAILURE);
+	}
+	if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' '
+		&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
+	{
+		cmd->builtin_num = -4;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	check_pipes(t_cmd *cmd)
 {
 	int	i;
@@ -116,25 +132,14 @@ int	check_pipes(t_cmd *cmd)
 		i++;
 	while (cmd->line[i] != '\0' && cmd->line[i] == PIPE)
 	{
-		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0' \
-			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
-		{
-			cmd->builtin_num = -3;
-			//printf(ERR_MU, "|");
-			return (EXIT_FAILURE);
-		}
-		else if (cmd->line[i] == PIPE && cmd->line[i + 1] == ' ' \
+		if (cmd->line[i] == PIPE && cmd->line[i + 1] == '\0'
 			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
 		{
 			cmd->builtin_num = -3;
 			return (EXIT_FAILURE);
 		}
-		else if (cmd->line[i] == PIPE && c > 1 && cmd->line[i + 1] != ' ' \
-			&& check_char_in_quotes(cmd->line, i, PIPE) == 0)
-		{
-			cmd->builtin_num = -3;
+		else if (pipes_helper(cmd, i, c) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		}
 		i++;
 	}
 	return (EXIT_SUCCESS);
