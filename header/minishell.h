@@ -6,7 +6,11 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/16 14:09:28 by mgulenay         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/16 14:29:30 by jrocha           ###   ########.fr       */
+>>>>>>> 393daba449c88e983eef7a44936d627e61119071
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +111,7 @@ char		*ms_env_ret_value(t_shell *shell, char *name);
 
 void		ms_signals_parent(void);
 void		ms_signals_child(void);
+void		ms_signals_heredoc(void);
 void		ms_signals_block(void);
 
 // Parsing Functions

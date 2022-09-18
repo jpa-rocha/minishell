@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 09:33:07 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 13:05:13 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 16:51:56 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ static int	ms_exec_set_input(t_shell *shell)
 			close(shell->cmd->input);
 		if (ft_strncmp(shell->cmd->curr_cmd[0], "<<", 2) == 0)
 		{
-			if (ms_exec_here_doc(shell) != 0)
-				return (-1);
+				ms_signals_heredoc();
+				if (ms_exec_here_doc(shell) != 0)
+					return (-1);
+				ms_signals_parent();
 		}
 		else
 			shell->cmd->input = open(shell->cmd->curr_cmd[1], O_RDONLY);
@@ -118,7 +120,7 @@ static int	ms_exec_outs(t_shell *shell, int i)
 				O_RDWR | O_CREAT | O_APPEND, 00777);
 	else
 		shell->cmd->output = open(shell->cmd->curr_cmd[i + 1],
-				O_WRONLY | O_CREAT, 00777);
+				O_WRONLY | O_CREAT | O_TRUNC, 00777);
 	if (shell->cmd->output < 0)
 		return (EXIT_FAILURE);
 	if (ms_cmd_replace_out(shell, shell->cmd->curr_cmd) == 1)

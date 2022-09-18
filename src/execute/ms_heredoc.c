@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 11:28:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/16 17:25:26 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int	ms_exec_here_doc(t_shell *shell)
 			ft_printf(STDERR_FILENO, HEREDOC_MSG, shell->cmd->limiter);
 			break ;
 		}
+		//
+		if (ft_strncmp(line, "^C\n", 4) == 0)
+			return (130);
+		//
 		len = ft_strlen(line);
 		if (len == 1 && ft_strncmp(line, "\n", 1) != 0)
 			len = 2;

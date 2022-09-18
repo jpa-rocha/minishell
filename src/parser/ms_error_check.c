@@ -6,9 +6,10 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/16 17:01:20 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/18 21:20:54 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../header/minishell.h"
 
@@ -103,8 +104,10 @@ static int	check_redirections(t_cmd *cmd)
 			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
 			|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
 		{
-			cmd->builtin_num = -5;
-			return (EXIT_FAILURE);
+			// -5
+			cmd->builtin_num = 0;
+			return (EXIT_SUCCESS);
+			//return (EXIT_FAILURE);
 		}
 		else if (redirections_helper(cmd, c, i) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
