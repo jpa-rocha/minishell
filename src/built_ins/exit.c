@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:15:57 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/16 11:58:47 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/19 12:28:34 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ static int	check_if_int(char *str)
 	return (0);
 }
 
+static void	print_helper(void)
+{
+	printf("exit\n");
+	printf("minishell: exit: too many arguments\n");
+}
+
+static void	exit_helper(t_shell *shell)
+{
+	printf("exit\n");
+	ms_cmd_cleanup(shell->cmd);
+}
+
+static void	helper(t_shell *shell)
+{
+	printf("exit\n");
+	ft_printf(STDERR_FILENO, EXIT_MSG, shell->cmd->curr_cmd[1]);
+}
+
 int	ms_exit(t_shell *shell)
 {
 	int	status;
@@ -45,24 +63,19 @@ int	ms_exit(t_shell *shell)
 		status = ft_atoi(shell->cmd->curr_cmd[1]);
 		if (n_args > 2 && check_if_int(shell->cmd->curr_cmd[1]) == 0)
 		{
-			printf("exit\n");
-			printf("minishell: exit: too many arguments\n");
+			print_helper();
 			return (0);
 		}
 		else if (check_if_int(shell->cmd->curr_cmd[1]))
 		{
-			printf("exit\n");
-			ft_printf(STDERR_FILENO, EXIT_MSG, shell->cmd->curr_cmd[1]);
+			helper(shell);
 			status = 2;
 			ms_cmd_cleanup(shell->cmd);
 			exit(status);
 		}
 		else if (status)
-		{
 			status = ft_atoi(shell->cmd->curr_cmd[1]) % 256;
-		}
 	}
-	printf("exit\n");
-	ms_cmd_cleanup(shell->cmd);
+	exit_helper(shell);
 	exit(shell->status);
 }

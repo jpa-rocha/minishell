@@ -6,12 +6,12 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/18 21:13:59 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:19:35 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/* 
 static int	ms_is_in_quotes(char *str, size_t idx, int c)
 {
 	int		quotes_flag;
@@ -52,39 +52,13 @@ static int	ms_is_in_quotes(char *str, size_t idx, int c)
 		i--;
 	}
 	return (quotes_flag);
-}
-
-char	*remove_white_spaces(char *str)
-{
-	size_t	i;
-	size_t	j;
-	char	*new_str;
-
-	i = 0;
-	j = 0;
-	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	while (str[i] != '\0')
-	{
-		if ((str[i] == ' ' && str[i + 1] == ' ') != 0
-			&& ms_is_in_quotes(str, i, ' ') == 0)
-		{
-			i++;
-			continue ;
-		}
-		new_str[j++] = str[i];
-		i++;
-	}
-	new_str[j] = '\0';
-	str = ft_strdup(new_str);
-	free(new_str);
-	return (str);
-}
+} */
 
 static int	count_break_q(char *str, int i, int count)
 {
 	while (str[i] != '\0')
 	{
-		if (str[i] == ' ' && ms_is_in_quotes(str, i, str[i]) == 0)
+		if (str[i] == ' ' && check_char_in_quotes(str, i, str[i]) == 0)
 			count++;
 		i++;
 	}
@@ -116,7 +90,7 @@ static char	**break_quotes(t_shell *shell, char *str)
 	k = 0;
 	while (k < count)
 	{
-		if ((str[i] == ' ' && ms_is_in_quotes(str, i, ' ') == 0)
+		if ((str[i] == ' ' && check_char_in_quotes(str, i, ' ') == 0)
 			|| str[i] == '\0')
 		{
 			new[k] = ft_calloc(j + 1, sizeof(char));
