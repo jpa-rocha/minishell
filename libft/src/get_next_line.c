@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 15:57:34 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/12 09:27:35 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 21:19:06 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ char	*get_next_line(int fd)
 
 	if (fd < 0)
 		return (NULL);
-	reader = ft_calloc(1, sizeof(char));
-	ft_memset(reader, 0, 1);
 	readlen = read(fd, buf, 100);
 	if (readlen <= 0)
 		return (NULL);
+	reader = ft_calloc(1, sizeof(char));
+	ft_memset(reader, 0, 1);
 	while (readlen > 0)
 	{
 		buf[readlen] = '\0';

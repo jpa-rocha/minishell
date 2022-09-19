@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 17:25:26 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/18 20:48:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ms_exec_here_doc(t_shell *shell)
 		if (line == NULL)
 		{
 			ft_printf(STDERR_FILENO, HEREDOC_MSG, shell->cmd->limiter);
-			break ;
+			return (ms_here_doc_end(shell, line));
 		}
 		//
 		if (ft_strncmp(line, "^C\n", 4) == 0)
@@ -41,6 +41,7 @@ int	ms_exec_here_doc(t_shell *shell)
 		if (ft_strncmp(line, shell->cmd->limiter, len - 1) == 0
 			&& ft_strlen(line) - 1 == ft_strlen(shell->cmd->limiter))
 			break ;
+		line = (char *) ms_dollar_check(shell, line);
 		write(shell->cmd->input, line, ft_strlen(line));
 		free(line);
 	}
