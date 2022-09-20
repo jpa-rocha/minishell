@@ -6,11 +6,107 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 19:49:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/18 20:58:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:04:07 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_char_in_quotes(char *str, int idx, int c)
+{
+	int		quotes_flag;
+	int		firstq;
+	int		secondq;
+	int		iter;
+	int		i;
+
+	i = 0;
+	quotes_flag = 0;
+	firstq = 0;
+	secondq = 0;
+	while (str[i] != '\0')
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0 && i < idx)
+		{
+			quotes_flag = 1;
+			firstq = i;
+			i += 1;
+		}
+		if (str[i] == str[firstq] && quotes_flag > 0)
+		{
+			if (i > idx)
+			{
+				quotes_flag = 2;
+				secondq = i;
+			}
+			else
+			{
+				quotes_flag = 0;
+				firstq = i;
+			}
+		}
+		if (quotes_flag == 2 && secondq > idx)
+		{
+			iter = firstq;
+			while (iter < secondq)
+			{
+				if (str[iter] == c)
+					return (1);
+				iter += 1;
+			}
+		}
+		i += 1;
+	}
+	return (0);
+}
+
+/* checks whether a char is inside the quotes */
+/* int	check_char_in_quotes(char *str, int idx, int c)
+{
+	int		quotes_flag;
+	int		quotes[2];
+	int		iter;
+	int		i;
+
+	i = 0;
+	quotes_flag = 0;
+	quotes[0] = 0;
+	quotes[1] = 0;
+	while (str[i] != '\0')
+	{
+		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0 && i < idx)
+		{
+			quotes_flag = 1;
+			quotes[0] = i;
+			i += 1;
+		}
+		if (str[i] == str[quotes[0]] && quotes_flag > 0)
+		{
+			if (i > idx)
+			{
+				quotes_flag = 2;
+				quotes[1] = i;
+			}
+			else
+			{
+				quotes_flag = 0;
+				quotes[0] = i;
+			}
+		}
+		if (quotes_flag == 2 && quotes[1] > idx)
+		{
+			iter = quotes[0];
+			while (iter < quotes[1])
+			{
+				if (str[iter] == c)
+					return (1);
+				iter += 1;
+			}
+		}
+		i += 1;
+	}
+	return (0);
+} */
 
 static char	*sq_if_helper(char *str, int index, size_t i, int d_flag)
 {
