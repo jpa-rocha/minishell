@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 12:33:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/19 14:01:49 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 13:51:50 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ms_error_messages(t_shell *shell, int error_num)
 {
 	if (error_num == -2)
-		printf("quotes are not closed\n");
+		printf(ERR_QUOTES);
 	if (error_num == -3)
 		printf(ERR_MU, "|");
 	if (error_num == -4)
@@ -34,6 +34,6 @@ int	ms_error_messages(t_shell *shell, int error_num)
 		printf("pipe needs argument\n");
 	shell->status = 2;
 	if (error_num == -11)
-		printf("Dsadadad\n");
+		printf("\n");
 	return (EXIT_SUCCESS);
 }

@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ms_error_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/18 21:20:54 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/20 11:36:25 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../header/minishell.h"
 

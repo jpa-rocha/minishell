@@ -3,55 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_quotes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 11:51:08 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/18 19:52:26 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/20 11:55:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-static void	free_r_quotes(char *str, char *temp)
-{
-	free(str);
-	free(temp);
-}
-
-char	*remove_quotes(char *str, int index, int quote)
-{
-	char	*temp;
-	char	*ret;
-	int		k;
-
-	k = 0;
-	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	ft_strlcpy(temp, str, index + 1);
-	k = index;
-	while (str[index] != '\0')
-	{
-		if (str[index] == quote)
-		{
-			if (str[index + 1] == quote)
-			{
-				ret = ft_strjoin(temp, &str[index + 2]);
-				free_r_quotes(str, temp);
-				return (ret);
-			}
-			index += 1;
-			while (str[index] != '\0' && str[index] != quote)
-			{
-				temp[k] = str[index];
-				k += 1;
-				index += 1;
-			}
-			ret = ft_strjoin(temp, &str[index + 1]);
-			free_r_quotes(str, temp);
-			return (ret);
-		}
-	}
-	return (NULL);
-}
+#include "../../header/minishell.h"
 
 static int	quotes_len(char *str)
 {

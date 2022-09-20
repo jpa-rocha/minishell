@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_quotes_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 19:49:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/19 10:04:07 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:03:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ char	*check_quotes_pre_lexer(char *str)
 			{
 				index = i;
 				index++;
-				while (str[index] != DQ)
+				while (str[index] != DQ && str[index] != '\0')
 					index++;
 				str = remove_quotes(str, i, DQ);
 				i = index;

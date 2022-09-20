@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:33:14 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/09 10:33:50 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 13:52:45 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # define HEREDOC_MSG "minishell: warning: here-document\
  delimited by end-of-file (wanted `%s')\n"
+
+# define ERR_QUOTES "minishell: quotes must be closed\n"
 
 # define COMMAND_NOT_FOUND 127
 # define ERR_INV ": command not found\n"

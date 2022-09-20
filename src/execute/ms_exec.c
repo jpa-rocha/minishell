@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 09:50:08 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 09:07:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 11:30:14 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	ms_exec(t_shell *shell)
 	if (shell->cmd->curr_cmd != NULL)
 		ms_free_args(shell->cmd->curr_cmd);
 	if (shell->cmd->builtin_num == 0)
-		shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
+		shell->cmd->curr_cmd = ms_copy_cmd(
+				shell->cmd->seq[shell->cmd->cmd_idx]);
 	if (shell->cmd->curr_cmd == NULL && shell->cmd->builtin_num == 0)
 		return (EXIT_FAILURE);
 	shell->status = ms_command_processing(shell);

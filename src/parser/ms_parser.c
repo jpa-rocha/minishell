@@ -3,14 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/19 08:48:51 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:18:12 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
+static void	free_r_quotes(char *str, char *temp)
+{
+	if (str != NULL)
+		free(str);
+	if (str != NULL)
+		free(temp);
+}
+
+static char	*remove_quotes_helper(char *str, char *temp, int index, int quote)
+{
+	int		k;
+	char	*ret;
+
+	k = index;
+	while (str[index] != '\0')
+	{
+		if (str[index] == quote)
+		{
+			if (str[index + 1] == quote)
+			{
+				ret = ft_strjoin(temp, &str[index + 2]);
+				return (ret);
+			}
+			index += 1;
+			while (str[index] != '\0' && str[index] != quote)
+			{
+				temp[k] = str[index];
+				k += 1;
+				index += 1;
+			}
+			ret = ft_strdup(temp);
+			return (ret);
+		}
+	}
+	return (NULL);
+}
 
 int	ms_parser(t_shell *shell)
 {
@@ -33,4 +70,16 @@ int	ms_parser(t_shell *shell)
 	ms_free_args(shell->lexer);
 	shell->lexer = NULL;
 	return (EXIT_SUCCESS);
+}
+
+char	*remove_quotes(char *str, int index, int quote)
+{
+	char	*temp;
+	char	*ret;
+
+	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	ft_strlcpy(temp, str, index + 1);
+	ret = remove_quotes_helper(str, temp, index, quote);
+	free_r_quotes(str, temp);
+	return (ret);
 }

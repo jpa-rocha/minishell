@@ -54,15 +54,16 @@ SRCS	=	$(SRCDIR)minishell.c			\
 			$(SRCDIR)ms_utils.c				\
 			$(SRCDIR)ms_cleanup.c			\
 			$(SIGNALS)ms_signals.c			\
+			$(SIGNALS)ms_signals_utils.c	\
 			$(PARSER)ms_parser.c			\
 			$(PARSER)ms_lexer.c				\
-			$(PARSER)ms_lexer_utils.c				\
+			$(PARSER)ms_lexer_utils.c		\
 			$(PARSER)ms_error_check.c		\
 			$(PARSER)ms_token.c				\
 			$(PARSER)ms_other_checks.c		\
 			$(PARSER)ms_pipe_utils.c		\
 			$(PARSER)ms_quotes.c			\
-			$(PARSER)ms_quotes_utils.c			\
+			$(PARSER)ms_quotes_utils.c		\
 			$(EXECUTER)ms_exec.c			\
 			$(EXECUTER)ms_exec_aux.c		\
 			$(EXECUTER)ms_exec_set_io.c		\

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 09:09:17 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 11:33:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,16 @@ char		**ms_cmd_path_creator(t_shell *shell);
 int			ms_env_swap_data(t_envvar *line, t_envvar *nline);
 char		**ms_copy_cmd(char **cmd);
 char		*ms_env_ret_value(t_shell *shell, char *name);
+
 // Signal Functions
 
 void		ms_signals_parent(void);
 void		ms_signals_child(void);
 void		ms_signals_heredoc(void);
 void		ms_signals_block(void);
+void		ms_parent_signal_handler(int num);
+void		ms_child_signal_handler(int num);
+void		ms_here_signal_handler(int num);
 
 // Parsing Functions
 

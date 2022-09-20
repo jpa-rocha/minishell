@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 15:31:35 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/19 10:05:46 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 11:28:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	ms_shell_cleanup(t_shell *shell)
 		ms_list_data_cleaner(shell->workenv);
 		list_destroyer(shell->workenv);
 	}
-	//rl_clear_history();
 	if (shell != NULL)
 		free(shell);
 	return (EXIT_SUCCESS);

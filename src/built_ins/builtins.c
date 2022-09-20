@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/19 14:05:33 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 13:51:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ms_control_state(t_shell *shell, char **curr_cmd)
 
 int	ms_call_built_in(t_shell *shell)
 {
-	if (shell->cmd->builtin_num <= -2)
+	if (shell->cmd->builtin_num < -1)
 		return (ms_error_messages(shell, shell->cmd->builtin_num));
 	if (shell->cmd->builtin_num == 0)
 		return (ms_cd(shell, shell->cmd->curr_cmd));
@@ -107,7 +107,8 @@ static int	ms_exec_first_check(t_shell *shell)
 		return (EXIT_SUCCESS);
 	if (shell->cmd->curr_cmd == NULL)
 	{
-		shell->cmd->builtin_num = -10;
+		if (shell->cmd->builtin_num > -1)
+			shell->cmd->builtin_num = 10;
 		return (EXIT_SUCCESS);
 	}
 	if (shell->cmd->builtin_num < -1)
