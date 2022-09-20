@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 11:36:25 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:53:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* ERROR CHECKS AT THE BEGINNING */
 /* checks whether quotes are closed */
-static int	check_quotes(t_cmd *cmd)
+int	check_quotes(t_cmd *cmd)
 {
 	int	i;
 	int	quote_end;
@@ -88,26 +88,25 @@ static int	redirections_helper(t_cmd *cmd, int c, int i)
 	return (EXIT_SUCCESS);
 }
 
-static int	check_redirections(t_cmd *cmd)
+int	check_redirections(t_cmd *cmd)
 {
 	int	i;
 	int	c;
+	int	len;
 
 	i = 0;
+	len = ft_strlen(cmd->line);
 	c = counter_io(cmd);
 	while (cmd->line[i] == ' ')
 		i++;
 	while (cmd->line[i] != '\0' && (cmd->line[i] == SM || cmd->line[i] == GR))
 	{
-		if ((cmd->line[i] == SM && c < 4 && cmd->line[i + 1] != ' ')
-			|| (cmd->line[i] == GR && c < 4 && cmd->line[i + 1] != ' ')
-			|| (cmd->line[i] == SM && cmd->line[i + 1] == GR))
-		{
-			// -5
-			cmd->builtin_num = 0;
-			return (EXIT_SUCCESS);
-			//return (EXIT_FAILURE);
-		}
+		if (len == 1 && (cmd->line[i] == SM || (cmd->line[i] == GR)))
+			cmd->builtin_num = -5;
+		else if (len == 2 && (ft_strncmp(cmd->line, ">>", len)
+				|| ft_strncmp(cmd->line, "<<", len)
+				|| ft_strncmp(cmd->line, "<>", len)))
+			cmd->builtin_num = -5;
 		else if (redirections_helper(cmd, c, i) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		i++;
@@ -115,15 +114,27 @@ static int	check_redirections(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-int	check_char_errors(t_cmd *cmd)
+int	check_slash(t_cmd *cmd)
 {
-	if (check_quotes(cmd))
-		return (EXIT_FAILURE);
-	if (check_redirections(cmd))
-		return (EXIT_FAILURE);
-	if (check_pipes(cmd))
-		return (EXIT_FAILURE);
-	if (check_empty_pipes(cmd))
-		return (EXIT_FAILURE);
+	int	i;
+
+	i = 0;
+	while (cmd->line[i] != '\0' && (cmd->line[i] == SLASH
+			|| cmd->line[i] == BSLASH || cmd->line[i] == '-'))
+	{
+		if (cmd->line[i] == SLASH)
+		{
+			cmd->builtin_num = -12;
+			cmd->error_inc = i;
+			return (EXIT_FAILURE);
+		}
+		else if (cmd->line[i] == BSLASH || cmd->line[i] == '-')
+		{
+			cmd->builtin_num = -13;
+			cmd->error_inc = i;
+			return (EXIT_FAILURE);
+		}
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }

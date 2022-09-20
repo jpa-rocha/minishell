@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 13:18:12 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:50:52 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,19 @@ char	*remove_quotes(char *str, int index, int quote)
 	ret = remove_quotes_helper(str, temp, index, quote);
 	free_r_quotes(str, temp);
 	return (ret);
+}
+
+int	check_char_errors(t_cmd *cmd)
+{
+	if (check_quotes(cmd))
+		return (EXIT_FAILURE);
+	if (check_redirections(cmd))
+		return (EXIT_FAILURE);
+	if (check_pipes(cmd))
+		return (EXIT_FAILURE);
+	if (check_empty_pipes(cmd))
+		return (EXIT_FAILURE);
+	if (check_slash(cmd))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

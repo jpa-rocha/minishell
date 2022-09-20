@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 11:07:53 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:43:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	ms_exec_here_doc_fork(t_shell *shell)
 	{
 		waitpid(shell->pid, &shell->status, 0);
 		ms_signals_parent();
+		if (shell->cmd->n_cmd == 1)
+			shell->cmd->builtin_num = -14;
 		if (WIFSIGNALED(shell->status) == 1)
 			shell->status = 128 + WTERMSIG(shell->status);
 		else

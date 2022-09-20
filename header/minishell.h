@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 11:33:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:52:58 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,29 @@
 # define DOLLAR '$'
 # define SLASH '/'
 # define BSLASH '\\'
-
 # define PATH_SIZE 1024
+
+typedef struct s_breaks {
+	int		i;
+	int		j;
+	int		k;
+	int		count;
+}	t_breaks;
+
+typedef struct s_lexcheck {
+	size_t		i;
+	int			index;
+	int			s_flag;
+	int			d_flag;
+}	t_lexcheck;
+
+typedef struct s_qcheck {
+	int		quotes_flag;
+	int		firstq;
+	int		secondq;
+	int		iter;
+	int		i;
+}	t_qcheck;
 
 typedef struct s_envvar {
 	char	*name;
@@ -66,6 +87,7 @@ typedef struct s_cmd {
 	char		***seq;
 	int			pfd[2];
 	int			temp_fd[2];
+	int			error_inc;
 }	t_cmd;
 
 typedef struct s_shell {
@@ -126,12 +148,16 @@ char		*remove_quotes(char *str, int index, int quote);
 char		*check_quotes_pre_lexer(char *str);
 char		*remove_white_spaces(char *str);
 void		*ms_dollar_check(t_shell *shell, char *str);
+int			check_dollar_in_quotes(char *str, size_t idx, int c);
 int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);
 
 // Error checks for the variable line
 
 int			check_char_errors(t_cmd *cmd);
+int			check_quotes(t_cmd *cmd);
+int			check_redirections(t_cmd *cmd);
+int			check_slash(t_cmd *cmd);
 int			check_empty_pipes(t_cmd *cmd);
 int			check_pipes(t_cmd *cmd);
 int			ms_error_messages(t_shell *shell, int error_num);

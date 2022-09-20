@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:01:55 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 13:50:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:26:44 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static void	ms_pipe_builtins(t_shell *shell)
 	else
 		if (shell->cmd->curr_cmd[0] != NULL && shell->cmd->builtin_num < 8)
 			ms_call_built_in(shell);
+	exitcode = shell->status;
 	ms_shell_cleanup(shell);
 	exit(exitcode);
 }

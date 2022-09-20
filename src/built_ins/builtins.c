@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 13:51:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 16:38:51 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ms_call_built_in(t_shell *shell)
 
 static int	ms_exec_first_check(t_shell *shell)
 {
-	if (shell->cmd->builtin_num == -11)
+	if (shell->cmd->builtin_num < -11)
 		return (EXIT_SUCCESS);
 	if (shell->cmd->curr_cmd == NULL)
 	{

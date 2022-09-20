@@ -3,107 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ms_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/19 12:19:35 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:35:20 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/* 
-static int	ms_is_in_quotes(char *str, size_t idx, int c)
-{
-	int		quotes_flag;
-	int		index;
-	size_t	i;
 
-	i = 0;
-	quotes_flag = 0;
-	index = 0;
-	while (i < idx)
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i++;
-	}
-	i++;
-	while (i < ft_strlen(str))
-	{
-		if ((str[i] == SQ || str[i] == DQ) && quotes_flag == 1)
-		{
-			index += i;
-			quotes_flag = 0;
-			break ;
-		}
-		i++;
-	}
-	i = index - 1;
-	while (i < ft_strlen(str))
-	{
-		if (str[i] == c && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i--;
-	}
-	return (quotes_flag);
-} */
-
-static int	count_break_q(char *str, int i, int count)
-{
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ' && check_char_in_quotes(str, i, str[i]) == 0)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-static int	check_new(char **new)
-{
-	if (new == NULL)
-		return (0);
-	return (0);
-}
+static char	**break_quotes_inner_loop(t_shell *shell,
+				char *str, t_breaks *b);
+static int	count_break_q(char *str, t_breaks *breaks);
 
 static char	**break_quotes(t_shell *shell, char *str)
 {
-	int		i;
-	int		j;
-	int		k;
-	char	**new;
-	int		count;
+	t_breaks	*b;
+	char		**new;
 
-	i = 0;
-	j = 0;
-	count = 1;
-	count = count_break_q(str, i, count);
-	new = ft_calloc(count + 1, sizeof(char *));
-	check_new(new);
-	i = 0;
-	k = 0;
-	while (k < count)
+	b = ft_calloc(1, sizeof(t_breaks));
+	b->i = 0;
+	b->j = 0;
+	b->k = 0;
+	b->count = count_break_q(str, b);
+	new = break_quotes_inner_loop(shell, str, b);
+	new[b->k] = NULL;
+	free(b);
+	return (new);
+}
+
+static char	**break_quotes_inner_loop(t_shell *shell,
+			char *str, t_breaks *b)
+{
+	char		**new;
+
+	new = ft_calloc(b->count + 1, sizeof(char *));
+	if (new == NULL)
+		return (NULL);
+	while (b->k < b->count)
 	{
-		if ((str[i] == ' ' && check_char_in_quotes(str, i, ' ') == 0)
-			|| str[i] == '\0')
+		if ((str[b->i] == ' ' && check_char_in_quotes(str, b->i, ' ') == 0)
+			|| str[b->i] == '\0')
 		{
-			new[k] = ft_calloc(j + 1, sizeof(char));
-			ft_strlcpy(new[k], &str[i - j], j + 1);
-			new[k] = (char *)ms_dollar_check(shell, new[k]);
-			new[k] = check_quotes_pre_lexer(new[k]);
-			k++;
-			j = -1;
+			new[b->k] = ft_calloc(b->j + 1, sizeof(char));
+			ft_strlcpy(new[b->k], &str[b->i - b->j], b->j + 1);
+			new[b->k] = (char *)ms_dollar_check(shell, new[b->k]);
+			new[b->k] = check_quotes_pre_lexer(new[b->k]);
+			b->k++;
+			b->j = -1;
 		}
-		j++;
-		i++;
+		b->j++;
+		b->i++;
 	}
-	new[k] = NULL;
 	return (new);
 }
 
@@ -139,4 +90,20 @@ char	***create_seq_from_lexer(t_shell *shell)
 	}
 	shell->cmd->seq[j] = NULL;
 	return (shell->cmd->seq);
+}
+
+static int	count_break_q(char *str, t_breaks *breaks)
+{
+	int	i;
+
+	i = 0;
+	breaks->count = 1;
+	while (str[i] != '\0')
+	{
+		if (str[i] == ' '
+			&& check_char_in_quotes(str, i, str[i]) == 0)
+			breaks->count++;
+		i++;
+	}
+	return (breaks->count);
 }

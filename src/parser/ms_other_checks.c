@@ -6,16 +6,15 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 13:31:36 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 14:10:28 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../header/minishell.h"
 
 static char	*ms_dollar_check_helper(t_shell *shell, char *str, int i);
 static char	*ms_replace_err(t_shell *shell, char *dollar, char *str);
 static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
-static int	check_dollar_in_quotes(char *str, size_t idx, int c);
 
 /* finds  dollar sign in the string
  + if env comes after we need to get env variable
@@ -23,48 +22,6 @@ static int	check_dollar_in_quotes(char *str, size_t idx, int c);
  + if '$ENV' prints $ENV but if "$ENV" , print env variable
  + same also for $?
  */
-
-static int	check_dollar_in_quotes(char *str, size_t idx, int c)
-{
-	int		quotes_flag;
-	int		index;
-	size_t	i;
-
-	i = 0;
-	quotes_flag = 0;
-	index = 0;
-	while (i < idx)
-	{
-		if ((str[i] == SQ) && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i++;
-	}
-	i++;
-	while (i < ft_strlen(str))
-	{
-		if ((str[i] == SQ) && quotes_flag == 1)
-		{
-			index += i;
-			quotes_flag = 0;
-			break ;
-		}
-		i++;
-	}
-	i = index - 1;
-	while (i < ft_strlen(str))
-	{
-		if (str[i] == c && quotes_flag == 0)
-		{
-			quotes_flag = 1;
-			break ;
-		}
-		i--;
-	}
-	return (quotes_flag);
-}
 
 /* check the single quotes, needs to return the string, not the actual value*/
 void	*ms_dollar_check(t_shell *shell, char *str)
