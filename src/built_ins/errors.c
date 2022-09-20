@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 12:33:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 14:41:25 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:01:49 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ int	ms_error_messages(t_shell *shell, int error_num)
 	if (error_num == -10)
 		printf("pipe needs argument\n");
 	shell->status = 2;
+	if (error_num == -11)
+		printf("Dsadadad\n");
 	return (EXIT_SUCCESS);
 }

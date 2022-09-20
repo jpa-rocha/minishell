@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/18 21:47:06 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/19 12:44:43 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ int			ms_error_messages(t_shell *shell, int error_num);
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
 int			ms_exec_set_in_out(t_shell *shell);
-int			ms_exec_here_doc(t_shell *shell);
+int			ms_exec_here_doc_fork(t_shell *shell);
+int			ms_here_doc_end(t_shell *shell, char *line, int ret);
 int			ms_find_cmd_loop(t_shell *shell);
 int			ms_next_cmd(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);

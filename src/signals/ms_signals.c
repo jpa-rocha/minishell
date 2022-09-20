@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 11:55:41 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 17:44:28 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/19 10:52:36 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ms_signals_child(void)
 
 void	ms_signals_heredoc(void)
 {
-	signal(SIGINT, ms_here_signal_handler);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, ms_here_signal_handler);
 }
 

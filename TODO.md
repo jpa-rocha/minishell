@@ -11,4 +11,4 @@ Pipes
 
 Signals
 ----------------------
-[ ] difference between children and parent processes
+[X] difference between children and parent processes

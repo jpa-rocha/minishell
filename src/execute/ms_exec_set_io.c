@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 09:33:07 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 16:51:56 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/19 13:51:46 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,31 @@ static int	ms_exec_error(t_shell *shell);
 int	ms_exec_set_in_out(t_shell *shell)
 {
 	int		cmd_len;
-	int		error;
+	//int		error;
 	char	**cmd;
 
-	if (shell->cmd->builtin_num< -1)
-		return(ms_exec_error(shell));
-	error = 0;
+	if (shell->cmd->builtin_num < -1)
+		return (ms_exec_error(shell));
+	//error = 0;
 	cmd = shell->cmd->curr_cmd;
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
-	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1)
+	if ((cmd[0][0] == '<' && ft_strlen(cmd[0]) == 1 && cmd[1] != NULL)
 		|| ft_strncmp(cmd[0], "<<", 2) == 0)
-		error = ms_exec_set_input(shell);
+		ms_exec_set_input(shell); // error
 	cmd_len = ms_args_len(shell->cmd->curr_cmd);
 	cmd = shell->cmd->curr_cmd;
 	if (cmd_len >= 3 && cmd[cmd_len - 2][0] == '>'
 		&& (ft_strlen(cmd[cmd_len - 2]) == 1
 		|| ft_strncmp(cmd[cmd_len - 2], ">>", 2) == 0))
-		error = ms_exec_set_output(shell);
+		ms_exec_set_output(shell); //error
 	else
 	{
 		shell->cmd->input = shell->cmd->temp_fd[0];
 		shell->cmd->output = shell->cmd->temp_fd[1];
 	}
-	if (error == EXIT_SUCCESS || error == EXIT_FAILURE)
-		return (error);
-	return (shell->status);
+	/* if (error == EXIT_SUCCESS || error == EXIT_FAILURE)
+		return (error); */ 
+	return (EXIT_SUCCESS);
 }
 
 static int	ms_exec_error(t_shell *shell)
@@ -64,10 +64,8 @@ static int	ms_exec_set_input(t_shell *shell)
 			close(shell->cmd->input);
 		if (ft_strncmp(shell->cmd->curr_cmd[0], "<<", 2) == 0)
 		{
-				ms_signals_heredoc();
-				if (ms_exec_here_doc(shell) != 0)
-					return (-1);
-				ms_signals_parent();
+			if (ms_exec_here_doc_fork(shell) == 130)
+				shell->cmd->builtin_num = 11;
 		}
 		else
 			shell->cmd->input = open(shell->cmd->curr_cmd[1], O_RDONLY);
