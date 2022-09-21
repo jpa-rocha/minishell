@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/21 10:07:01 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 11:43:06 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
 	t_dol_rep	*rep;
 	char		*ret;
 
-	rep = ft_calloc(1, sizeof(t_dol_rep));
-	rep->beg_len = 0;
-	rep->search = ms_replace_var_search(dollar + 1);
-	rep->replace = ms_env_ret_value(shell, rep->search);
+	rep = ms_dollar_rep_init(shell, dollar);
 	if (rep->replace != NULL && ft_strlen(str) > 1)
 	{
 		while (str[rep->beg_len] != '$')
@@ -102,7 +99,10 @@ static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
 		rep->beginning = ft_calloc(rep->beg_len + 1, sizeof(char));
 		rep->var_len = ft_strlen(rep->replace);
 		ft_strlcpy(rep->beginning, str, rep->beg_len + 1);
-		rep->end = ft_strdup(&str[rep->beg_len + rep->var_len - 1]);
+		if (ft_strlen(str) > (size_t)(rep->beg_len + rep->var_len - 1))
+			rep->end = ft_strdup(&str[rep->beg_len + rep->var_len - 1]);
+		else
+			rep->end = ft_strdup("");
 		rep->temp = ft_strjoin(rep->beginning, rep->replace);
 		ret = ft_strjoin(rep->temp, rep->end);
 		free(str);

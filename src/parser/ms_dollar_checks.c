@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:04:55 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 09:42:27 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 11:08:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,17 @@ static int	check_dollar_in_quotes_first_loop(char *str, size_t idx,
 		i++;
 	}
 	return (index);
+}
+
+t_dol_rep	*ms_dollar_rep_init(t_shell *shell, char *dollar)
+{
+	t_dol_rep	*rep;
+
+	rep = ft_calloc(1, sizeof(t_dol_rep));
+	rep->beg_len = 0;
+	rep->search = ms_replace_var_search(dollar + 1);
+	rep->replace = ms_env_ret_value(shell, rep->search);
+	return (rep);
 }
 
 void	*ms_dollar_rep_clean(t_dol_rep *rep)

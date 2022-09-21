@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 18:14:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 11:00:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	free_r_quotes(char *str, char *temp)
 static char	*remove_quotes_helper(char *str, char *temp, int index, int quote)
 {
 	int		k;
-	char	*ret;
 
 	k = index;
 	while (str[index] != '\0')
@@ -31,10 +30,7 @@ static char	*remove_quotes_helper(char *str, char *temp, int index, int quote)
 		if (str[index] == quote)
 		{
 			if (str[index + 1] == quote)
-			{
-				ret = ft_strjoin(temp, &str[index + 2]);
-				return (ret);
-			}
+				return (ft_strjoin(temp, &str[index + 2]));
 			index += 1;
 			while (str[index] != '\0')
 			{
@@ -45,8 +41,7 @@ static char	*remove_quotes_helper(char *str, char *temp, int index, int quote)
 				}
 				index += 1;
 			}
-			ret = ft_strdup(temp);
-			return (ret);
+			return (ft_strdup(temp));
 		}
 	}
 	return (NULL);
@@ -85,19 +80,4 @@ char	*remove_quotes(char *str, int index, int quote)
 	ret = remove_quotes_helper(str, temp, index, quote);
 	free_r_quotes(str, temp);
 	return (ret);
-}
-
-int	check_char_errors(t_cmd *cmd)
-{
-	if (check_quotes(cmd))
-		return (EXIT_FAILURE);
-	if (check_redirections(cmd))
-		return (EXIT_FAILURE);
-	if (check_pipes(cmd))
-		return (EXIT_FAILURE);
-	if (check_empty_pipes(cmd))
-		return (EXIT_FAILURE);
-	if (check_slash(cmd))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
 }
