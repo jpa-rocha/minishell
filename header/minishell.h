@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 16:52:58 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 09:41:58 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@
 # define SLASH '/'
 # define BSLASH '\\'
 # define PATH_SIZE 1024
+
+typedef struct s_dol_rep {
+	char	*replace;
+	char	*beginning;
+	char	*end;
+	char	*search;
+	char	*temp;
+	int		var_len;
+	int		beg_len;
+}	t_dol_rep;
 
 typedef struct s_breaks {
 	int		i;
@@ -147,8 +157,10 @@ char		**get_each_word(char *str);
 char		*remove_quotes(char *str, int index, int quote);
 char		*check_quotes_pre_lexer(char *str);
 char		*remove_white_spaces(char *str);
-void		*ms_dollar_check(t_shell *shell, char *str);
+char		*ms_dollar_check(t_shell *shell, char *str);
 int			check_dollar_in_quotes(char *str, size_t idx, int c);
+void		*ms_dollar_rep_clean(t_dol_rep *rep);
+char		*ms_replace_var_search(char *dollar);
 int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);
 
@@ -168,7 +180,6 @@ int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
 int			ms_exec_set_in_out(t_shell *shell);
 int			ms_exec_here_doc_fork(t_shell *shell);
-int			ms_here_doc_end(t_shell *shell, char *line, int ret);
 int			ms_find_cmd_loop(t_shell *shell);
 int			ms_next_cmd(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);

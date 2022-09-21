@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 08:05:45 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 16:50:52 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 18:14:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ static char	*remove_quotes_helper(char *str, char *temp, int index, int quote)
 				return (ret);
 			}
 			index += 1;
-			while (str[index] != '\0' && str[index] != quote)
+			while (str[index] != '\0')
 			{
-				temp[k] = str[index];
-				k += 1;
+				if (str[index] != quote)
+				{
+					temp[k] = str[index];
+					k += 1;
+				}
 				index += 1;
 			}
 			ret = ft_strdup(temp);

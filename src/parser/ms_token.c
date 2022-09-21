@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 17:22:34 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 15:35:20 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 18:16:44 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	**break_quotes_inner_loop(t_shell *shell,
 		{
 			new[b->k] = ft_calloc(b->j + 1, sizeof(char));
 			ft_strlcpy(new[b->k], &str[b->i - b->j], b->j + 1);
-			new[b->k] = (char *)ms_dollar_check(shell, new[b->k]);
+			new[b->k] = ms_dollar_check(shell, new[b->k]);
 			new[b->k] = check_quotes_pre_lexer(new[b->k]);
 			b->k++;
 			b->j = -1;

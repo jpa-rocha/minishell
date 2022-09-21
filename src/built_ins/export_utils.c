@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/06 17:36:37 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 18:27:39 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 	while (search)
 	{
 		line = (t_envvar *) search->data;
-		if (ft_strncmp(line->name, name, ft_strlen(line->name) - 1) == 0)
+		if (ft_strncmp(line->name, name, ft_strlen(name) - 1) == 0)
 		{
 			node = search;
 			break ;

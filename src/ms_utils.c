@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 09:14:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 09:24:04 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,20 @@ char	*ms_env_ret_value(t_shell *shell, char *name)
 	t_envvar	*var;
 	char		*search;
 
-	search = ft_strjoin(name, "=");
-	node = ms_env_find_entry(shell->workenv, search);
-	if (node == NULL)
+	if (ft_strlen(name) > 0)
 	{
+		search = ft_strjoin(name, "=");
+		node = ms_env_find_entry(shell->workenv, search);
+		if (node == NULL)
+		{
+			free(search);
+			return (NULL);
+		}
+		var = (t_envvar *)node->data;
 		free(search);
-		return (NULL);
+		search = ft_strdup(var->value);
+		return (search);
 	}
-	var = (t_envvar *)node->data;
-	free(search);
-	search = ft_strdup(var->value);
+	search = ft_calloc(1, sizeof(char));
 	return (search);
 }

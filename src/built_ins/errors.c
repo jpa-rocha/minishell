@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 12:33:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 16:48:45 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 17:25:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ static	int	ms_more_errors(t_shell *shell, int error_num)
 	{
 		printf(ERR_NF, &shell->cmd->line[shell->cmd->error_inc]);
 		return (COMMAND_NOT_FOUND);
+	}
+	if (error_num == -15)
+	{
+		shell->cmd->cmd_idx = shell->cmd->n_cmd;
+		return (ERR_CWD);
 	}
 	return (EXIT_SUCCESS);
 }

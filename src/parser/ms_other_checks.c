@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 14:10:28 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 10:07:01 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*ms_replace_var(t_shell *shell, char *dollar, char *str);
  */
 
 /* check the single quotes, needs to return the string, not the actual value*/
-void	*ms_dollar_check(t_shell *shell, char *str)
+char	*ms_dollar_check(t_shell *shell, char *str)
 {
 	int		i;
 	char	*ret;
@@ -52,6 +52,7 @@ static char	*ms_dollar_check_helper(t_shell *shell, char *str, int i)
 						str = ms_replace_var(shell, dollar, str);
 					else
 						str = ms_replace_err(shell, dollar, str);
+					i = 0;
 				}
 			}
 		}
@@ -87,24 +88,29 @@ static char	*ms_replace_err(t_shell *shell, char *dollar, char *str)
 
 static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
 {
-	char	*end;
-	char	*beginning;
-	int		i;
+	t_dol_rep	*rep;
+	char		*ret;
 
-	i = 0;
-	end = ms_env_ret_value(shell, dollar + 1);
-	if (end != NULL)
+	rep = ft_calloc(1, sizeof(t_dol_rep));
+	rep->beg_len = 0;
+	rep->search = ms_replace_var_search(dollar + 1);
+	rep->replace = ms_env_ret_value(shell, rep->search);
+	if (rep->replace != NULL && ft_strlen(str) > 1)
 	{
-		while (str[i] != '$')
-			i += 1;
-		beginning = ft_calloc(i + 1, sizeof(char));
-		ft_strlcpy(beginning, str, i + 1);
+		while (str[rep->beg_len] != '$')
+			rep->beg_len += 1;
+		rep->beginning = ft_calloc(rep->beg_len + 1, sizeof(char));
+		rep->var_len = ft_strlen(rep->replace);
+		ft_strlcpy(rep->beginning, str, rep->beg_len + 1);
+		rep->end = ft_strdup(&str[rep->beg_len + rep->var_len - 1]);
+		rep->temp = ft_strjoin(rep->beginning, rep->replace);
+		ret = ft_strjoin(rep->temp, rep->end);
 		free(str);
-		str = ft_strjoin(beginning, end);
-		free(beginning);
-		free(end);
-		return (str);
+		ms_dollar_rep_clean(rep);
+		return (ret);
 	}
+	ret = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	ms_dollar_rep_clean(rep);
 	free(str);
-	return (ft_strdup(""));
+	return (ret);
 }

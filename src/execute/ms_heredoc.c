@@ -6,18 +6,20 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 16:43:38 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/20 17:23:53 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static int	ms_exec_here_doc_setup(t_shell *shell);
-//static int	ms_here_doc_end(t_shell *shell, char *line, int ret);
+static int	ms_here_doc_end(t_shell *shell, char *line, int ret);
 static int	ms_exec_here_doc(t_shell *shell);
+static void	ms_here_doc_waiting(t_shell *shell);
 
 int	ms_exec_here_doc_fork(t_shell *shell)
 {
+	ms_signals_block();
 	shell->pid = fork();
 	if (shell->pid == 0)
 	{
@@ -27,21 +29,30 @@ int	ms_exec_here_doc_fork(t_shell *shell)
 	}
 	else
 	{
-		waitpid(shell->pid, &shell->status, 0);
-		ms_signals_parent();
-		if (shell->cmd->n_cmd == 1)
-			shell->cmd->builtin_num = -14;
-		if (WIFSIGNALED(shell->status) == 1)
-			shell->status = 128 + WTERMSIG(shell->status);
-		else
-			shell->status = WEXITSTATUS(shell->status);
-		if (shell->status == 130)
-			return (130);
-		shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
+		ms_here_doc_waiting(shell);
 		if (shell->cmd->input < 0)
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+static void	ms_here_doc_waiting(t_shell *shell)
+{
+	waitpid(shell->pid, &shell->status, 0);
+	ms_signals_parent();
+	shell->cmd->heredoc = 1;
+	if (shell->cmd->n_cmd == 1)
+		shell->cmd->builtin_num = -14;
+	if (WIFSIGNALED(shell->status) == 1)
+		shell->status = 128 + WTERMSIG(shell->status);
+	else
+		shell->status = WEXITSTATUS(shell->status);
+	if (shell->status == 130)
+	{
+		ft_printf(STDIN_FILENO, "\n");
+		shell->cmd->builtin_num = -15;
+	}
+	shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
 }
 
 static int	ms_exec_here_doc(t_shell *shell)
@@ -75,7 +86,8 @@ static int	ms_exec_here_doc(t_shell *shell)
 
 static int	ms_exec_here_doc_setup(t_shell *shell)
 {
-	shell->cmd->heredoc = 1;
+	close(shell->cmd->temp_fd[0]);
+	close(shell->cmd->temp_fd[1]);
 	shell->cmd->input = open("heredoc_aux.txt",
 			O_CREAT | O_RDWR | O_TRUNC, 00777);
 	if (shell->cmd->input < 0)
@@ -84,7 +96,7 @@ static int	ms_exec_here_doc_setup(t_shell *shell)
 	return (EXIT_SUCCESS);
 }
 
-int	ms_here_doc_end(t_shell *shell, char *line, int ret)
+static int	ms_here_doc_end(t_shell *shell, char *line, int ret)
 {
 	if (line != NULL)
 		free(line);
