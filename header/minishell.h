@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 16:52:00 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 17:20:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ char		*ms_dollar_check(t_shell *shell, char *str);
 int			check_dollar_in_quotes(char *str, size_t idx, int c);
 t_dol_rep	*ms_dollar_rep_init(t_shell *shell, char *dollar);
 void		*ms_dollar_rep_clean(t_dol_rep *rep);
+char		*ms_replace_var_empty(t_dol_rep *rep, char *str);
 char		*ms_replace_var_search(char *dollar);
 int			check_char_in_quotes(char *str, int idx, int c);
 int			flag_quotes(char *str, int quote);

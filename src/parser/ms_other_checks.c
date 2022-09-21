@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/21 11:43:06 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 17:20:22 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
 		ms_dollar_rep_clean(rep);
 		return (ret);
 	}
-	ret = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	ms_dollar_rep_clean(rep);
-	free(str);
+	ret = ms_replace_var_empty(rep, str);
 	return (ret);
 }

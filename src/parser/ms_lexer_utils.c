@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_lexer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 08:47:57 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/19 09:02:22 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/21 17:20:32 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,17 @@ char	*remove_white_spaces(char *str)
 	str = ft_strdup(new_str);
 	free(new_str);
 	return (str);
+}
+
+char	*ms_replace_var_empty(t_dol_rep *rep, char *str)
+{
+	char	*ret;
+
+	ret = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	while (str[rep->beg_len] != '$')
+			rep->beg_len += 1;
+	ft_strlcpy(ret, str, rep->beg_len + 1);
+	ms_dollar_rep_clean(rep);
+	free(str);
+	return (ret);
 }
