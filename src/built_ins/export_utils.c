@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 18:27:39 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 21:33:10 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,18 @@ t_node	*ms_env_find_entry(t_list *env, char *name)
 	t_node		*node;
 	t_node		*search;
 	t_envvar	*line;
+	int			i;
 
 	node = NULL;
 	search = env->first;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
-		if (ft_strncmp(line->name, name, ft_strlen(name) - 1) == 0)
+		if (ft_strncmp(&line->name[ft_strlen(line->name) -1], "=", 1) == 0)
+			i = 1;
+		else
+			i = 0;
+		if (ft_strncmp(line->name, name, ft_strlen(line->name) - i) == 0)
 		{
 			node = search;
 			break ;
@@ -87,7 +92,8 @@ int	ms_var_check(t_shell *shell, char *called_from, char *newvar)
 	while (newvar[i] != '=' && newvar[i] != '\0')
 	{
 		if (newvar[i] == '=' || newvar[i] == '%' || newvar[i] == '?'
-			|| ft_isdigit(newvar[0]) == 1 || newvar[i] == '-')
+			|| ft_isdigit(newvar[0]) == 1 || newvar[i] == '-'
+			|| newvar[i] == '$')
 			first_check = 1;
 		if (ft_isdigit(newvar[i]) != 1)
 			check = 1;

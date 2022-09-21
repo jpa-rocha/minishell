@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/18 21:15:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 21:42:19 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,6 @@ static int	ms_cd_minus(t_shell *shell, t_envvar *path, t_envvar *oldpath)
 	}
 	else
 		ms_unset_var(shell, "OLDPWD");
-	ms_pwd();
+	ms_pwd(shell);
 	return (shell->status);
 }

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/15 10:20:46 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 18:48:18 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static int	ms_export_value_check(t_shell *shell, t_envvar *line, char *newvar);
 int	ms_export(t_shell *shell, char **args)
 {
 	t_node		*node;
+	int			i;
 
+	i = 1;
 	node = shell->workenv->first;
 	shell->status = ms_export_order(shell->workenv);
 	if (shell->status == ALLOCATION_PROBLEM_EXIT)
@@ -29,13 +31,15 @@ int	ms_export(t_shell *shell, char **args)
 		ms_export_empty_call(node);
 	else if (ms_args_len(args) > 1)
 	{
-		node = ms_env_find_entry(shell->workenv, args[1]);
-		if (node != NULL)
-			ms_export_var_exists(shell, args[1], node);
-		else
-			shell->status = ms_export_create_var(shell, args[1]);
-		if (shell->status != EXIT_SUCCESS)
-			return (shell->status);
+		while (i < ms_args_len(args))
+		{
+			node = ms_env_find_entry(shell->workenv, args[i]);
+			if (node != NULL)
+				ms_export_var_exists(shell, args[i], node);
+			else
+				shell->status = ms_export_create_var(shell, args[i]);
+			i += 1;
+		}
 	}
 	shell->status = EXIT_SUCCESS;
 	return (shell->status);

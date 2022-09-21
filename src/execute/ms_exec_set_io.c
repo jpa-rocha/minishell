@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 09:33:07 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 17:00:15 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 19:02:43 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ static int	ms_exec_set_output(t_shell *shell)
 		cmd_len = ms_args_len(shell->cmd->curr_cmd);
 		i += 1;
 	}
+	//close(shell->cmd->output);
 	if (error != EXIT_SUCCESS)
 		return (error);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 11:30:14 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 18:55:31 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,29 @@ static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line);
 int	ms_unset(t_shell *shell, char **args)
 {
 	t_node		*node;
+	int			i;
 
+	i = 1;
 	if (ms_args_len(args) == 1)
 	{
 		shell->status = EXIT_SUCCESS;
 		return (shell->status);
 	}
-	if (ms_var_check(shell, "unset", args[1]) == -1)
-		return (shell->status);
-	node = ms_env_find_entry(shell->workenv, args[1]);
-	if (node != NULL)
+	while (i < ms_args_len(args))
 	{
-		ms_unset_var_exists(shell, node);
-		if (shell->status != EXIT_SUCCESS)
+		if (ms_var_check(shell, "unset", args[i]) == -1)
 			return (shell->status);
-		shell->status = ms_export_order(shell->workenv);
-		shell->env = ms_env_init_env(shell);
-		if (shell->cmd->path != NULL)
-			ms_free_args(shell->cmd->path);
-		shell->cmd->path = ms_cmd_path_creator(shell);
+		node = ms_env_find_entry(shell->workenv, args[i]);
+		if (node != NULL)
+		{
+			ms_unset_var_exists(shell, node);
+			shell->status = ms_export_order(shell->workenv);
+			shell->env = ms_env_init_env(shell);
+			if (shell->cmd->path != NULL)
+				ms_free_args(shell->cmd->path);
+			shell->cmd->path = ms_cmd_path_creator(shell);
+		}
+		i += 1;
 	}
 	shell->status = EXIT_SUCCESS;
 	return (shell->status);

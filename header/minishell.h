@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 17:20:57 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 21:41:21 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ int			ms_cd_path_exists(t_shell *shell, t_envvar *path,
 t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 
 // Return the current working path
-int			ms_pwd(void);
+int			ms_pwd(t_shell *shell);
 
 // Exits current program
 int			ms_exit(t_shell *shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:31:47 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 20:08:59 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:40:55 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,19 @@
 	the max. path size/length in mac 1024 & 4096 in linux
 	buffer stores the current working directory
 */
-int	ms_pwd(void)
+int	ms_pwd(t_shell *shell)
 {
-	char	buffer[PATH_SIZE];
-	char	*cwd;
+	//could fix it like bash
+	char		buffer[PATH_SIZE];
+	char		*cwd;
+	t_envvar	*pwd;	
 
 	cwd = getcwd(buffer, PATH_SIZE);
 	if (cwd == NULL)
 	{
-		perror("Error in current working directory\n");
-		return (1);
+		pwd = ms_init_vars(shell, "PWD");
+		printf("%s\n", pwd->value);
+		return (0);
 	}
 	printf("%s\n", cwd);
 	return (0);

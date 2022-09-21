@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:48:10 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/21 17:20:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 19:17:57 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,18 @@ static char	*ms_replace_var(t_shell *shell, char *dollar, char *str)
 	rep = ms_dollar_rep_init(shell, dollar);
 	if (rep->replace != NULL && ft_strlen(str) > 1)
 	{
+		if (ft_strlen(dollar) == ft_strlen(str))
+		{
+			ret = ft_strdup(rep->replace);
+			ms_dollar_rep_clean(rep);
+			return (ret);
+		}
 		while (str[rep->beg_len] != '$')
 			rep->beg_len += 1;
 		rep->beginning = ft_calloc(rep->beg_len + 1, sizeof(char));
 		rep->var_len = ft_strlen(rep->replace);
 		ft_strlcpy(rep->beginning, str, rep->beg_len + 1);
+		// FIX
 		if (ft_strlen(str) > (size_t)(rep->beg_len + rep->var_len - 1))
 			rep->end = ft_strdup(&str[rep->beg_len + rep->var_len - 1]);
 		else
