@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 16:38:51 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 17:04:18 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ms_call_built_in(t_shell *shell)
 
 static int	ms_exec_first_check(t_shell *shell)
 {
-	if (shell->cmd->builtin_num < -11)
+	if (shell->cmd->builtin_num < -1)
 		return (EXIT_SUCCESS);
 	if (shell->cmd->curr_cmd == NULL)
 	{
@@ -111,20 +111,21 @@ static int	ms_exec_first_check(t_shell *shell)
 			shell->cmd->builtin_num = 10;
 		return (EXIT_SUCCESS);
 	}
-	if (shell->cmd->builtin_num < -1)
-		return (EXIT_SUCCESS);
-	if (ft_strlen(shell->cmd->curr_cmd[0]) < 1
-		|| (shell->cmd->curr_cmd[0][0] <= 32
-		|| shell->cmd->curr_cmd[0][0] == 58))
+	if (shell->cmd->curr_cmd[0] != NULL)
 	{
-		shell->cmd->builtin_num = 8;
-		return (EXIT_SUCCESS);
-	}
-	else if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
-		&& shell->cmd->curr_cmd[0][0] == 33)
-	{
-		shell->cmd->builtin_num = 9;
-		return (EXIT_SUCCESS);
+		if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
+			&& shell->cmd->curr_cmd[0][0] == 33)
+		{
+			shell->cmd->builtin_num = -16;
+			return (EXIT_SUCCESS);
+		}
+		else if (ft_strlen(shell->cmd->curr_cmd[0]) == 1
+			|| (shell->cmd->curr_cmd[0][0] <= 32
+			|| shell->cmd->curr_cmd[0][0] == 58))
+		{
+			shell->cmd->builtin_num = -17;
+			return (EXIT_SUCCESS);
+		}
 	}
 	return (EXIT_FAILURE);
 }

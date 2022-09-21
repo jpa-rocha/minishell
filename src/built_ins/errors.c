@@ -6,13 +6,14 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 12:33:38 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 17:25:57 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 17:02:33 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
 static	int	ms_more_errors(t_shell *shell, int error_num);
+static	int	ms_more_more_errors(t_shell *shell, int error_num);
 
 int	ms_error_messages(t_shell *shell, int error_num)
 {
@@ -59,5 +60,22 @@ static	int	ms_more_errors(t_shell *shell, int error_num)
 		shell->cmd->cmd_idx = shell->cmd->n_cmd;
 		return (ERR_CWD);
 	}
-	return (EXIT_SUCCESS);
+	if (error_num < -15)
+		shell->status = ms_more_more_errors(shell, error_num);
+	return (shell->status);
+}
+
+static	int	ms_more_more_errors(t_shell *shell, int error_num)
+{
+	if (error_num == -16)
+	{
+		shell->status = EXIT_FAILURE;
+		return (EXIT_FAILURE);
+	}
+	if (error_num == -17)
+	{
+		shell->status = EXIT_SUCCESS;
+		return (EXIT_SUCCESS);
+	}
+	return (shell->status);
 }

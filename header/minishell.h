@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 11:07:40 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 16:52:00 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,8 @@ int			ms_error_messages(t_shell *shell, int error_num);
 int			ms_exec(t_shell *shell);
 int			ms_check_pipe(t_cmd *cmd);
 int			ms_exec_set_in_out(t_shell *shell);
-int			ms_exec_here_doc_fork(t_shell *shell);
+int			ms_exec_error(t_shell *shell);
+int			ms_exec_here_doc_fork(t_shell *shell, int i);
 int			ms_find_cmd_loop(t_shell *shell);
 int			ms_next_cmd(t_shell *shell);
 int			ms_top_pipe(t_shell *shell);
@@ -188,8 +189,8 @@ int			ms_bot_pipe(t_shell *shell);
 int			ms_cmd_executing(t_shell *shell);
 int			ms_call_built_in(t_shell *shell);
 int			ms_cmd_separator(t_shell *shell);
-int			ms_cmd_replace_in(t_shell *shell, char **cmd);
-int			ms_cmd_replace_out(t_shell *shell, char **cmd);
+int			ms_cmd_replace_in(t_shell *shell, char **cmd, int i);
+int			ms_cmd_replace_out(t_shell *shell, char **cmd, int i);
 
 // Built-handling
 int			ms_is_built_in(t_shell *shell, char **curr_cmd);

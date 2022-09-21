@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 11:13:58 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/14 20:08:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:38:36 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ int	ms_echo(t_cmd *cmd)
 	}
 	if (flag_n == 0)
 		write(1, "\n", 1);
-	return (0);
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 10:16:45 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 14:06:43 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 16:51:40 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,11 @@ int	ms_next_cmd(t_shell *shell)
 		ms_free_args(shell->cmd->curr_cmd);
 	shell->cmd->curr_cmd = ms_copy_cmd(shell->cmd->seq[shell->cmd->cmd_idx]);
 	return (ms_cmd_separator(shell));
+}
+
+int	ms_exec_error(t_shell *shell)
+{
+	shell->cmd->input = shell->cmd->temp_fd[0];
+	shell->cmd->output = shell->cmd->temp_fd[1];
+	return (EXIT_SUCCESS);
 }

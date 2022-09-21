@@ -6,25 +6,25 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/20 17:23:53 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/21 16:49:25 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
 
-static int	ms_exec_here_doc_setup(t_shell *shell);
+static int	ms_exec_here_doc_setup(t_shell *shell, int i);
 static int	ms_here_doc_end(t_shell *shell, char *line, int ret);
-static int	ms_exec_here_doc(t_shell *shell);
+static int	ms_exec_here_doc(t_shell *shell, int i);
 static void	ms_here_doc_waiting(t_shell *shell);
 
-int	ms_exec_here_doc_fork(t_shell *shell)
+int	ms_exec_here_doc_fork(t_shell *shell, int i)
 {
 	ms_signals_block();
 	shell->pid = fork();
 	if (shell->pid == 0)
 	{
 		ms_signals_heredoc();
-		if (ms_exec_here_doc(shell) == 0)
+		if (ms_exec_here_doc(shell, i) == 0)
 			exit(0);
 	}
 	else
@@ -41,7 +41,7 @@ static void	ms_here_doc_waiting(t_shell *shell)
 	waitpid(shell->pid, &shell->status, 0);
 	ms_signals_parent();
 	shell->cmd->heredoc = 1;
-	if (shell->cmd->n_cmd == 1)
+	if (ms_args_len(shell->cmd->curr_cmd) < 3)
 		shell->cmd->builtin_num = -14;
 	if (WIFSIGNALED(shell->status) == 1)
 		shell->status = 128 + WTERMSIG(shell->status);
@@ -55,12 +55,12 @@ static void	ms_here_doc_waiting(t_shell *shell)
 	shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
 }
 
-static int	ms_exec_here_doc(t_shell *shell)
+static int	ms_exec_here_doc(t_shell *shell, int i)
 {
 	char	*line;
 	int		len;
 
-	if (ms_exec_here_doc_setup(shell) != 0)
+	if (ms_exec_here_doc_setup(shell, i) != 0)
 		return (EXIT_FAILURE);
 	while (1)
 	{
@@ -84,7 +84,7 @@ static int	ms_exec_here_doc(t_shell *shell)
 	return (ms_here_doc_end(shell, line, EXIT_SUCCESS));
 }
 
-static int	ms_exec_here_doc_setup(t_shell *shell)
+static int	ms_exec_here_doc_setup(t_shell *shell, int i)
 {
 	close(shell->cmd->temp_fd[0]);
 	close(shell->cmd->temp_fd[1]);
@@ -92,7 +92,7 @@ static int	ms_exec_here_doc_setup(t_shell *shell)
 			O_CREAT | O_RDWR | O_TRUNC, 00777);
 	if (shell->cmd->input < 0)
 		return (EXIT_FAILURE);
-	shell->cmd->limiter = shell->cmd->curr_cmd[1];
+	shell->cmd->limiter = shell->cmd->curr_cmd[i + 1];
 	return (EXIT_SUCCESS);
 }
 
