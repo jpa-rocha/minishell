@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 14:29:57 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 19:29:11 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 11:02:38 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_shell	*ms_shell_init(char **env, char **argv, int shlvl)
 	if (shell->env == NULL)
 		ms_shell_cleanup(shell);
 	ms_set_builtins(shell);
-	shell->user = ms_env_ret_value(shell, "USER=");
-	shell->home = ms_env_ret_value(shell, "HOME=");
+	shell->user = ms_env_ret_value(shell, "USER");
+	shell->home = ms_env_ret_value(shell, "HOME");
 	shell->status = 0;
 	return (shell);
 }
@@ -58,7 +58,7 @@ char	**ms_cmd_path_creator(t_shell *shell)
 	char		**path;
 
 	path = NULL;
-	node = ms_env_find_entry(shell->workenv, "PATH=");
+	node = ms_env_find_entry(shell->workenv, "PATH");
 	if (node == NULL)
 	{
 		path = ft_calloc(2, sizeof(char *));
@@ -105,7 +105,7 @@ static void	ms_update_shell_home(t_shell *shell)
 	DIR		*dir;
 	char	*home;
 
-	home = ms_env_ret_value(shell, "HOME=");
+	home = ms_env_ret_value(shell, "HOME");
 	if (home != NULL && ft_strncmp(home, shell->home,
 			ft_strlen(home) == 1))
 	{

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 09:27:39 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 18:55:31 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 10:03:11 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	ms_unset_var_exists(t_shell *shell, t_node *node);
 static int	ms_unset_free_lines(t_shell *shell, t_node *node, t_envvar *line);
+static int	ms_unset_inner_loop(t_shell *shell, char **args, int i);
 
 int	ms_unset(t_shell *shell, char **args)
 {
-	t_node		*node;
 	int			i;
 
 	i = 1;
@@ -28,22 +28,30 @@ int	ms_unset(t_shell *shell, char **args)
 	}
 	while (i < ms_args_len(args))
 	{
-		if (ms_var_check(shell, "unset", args[i]) == -1)
-			return (shell->status);
-		node = ms_env_find_entry(shell->workenv, args[i]);
-		if (node != NULL)
-		{
-			ms_unset_var_exists(shell, node);
-			shell->status = ms_export_order(shell->workenv);
-			shell->env = ms_env_init_env(shell);
-			if (shell->cmd->path != NULL)
-				ms_free_args(shell->cmd->path);
-			shell->cmd->path = ms_cmd_path_creator(shell);
-		}
+		shell->status = ms_unset_inner_loop(shell, args, i);
 		i += 1;
 	}
 	shell->status = EXIT_SUCCESS;
 	return (shell->status);
+}
+
+static int	ms_unset_inner_loop(t_shell *shell, char **args, int i)
+{
+	t_node		*node;
+
+	if (ms_var_check(shell, "unset", args[i]) == -1)
+		return (shell->status);
+	node = ms_env_find_entry(shell->workenv, args[i]);
+	if (node != NULL)
+	{
+		ms_unset_var_exists(shell, node);
+		shell->status = ms_export_order(shell->workenv);
+		shell->env = ms_env_init_env(shell);
+		if (shell->cmd->path != NULL)
+			ms_free_args(shell->cmd->path);
+		shell->cmd->path = ms_cmd_path_creator(shell);
+	}
+	return (EXIT_SUCCESS);
 }
 
 static int	ms_unset_var_exists(t_shell *shell, t_node *node)

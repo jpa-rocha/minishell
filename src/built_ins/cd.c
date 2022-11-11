@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 12:26:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 21:42:19 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 10:45:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	ms_cd_rel_abs_path(t_shell *shell, char **args, t_envvar *path,
 
 static int	ms_cd_rel_path(t_shell *shell, char **args, char **home)
 {
-	home[0] = ms_env_ret_value(shell, "HOME=");
+	home[0] = ms_env_ret_value(shell, "HOME");
 	if (home[0] == NULL)
 	{
 		home[0] = ft_strjoin(shell->home, &args[1][1]);

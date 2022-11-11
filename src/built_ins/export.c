@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 13:47:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 18:48:18 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 12:41:56 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,31 @@ static void	ms_export_empty_call(t_node *node)
 	}
 }
 
-// POSSIBLE PROBLEMS WITH NULL
 static int	ms_export_var_exists(t_shell *shell, char *newvar, t_node *node)
 {
 	t_envvar	*line;
 	int			i;
 
-	line = (t_envvar *) node->data;
-	free(line->name);
-	free(line->value);
-	i = ms_var_check(shell, "export", newvar);
-	if (i < 0)
-		return (shell->status);
-	line->name = ft_calloc(i, sizeof(char));
-	if (line->name == NULL)
+	if (ft_strchr(newvar, '=') != NULL)
 	{
-		shell->status = ALLOCATION_PROBLEM_EXIT;
-		return (shell->status);
+		line = (t_envvar *) node->data;
+		free(line->name);
+		free(line->value);
+		i = ms_var_check(shell, "export", newvar);
+		if (i < 0)
+			return (shell->status);
+		line->name = ft_calloc(i, sizeof(char));
+		if (line->name == NULL)
+		{
+			shell->status = ALLOCATION_PROBLEM_EXIT;
+			return (shell->status);
+		}
+		ft_strlcpy(line->name, newvar, i);
+		shell->status = ms_export_value_check(shell, line, newvar);
+		shell->env = ms_env_init_env(shell);
+		ms_free_args(shell->cmd->path);
+		shell->cmd->path = ms_cmd_path_creator(shell);
 	}
-	ft_strlcpy(line->name, newvar, i);
-	shell->status = ms_export_value_check(shell, line, newvar);
-	shell->env = ms_env_init_env(shell);
-	ms_free_args(shell->cmd->path);
-	shell->cmd->path = ms_cmd_path_creator(shell);
 	return (shell->status);
 }
 

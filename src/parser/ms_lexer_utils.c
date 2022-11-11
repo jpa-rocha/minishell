@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 08:47:57 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/21 17:20:32 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 13:04:24 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,20 @@ char	*ms_replace_var_empty(t_dol_rep *rep, char *str)
 	ms_dollar_rep_clean(rep);
 	free(str);
 	return (ret);
+}
+
+int	ms_slash_flag_check(t_cmd *cmd)
+{
+	int	i;
+	int	flag;
+
+	flag = 0;
+	i = 0;
+	while (cmd->line[i] != '\0')
+	{
+		if (ft_isalnum(cmd->line[i]) == 1)
+			flag = 1;
+		i += 1;
+	}
+	return (flag);
 }

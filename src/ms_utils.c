@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 14:37:40 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 09:24:04 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 10:43:54 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ char	*ms_env_ret_value(t_shell *shell, char *name)
 
 	if (ft_strlen(name) > 0)
 	{
-		search = ft_strjoin(name, "=");
-		node = ms_env_find_entry(shell->workenv, search);
+		search = ft_strdup(name);
+		node = ms_env_find_entry(shell->workenv, name);
 		if (node == NULL)
 		{
 			free(search);

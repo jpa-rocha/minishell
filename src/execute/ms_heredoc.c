@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 15:57:44 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 16:49:25 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 09:32:25 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	ms_exec_here_doc_fork(t_shell *shell, int i)
 		ms_signals_heredoc();
 		if (ms_exec_here_doc(shell, i) == 0)
 			exit(0);
+		else
+			exit(5);
 	}
 	else
 	{
@@ -52,6 +54,8 @@ static void	ms_here_doc_waiting(t_shell *shell)
 		ft_printf(STDIN_FILENO, "\n");
 		shell->cmd->builtin_num = -15;
 	}
+	if (shell->status == 5)
+		shell->cmd->builtin_num = -5;
 	shell->cmd->input = open("heredoc_aux.txt", O_RDONLY);
 }
 
@@ -93,6 +97,11 @@ static int	ms_exec_here_doc_setup(t_shell *shell, int i)
 	if (shell->cmd->input < 0)
 		return (EXIT_FAILURE);
 	shell->cmd->limiter = shell->cmd->curr_cmd[i + 1];
+	if (shell->cmd->limiter == NULL)
+	{
+		shell->cmd->builtin_num = -5;
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 

@@ -6,36 +6,59 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 11:50:02 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 21:33:10 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 12:46:04 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../header/minishell.h"
+
+static char	*ms_export_name_cleanup(char *name);
 
 t_node	*ms_env_find_entry(t_list *env, char *name)
 {
 	t_node		*node;
 	t_node		*search;
 	t_envvar	*line;
+	char		*new_name;
 	int			i;
 
+	new_name = ms_export_name_cleanup(name);
 	node = NULL;
 	search = env->first;
 	while (search)
 	{
 		line = (t_envvar *) search->data;
-		if (ft_strncmp(&line->name[ft_strlen(line->name) -1], "=", 1) == 0)
-			i = 1;
-		else
-			i = 0;
-		if (ft_strncmp(line->name, name, ft_strlen(line->name) - i) == 0)
+		i = ms_export_size_adjust(line);
+		if (ft_strncmp(line->name, new_name, ft_strlen(line->name) - i) == 0
+			&& ft_strlen(line->name) - i == ft_strlen(new_name))
 		{
 			node = search;
 			break ;
 		}
 		search = search->next;
 	}
+	free(new_name);
 	return (node);
+}
+
+static char	*ms_export_name_cleanup(char *name)
+{
+	char	*new;
+	char	*new_name;
+	int		i;
+
+	new = ft_strchr(name, '=');
+	if (new == NULL)
+		new_name = ft_strdup(name);
+	else
+	{
+		i = 0;
+		while (name[i] != '=')
+			i += 1;
+		new_name = ft_calloc(i + 1, sizeof(char));
+		ft_strlcpy(new_name, name, i + 1);
+	}
+	return (new_name);
 }
 
 int	ms_export_order(t_list *env)

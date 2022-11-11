@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:21:21 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 21:42:02 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 12:39:21 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	ms_call_built_in(t_shell *shell)
 	if (shell->cmd->builtin_num == 0)
 		return (ms_cd(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 1)
-		return (ms_exit(shell));
+		return (ms_exit(shell, shell->cmd->curr_cmd));
 	if (shell->cmd->builtin_num == 2)
 		return (ms_shell(shell->env, shell->argv, shell->shlvl + 1));
 	if (shell->cmd->builtin_num == 3)

@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:45:27 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/21 21:41:21 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 12:36:40 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ char		*remove_white_spaces(char *str);
 char		*ms_dollar_check(t_shell *shell, char *str);
 int			check_dollar_in_quotes(char *str, size_t idx, int c);
 t_dol_rep	*ms_dollar_rep_init(t_shell *shell, char *dollar);
+void		ms_rep_setup(t_dol_rep *rep, char *str);
 void		*ms_dollar_rep_clean(t_dol_rep *rep);
 char		*ms_replace_var_empty(t_dol_rep *rep, char *str);
 char		*ms_replace_var_search(char *dollar);
@@ -172,6 +173,7 @@ int			check_char_errors(t_cmd *cmd);
 int			check_quotes(t_cmd *cmd);
 int			check_redirections(t_cmd *cmd);
 int			check_slash(t_cmd *cmd);
+int			ms_slash_flag_check(t_cmd *cmd);
 int			check_empty_pipes(t_cmd *cmd);
 int			check_pipes(t_cmd *cmd);
 int			ms_error_messages(t_shell *shell, int error_num);
@@ -207,6 +209,7 @@ t_node		*ms_env_find_entry(t_list *env, char *name);
 int			ms_export(t_shell *shell, char **args);
 int			ms_export_order(t_list *env);
 int			ms_var_check(t_shell *shell, char *called_from, char *newvar);
+int			ms_export_size_adjust(t_envvar *line);
 
 // Entry point into the unset function
 int			ms_unset(t_shell *shell, char **args);
@@ -224,7 +227,7 @@ t_envvar	*ms_init_vars(t_shell *shell, char *envvar);
 int			ms_pwd(t_shell *shell);
 
 // Exits current program
-int			ms_exit(t_shell *shell);
+int			ms_exit(t_shell *shell, char **args);
 
 // Echo description
 int			ms_echo(t_cmd *cmd);

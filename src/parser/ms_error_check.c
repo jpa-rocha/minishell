@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:53:56 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/09/20 16:53:22 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 09:55:52 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,11 @@ int	check_redirections(t_cmd *cmd)
 int	check_slash(t_cmd *cmd)
 {
 	int	i;
+	int	flag;
 
+	flag = ms_slash_flag_check(cmd);
 	i = 0;
-	while (cmd->line[i] != '\0' && (cmd->line[i] == SLASH
+	while (cmd->line[i] != '\0' && flag == 0 && (cmd->line[i] == SLASH
 			|| cmd->line[i] == BSLASH || cmd->line[i] == '-'))
 	{
 		if (cmd->line[i] == SLASH)

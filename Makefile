@@ -62,6 +62,7 @@ SRCS	=	$(SRCDIR)minishell.c			\
 			$(PARSER)ms_token.c				\
 			$(PARSER)ms_other_checks.c		\
 			$(PARSER)ms_dollar_checks.c		\
+			$(PARSER)ms_dollar_utils.c		\
 			$(PARSER)ms_pipe_utils.c		\
 			$(PARSER)ms_quotes.c			\
 			$(PARSER)ms_quotes_utils.c		\

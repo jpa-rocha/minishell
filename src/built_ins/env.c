@@ -6,7 +6,7 @@
 /*   By: jrocha <jrocha@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:55:28 by jrocha            #+#    #+#             */
-/*   Updated: 2022/09/16 11:30:04 by jrocha           ###   ########.fr       */
+/*   Updated: 2022/09/22 12:36:17 by jrocha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,15 @@ char	**ms_env_init_env(t_shell *shell)
 	}
 	newenv[i] = NULL;
 	return (newenv);
+}
+
+int	ms_export_size_adjust(t_envvar *line)
+{
+	int	i;
+
+	if (ft_strncmp(&line->name[ft_strlen(line->name) - 1], "=", 1) == 0)
+			i = 1;
+	else
+		i = 0;
+	return (i);
 }
